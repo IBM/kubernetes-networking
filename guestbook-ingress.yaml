@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook
+  labels:
+    app: guestbook
+spec:
+  ports:
+  - port: 3000
+    targetPort: http-server
+  selector:
+    app: guestbook
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: guestbook
+  annotations:
+    ingress.bluemix.net/rewrite-path: "serviceName=guestbook rewrite=/"
+spec:
+  tls:
+  - hosts:
+    - <ingress-subdomain>
+    secretName: <ingress-secret>
+  rules:
+  - host: <ingress-subdomain>
+    http:
+      paths:
+      - path: /guestbook/
+        backend:
+          serviceName: guestbook
+          servicePort: 3000
