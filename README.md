@@ -5,10 +5,10 @@ In this tutorial we'll demonstrate basic networking concepts in Kubernetes using
 
 ## Objectives
 
-Learn how to perform the following tasks.
-* Create services so that pods can talk to each other.
-* Create an ingress resource so that an application outside the Kubernetes cluster can talk to a pod.
-* Create network policies to limit connections.
+In this lab you'll learn
+* how pods communicate with each other;
+* how pods are exposed to the internet;
+* how traffic between pods can be restricted.
 
 
 ## Prerequisites
@@ -27,7 +27,7 @@ See https://console.bluemix.net/docs/account/index.html#accounts for further inf
 
 
 ## Download the Sample Application
-The application used in this tutorial is a simple guestbook website where users can post messages.  
+The application used in this tutorial is a simple guestbook website where users can post messages.
 You should clone it to your workstation since you will be using some of the configuration files.
 
 ```console
@@ -78,7 +78,7 @@ variables to start using Kubernetes.
 export KUBECONFIG=/home/gregd/.bluemix/plugins/container-service/clusters/myStandardCluster/kube-config-hou02-myStandardCluster.yml
 ```
 
-Copy the `export` statement and run it.  This sets the `KUBECONFIG` environment variable to point to the kubectl config file.
+Copy the `export` statement that you get and run it.  This sets the `KUBECONFIG` environment variable to point to the kubectl config file.
 This will make your `kubectl` client work with your new Kubernetes cluster.  You can verify that by entering a `kubectl` command.
 
 ```console
@@ -93,7 +93,7 @@ NAME            STATUS    ROLES     AGE       VERSION
 
 The following figure depicts the components of the sample guestbook application.
 
-![w_to_master-r_to_slave](../images/Master-Slave.png)
+![w_to_master-r_to_slave](images/Master-Slave.png)
 
 The guestbook application is a Go program which runs inside a container that is deployed to the Kubernetes cluster.
 It includes a simple HTML page and javascript file for a browser front-end.
@@ -154,6 +154,8 @@ There are two networks.
   Each pod is assigned a unique IP and can talk to any other pod using its IP.
 
 You can observe how the pod network operates over the host node network by running a traceroute command in one of the pods.
+(Note: The ability to run Linux commands within a container varies depending on the base image it uses.
+This command will work with guestbook but may not work with other containers.)
 
 ```console
 $ kubectl exec -it guestbook-v1-7fc76dc46-bl7xf traceroute 172.30.58.206
@@ -162,9 +164,6 @@ traceroute to 172.30.58.206 (172.30.58.206), 30 hops max, 46 byte packets
  2  10.177.184.185 (10.177.184.185)  0.652 ms  0.360 ms  0.510 ms
  3  172.30.58.206 (172.30.58.206)  0.591 ms  0.347 ms  0.499 ms
 ```
-
-Note: The ability to run Linux commands within a container varies depending on the base image it uses.
-This command will work with guestbook but may not work with other containers.
 
 Here we're running a traceroute command on pod `guestbook-v1-7fc76dc46-bl7xf` which is running on node `10.177.184.220`.
 We ask it to trace the route to another pod, `redis-slave-586b4c847c-twjdb` which has a pod IP address of `172.30.58.206`.
@@ -178,7 +177,7 @@ without the need to remap them at the node level to avoid port conflicts.
 ## ClusterIP Services
 
 Although pods can communicate with each other using their IP addresses, we wouldn't want application programs to use them
-directly.  A pod's IP address can change each time the pod is recreated.  If the pod is scaled, then the set of IP addresses to 
+directly.  A pod's IP address can change each time the pod is recreated.  If the pod is scaled, then the set of IP addresses to
 communicate with can be changing frequently.
 
 This is where the ClusterIP services comes in.  Let's look at the services we created for the redis master and slaves.
@@ -216,27 +215,27 @@ Events:            <none>
 ```
 
 A ClusterIP service provides a stable virtual IP address which distributes TCP connections (or UDP datagrams) to a targeted set of pods (called endpoints).
-Here we can see that the redis-master service has the virtual IP address `172.21.193.14`2 and that it distributes requests to the redis-master's pod IP address `172.30.108.139`.
+Here we can see that the redis-master service has the virtual IP address `172.21.193.14` and that it distributes requests to the redis-master's pod IP address `172.30.108.139`.
 The redis-slave service has a virtual IP address `172.21.60.238` and it distributes requests to the redis-slave's pod IP addresses `172.30.108.140` and `172.30.58.206`.
- 
+
 The method by which Kubernetes implements the virtual IP address varies by Kubernetes release.  In the 1.10 release used in this tutorial the default method is to
 use iptables to translate (NAT) the virtual IP addresses to the pod IP addresses.
 
 ## Service discovery
 
 Kubernetes provides a DNS entry for each service so services can be addressed by name instead of IP address.
+Let's observe this by doing an `nslookup` command from within the container.
+(Note: The ability to run Linux commands within a container varies depending on the base image it uses.
+This command will work with guestbook but may not work with other containers.)
 
 ```console
-C:\dbg\guestbook\guestbook\v1>kubectl exec -it guestbook-v1-7fc76dc46-bl7xf nslookup redis-master
+$ kubectl exec -it guestbook-v1-7fc76dc46-bl7xf nslookup redis-master
 Server:    172.21.0.10
 Address 1: 172.21.0.10 kube-dns.kube-system.svc.cluster.local
 
 Name:      redis-master
 Address 1: 172.21.193.142 redis-master.default.svc.cluster.local
 ```
-
-Note: The ability to run Linux commands within a container varies depending on the base image it uses.
-This command will work with guestbook but may not work with other containers.
 
 Here we see that the name redis-master is resolved to address `172.21.193.142` which is the virtual IP address of the
 redis-master service.  There is a long-form name redis-master.default.svc.cluster.local as well.  The long-form name
@@ -323,7 +322,7 @@ The NodePort service typically would be used only in the following cases:
 
 ## Ingress
 
-Kubernetes LoadBalancer services are primitive.  
+Kubernetes LoadBalancer services are primitive.
 They do not provide the functional capabilities typically associated with a
 public-facing application load balancer such as SSL termination and client authentication.
 For these features you need to use an Ingress resource instead of a LoadBalancer service.
@@ -395,7 +394,7 @@ Ingress Secret:         mystandardcluster
 Workers:                2
 Worker Zones:           dal10
 Version:                1.10.7_1520
-Owner Email:            
+Owner Email:
 Monitoring Dashboard:   -
 ```
 
