@@ -371,7 +371,9 @@ spec:
           servicePort: 3000
 ```
 
-You can find this yaml [here](guestbook-ingress.yaml).  Download it and open it in a text editor.
+You can find this yaml [here](guestbook-ingress.yaml).  
+<a href="guestbook-ingress.yaml" download="guestbook-ingress.yaml">heretoo</a>
+Download it and open it in a text editor.
 
 There are a couple of updates that need to be made to the yaml before we can give it to Kubernetes.
 Run the following command:
