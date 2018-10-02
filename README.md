@@ -144,6 +144,8 @@ redis-slave-586b4c847c-ll9gc    1/1       Running   0          4m       172.30.1
 redis-slave-586b4c847c-twjdb    1/1       Running   0          4m       172.30.58.206    10.177.184.185
 ```
 
+![w_to_pod_network](images/podnetwork.png)
+
 There are two networks.
 
 * The nodes exist on a private VLAN which is part of your infrastructure account.
@@ -371,9 +373,7 @@ spec:
           servicePort: 3000
 ```
 
-You can find this yaml [here](guestbook-ingress.yaml).  
-<a href="guestbook-ingress.yaml" download="guestbook-ingress.yaml">heretoo</a>
-Download it and open it in a text editor.
+You can find this yaml [here](guestbook-ingress.yaml).  Download it and open it in a text editor.
 
 There are a couple of updates that need to be made to the yaml before we can give it to Kubernetes.
 Run the following command:
