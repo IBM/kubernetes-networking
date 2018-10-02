@@ -144,7 +144,7 @@ redis-slave-586b4c847c-ll9gc    1/1       Running   0          4m       172.30.1
 redis-slave-586b4c847c-twjdb    1/1       Running   0          4m       172.30.58.206    10.177.184.185
 ```
 
-![w_to_pod_network](images/podnetwork.png)
+![podnetwork](images/podnetwork.png)
 
 There are two networks.
 
@@ -435,6 +435,8 @@ The Ingress resource we're using accomplishes this as follows:
   to the guestbook application, it needs to rewrite the path to replace `/guestbook/` with `/`.
 
 This pattern can be repeated as you expose more services to the internet.
+
+![ingress](images/ingress.png)
 
 
 ## Network Policies
