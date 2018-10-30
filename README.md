@@ -5,17 +5,20 @@ In this tutorial we'll demonstrate basic networking concepts in Kubernetes using
 
 ## Objectives
 
-In this lab you'll learn
-* how pods communicate with each other;
-* how pods are exposed to the internet;
-* how traffic between pods can be restricted.
+In this lab you'll learn:
+* how pods communicate with each other
+* how pods are exposed to the internet
+* how traffic between pods can be restricted
 
 
 ## Prerequisites
 
+This tutorial assumes that the reader is familiar with basic Kubernetes concepts.
+See the [IBM Cloud Container Service Lab](https://github.com/IBM/kube101/tree/master/workshop) for a refresher of these concepts.
+
 Before you begin, you need to install the required CLIs to manage your Kubernetes clusters.
 IBM provides an installer [here](https://clis.ng.bluemix.net/ui/home.html) to get all of these tools together.
-There are instructions for how to obtain the tools manually if desired.  The following tools are used in this tutorial.
+There are instructions for how to obtain the tools manually if desired.  The following tools are used in this tutorial:
 * kubectl CLI
    * `kubectl` is a command line interface for running commands against Kubernetes clusters.
 * ibmcloud CLI
@@ -48,7 +51,7 @@ Give a name to your cluster; for this tutorial we'll use "myStandardCluster".
 * Review the cost estimate on the right side of the window.
 * Click the `Create Cluster` button.
 
-Now we'll continue using commands.
+Now we'll continue using the command line.
 Log in to the IBM Cloud CLI and enter your IBM Cloud credentials when prompted.
 
 ```console
@@ -129,9 +132,9 @@ service/guestbook created
 ## Pod network
 
 Let's look at the pods that were created.
-The guestbook deployment yaml file requested 3 replicas.
-The redis-master deployment yaml file requested a single replica.
-The redis-slave deployment yaml file requested 2 replicas.
+The `guestbook-deployment.yaml` file requested 3 replicas.
+The `redis-master-deployment.yaml` file requested a single replica.
+The `redis-slave-deployment.yaml` file requested 2 replicas.
 
 ```console
 $ kubectl get pods -o wide
@@ -146,12 +149,12 @@ redis-slave-586b4c847c-twjdb    1/1       Running   0          4m       172.30.5
 
 ![podnetwork](images/podnetwork.png)
 
-There are two networks.
+There are two networks:
 
-* The nodes exist on a private VLAN which is part of your infrastructure account.
+* The nodes (10.177.184.220, 10.177.184.185) exist on a private VLAN which is part of your infrastructure account.
   (They also exist on a public VLAN which we'll discuss later.)
 
-* The pods exist on a virtual network which is created by Kubernetes
+* The pods (172.30.108.141, 172.30.108.142, etc.) exist on a virtual network which is created by Kubernetes
   (technically by a container networking plugin to Kubernetes called Calico).
   Each pod is assigned a unique IP and can talk to any other pod using its IP.
 
@@ -221,7 +224,7 @@ Here we can see that the redis-master service has the virtual IP address `172.21
 The redis-slave service has a virtual IP address `172.21.60.238` and it distributes requests to the redis-slave's pod IP addresses `172.30.108.140` and `172.30.58.206`.
 
 The method by which Kubernetes implements the virtual IP address varies by Kubernetes release.  In the 1.10 release used in this tutorial the default method is to
-use iptables to translate (NAT) the virtual IP addresses to the pod IP addresses.
+use iptables to translate (NAT) the virtual IP addresses to the pod IP addresses and the choice of pod IP is random.
 
 ## Service discovery
 
@@ -239,10 +242,12 @@ Name:      redis-master
 Address 1: 172.21.193.142 redis-master.default.svc.cluster.local
 ```
 
-Here we see that the name redis-master is resolved to address `172.21.193.142` which is the virtual IP address of the
-redis-master service.  There is a long-form name redis-master.default.svc.cluster.local as well.  The long-form name
-is needed to address services across namespaces.  In this tutorial we are only using the `default` namespace so the
-long form isn't needed.
+Here we see that the name `redis-master` is resolved to address `172.21.193.142` which is the virtual IP address of the `redis-master` service.
+There is a long-form name `redis-master.default` as well which is the service name concatenated with the service namespace.
+The long-form name is needed to address services across namespaces.
+In this tutorial we are only using the `default` namespace so the long form isn't needed.
+The domain name `svc.cluster.local` does not need to be specified inside the pod because Kubernetes sets this
+in the domain search path in the pod's `/etc/resolve.conf` file.
 
 
 ## NodePort and LoadBalancer Services
@@ -294,6 +299,10 @@ The latter is straightforward:  use the loadbalancer address and the port that's
 ```console
 http://169.46.35.163:3000
 ```
+
+The LoadBalancer service obtains a public IP address from a public VLAN associated with your cluster.
+Behind the scenes, pods are created (in the ibm-system workspace) to manage the public IP using keepalived,
+ensuring that it is highly available.
 
 Using the NodePort service requires us to first find the public addresses of the worker nodes.
 
@@ -436,6 +445,9 @@ The Ingress resource we're using accomplishes this as follows:
 
 This pattern can be repeated as you expose more services to the internet.
 
+This diagram shows how the ingress works in this example.  There are two nginx pods for high availability.
+The nginx pods are fronted by a LoadBalancer service which manages the public IP using keepalived.
+
 ![ingress](images/ingress.png)
 
 
@@ -454,7 +466,7 @@ Network policies let you create additional restrictions on what traffic is allow
 For example you may want to restrict external inbound or outbound traffic to certain IP addresses.
 
 For this tutorial we'll use a network policy to restrict traffic between pods.
-Let's say that we want to limit access to the redis servers to the guestbook application.
+Let's say that we want to limit access to the redis servers to just the guestbook application.
 First we can observe that the redis servers are open to any pod by spinning up a Linux shell
 inside a pod and making a network connection to the redis servers' IP addresses and ports.
 
@@ -483,7 +495,7 @@ deployment.apps "busybox" deleted
 
 First we used the `kubectl get pods -o wide` command to see the IP addresses assigned to the redis pods.
 Then we ran a busybox image to try `nc` commands to each of those addresses.
-(The redis server ports are defined in the redis-master-service.yaml and redis-slave-service.yaml files we used earlier.
+(The redis server ports are defined in the `redis-master-service.yaml` and `redis-slave-service.yaml` files we used earlier.
 The `nc` commands show that connections are allowed.
 
 Now let's define a network policy to restrict access to the redis servers to the guestbook application.
@@ -529,3 +541,8 @@ nc: 172.30.58.206 (172.30.58.206:6379): Connection timed out
 Session ended, resume using 'kubectl attach busybox-5858cc4697-mvgsf -c busybox -i -t' command when the pod is running
 deployment.apps "busybox" deleted
 ```
+
+## Next Steps
+
+Continue your learning by visiting the [Istio workshop](https://github.com/IBM/istio101/tree/master/workshop).
+With Istio, you can manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
