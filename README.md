@@ -163,7 +163,7 @@ You can observe how the pod network operates over the host node network by runni
 This command will work with guestbook but may not work with other containers.)
 
 ```console
-$ kubectl exec -it guestbook-v1-7fc76dc46-bl7xf traceroute 172.30.58.206
+$ kubectl exec -it guestbook-v1-7fc76dc46-bl7xf -- traceroute 172.30.58.206
 traceroute to 172.30.58.206 (172.30.58.206), 30 hops max, 46 byte packets
  1  10.177.184.220 (10.177.184.220)  0.007 ms  0.005 ms  0.004 ms
  2  10.177.184.185 (10.177.184.185)  0.652 ms  0.360 ms  0.510 ms
@@ -219,12 +219,12 @@ Session Affinity:  None
 Events:            <none>
 ```
 
-A ClusterIP service provides a stable virtual IP address which distributes TCP connections (or UDP datagrams) to a targeted set of pods (called endpoints).
+A ClusterIP service provides a stable virtual IP address which distributes TCP connections (or UDP packets) to a targeted set of pods (called endpoints).
 Here we can see that the redis-master service has the virtual IP address `172.21.193.14` and that it distributes requests to the redis-master's pod IP address `172.30.108.139`.
 The redis-slave service has a virtual IP address `172.21.60.238` and it distributes requests to the redis-slave's pod IP addresses `172.30.108.140` and `172.30.58.206`.
 
 The method by which Kubernetes implements the virtual IP address varies by Kubernetes release.  In the 1.10 release used in this tutorial the default method is to
-use iptables to translate (NAT) the virtual IP addresses to the pod IP addresses and the choice of pod IP is random.
+use iptables to translate (Network Address Translation) the virtual IP addresses to the pod IP addresses and the choice of pod IP is random.
 
 ## Service discovery
 
@@ -234,7 +234,7 @@ Let's observe this by doing an `nslookup` command from within the container.
 This command will work with guestbook but may not work with other containers.)
 
 ```console
-$ kubectl exec -it guestbook-v1-7fc76dc46-bl7xf nslookup redis-master
+$ kubectl exec -it guestbook-v1-7fc76dc46-bl7xf -- nslookup redis-master
 Server:    172.21.0.10
 Address 1: 172.21.0.10 kube-dns.kube-system.svc.cluster.local
 
@@ -243,17 +243,24 @@ Address 1: 172.21.193.142 redis-master.default.svc.cluster.local
 ```
 
 Here we see that the name `redis-master` is resolved to address `172.21.193.142` which is the virtual IP address of the `redis-master` service.
-There is a long-form name `redis-master.default` as well which is the service name concatenated with the service namespace.
-The long-form name is needed to address services across namespaces.
-In this tutorial we are only using the `default` namespace so the long form isn't needed.
+
+Services are assigned a DNS name of the form `<service>.<namespace>.svc.cluster.local`.
+The namespace is needed to address services across namespaces.
+In this tutorial we are only using the `default` namespace so using the service name alone is fine to find services.
 The domain name `svc.cluster.local` does not need to be specified inside the pod because Kubernetes sets this
 in the domain search path in the pod's `/etc/resolve.conf` file.
 
+```console
+C:\>kubectl exec -it guestbook-v1-7fc76dc46-bl7xf -- cat /etc/resolv.conf
+nameserver 172.21.0.10
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+```
 
 ## NodePort and LoadBalancer Services
 
 The types of IPs presented so far, pod IPs and ClusterIPs, are usable only from within the Kubernetes cluster.
-It is not possible for applications outside the cluster to use them to reach a pod.
+It is not possible for applications outside the cluster to use them to reach a pod (without additional configuration, e.g. adding your own routes).
 For that we need to use a type of service which provides an external IP address.
 Kubernetes provides two service types which do this.
 
@@ -324,19 +331,18 @@ http://169.48.165.242:30347
 
 Note that a NodePort service also distributes TCP connections to the pods.  It does not require a pod to be running on the node which you address.
 If there is a pod running on the node which you address, it is not always the case that a connection will be routed to that pod if there are pods
-on other nodes as well.
+on other nodes as well.  The connection might be routed to one of those other pods.
 
 The NodePort service typically would be used only in the following cases:
 * in cloud environments which don't support a LoadBalancer service (such as in a trial account on IBM Cloud or in a local environmment such as `minikube`);
-* in development environments where you don't need or want to pay the cost of the LoadBalancer service.
+* in development environments where you don't need a LoadBalancer service.
 
 
 ## Ingress
 
-Kubernetes LoadBalancer services are primitive.
-They do not provide the functional capabilities typically associated with a
-public-facing application load balancer such as SSL termination and client authentication.
-For these features you need to use an Ingress resource instead of a LoadBalancer service.
+A Kubernetes LoadBalancer service is a TCP layer (layer 4) load balancer.
+If you want the features of an application layer (layer 7) load balancer,
+you need to use an Ingress resource instead of a LoadBalancer service.
 Let's change the guestbook application for using a LoadBalancer service to using an Ingress resource.
 First let's delete the existing guestbook service.
 
@@ -454,7 +460,7 @@ The nginx pods are fronted by a LoadBalancer service which manages the public IP
 ## Network Policies
 
 Kubernetes network policies specify how pods can communicate with other pods and with external endpoints.
-Default network policies are set up to secure your Kubernetes cluster.
+Default network policies are set up by the IBM Kubernetes service to secure your Kubernetes cluster.
 If you have unique security requirements, you can create your own network policies.
 
 The following network traffic is allowed by default:
