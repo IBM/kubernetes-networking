@@ -307,10 +307,6 @@ The latter is straightforward:  use the loadbalancer address and the port that's
 http://169.46.35.163:3000
 ```
 
-The LoadBalancer service obtains a public IP address from a public VLAN associated with your cluster.
-Behind the scenes, pods are created (in the ibm-system workspace) to manage the public IP using keepalived,
-ensuring that it is highly available.
-
 Using the NodePort service requires us to first find the public addresses of the worker nodes.
 
 ```console
@@ -452,7 +448,6 @@ The Ingress resource we're using accomplishes this as follows:
 This pattern can be repeated as you expose more services to the internet.
 
 This diagram shows how the ingress works in this example.  There are two nginx pods for high availability.
-The nginx pods are fronted by a LoadBalancer service which manages the public IP using keepalived.
 
 ![ingress](images/ingress.png)
 
