@@ -1,36 +1,36 @@
 # Kubernetes Networking Lab
 
-In this tutorial we'll demonstrate basic networking concepts in Kubernetes using the guestbook application.
+In this lab we'll demonstrate basic networking concepts in Kubernetes using the [guestbook application](https://github.com/IBM/guestbook).
 
 
 ## Objectives
 
 In this lab you'll learn:
-* how pods communicate with each other
-* how pods are exposed to the internet
-* how traffic between pods can be restricted
+* How pods communicate with each other
+* How pods are exposed to the internet
+* How traffic between pods can be restricted
 
 
 ## Prerequisites
 
-This tutorial assumes that the reader is familiar with basic Kubernetes concepts.
-See the [IBM Cloud Container Service Lab](https://github.com/IBM/kube101/tree/master/workshop) for a refresher of these concepts.
+This lab assumes that the reader is familiar with basic Kubernetes concepts.
+See the [IBM Cloud Kubernetes Service Lab](https://github.com/IBM/kube101/tree/master/workshop) for a refresher of these concepts.
 
 Before you begin, you need to install the required CLIs to manage your Kubernetes clusters.
 IBM provides an installer [here](https://clis.ng.bluemix.net/ui/home.html) to get all of these tools together.
-There are instructions for how to obtain the tools manually if desired.  The following tools are used in this tutorial:
+There are instructions for how to obtain the tools manually if desired.  The following tools are used in this lab:
 * kubectl CLI
    * `kubectl` is a command line interface for running commands against Kubernetes clusters.
 * ibmcloud CLI
    * `ibmcloud` is a command line interface for managing resources in IBM Cloud.
 
-This tutorial depends upon features such as an ingress controller which require a standard Kubernetes cluster.
+This lab depends upon features such as an ingress controller which require a standard Kubernetes cluster.
 In order to create a standard cluster you must have either a Pay-As-You-Go or a Subscription IBM Cloud account.
-See https://console.bluemix.net/docs/account/index.html#accounts for further information about account types.
+See https://cloud.ibm.com/docs/account/index.html#accounts for further information about account types.
 
 
 ## Download the Sample Application
-The application used in this tutorial is a simple guestbook website where users can post messages.
+The application used in this lab is a simple guestbook website where users can post messages.
 You should clone it to your workstation since you will be using some of the configuration files.
 
 ```console
@@ -40,14 +40,14 @@ $ git clone https://github.com/IBM/guestbook.git
 
 ## Create a standard cluster using IBM Cloud Kubernetes Service
 
-It is recommended to use the [IBM Cloud dashboard](https://console.bluemix.net/catalog/) to create a standard cluster because it will help guide you through
+It is recommended to use the [IBM Cloud dashboard](https://cloud.ibm.com/catalog/) to create a standard cluster because it will help guide you through
 the configuration options and it will show you the estimated cost.
 * Click the login button in the upper right and follow the login prompts to log into your account.
 * Click the `Containers` tab on the left side of the window and then select the "Kubernetes Service" tile.
 * Click the `Create` button.
 * Fill in the form that appears.  First select a location for your cluster as this will dictate the other options.
 Then choose a zone within the location and a machine type.  Set the number of worker nodes to 2.
-Give a name to your cluster; for this tutorial we'll use "myStandardCluster".
+Give a name to your cluster; for this lab we'll use "myStandardCluster".
 * Review the cost estimate on the right side of the window.
 * Click the `Create Cluster` button.
 
@@ -223,7 +223,7 @@ A ClusterIP service provides a stable virtual IP address which distributes TCP c
 Here we can see that the redis-master service has the virtual IP address `172.21.193.14` and that it distributes requests to the redis-master's pod IP address `172.30.108.139`.
 The redis-slave service has a virtual IP address `172.21.60.238` and it distributes requests to the redis-slave's pod IP addresses `172.30.108.140` and `172.30.58.206`.
 
-The method by which Kubernetes implements the virtual IP address varies by Kubernetes release.  In the 1.10 release used in this tutorial the default method is to
+The method by which Kubernetes implements the virtual IP address varies by Kubernetes release.  In the 1.10 release used in this lab the default method is to
 use iptables to translate (Network Address Translation) the virtual IP addresses to the pod IP addresses and the choice of pod IP is random.
 
 ## Service discovery
@@ -246,7 +246,7 @@ Here we see that the name `redis-master` is resolved to address `172.21.193.142`
 
 Services are assigned a DNS name of the form `<service>.<namespace>.svc.cluster.local`.
 The namespace is needed to address services across namespaces.
-In this tutorial we are only using the `default` namespace so using the service name alone is fine to find services.
+In this lab we are only using the `default` namespace so using the service name alone is fine to find services.
 The domain name `svc.cluster.local` does not need to be specified inside the pod because Kubernetes sets this
 in the domain search path in the pod's `/etc/resolve.conf` file.
 
@@ -418,7 +418,7 @@ There are two values of interest in the output (the values in your output may be
 * Ingress Secret:  IBM provides certificates for the IBM-provided domain name.  The certificates and private key are
   stored in this Kubernetes secret.
 
-There are ways to use your own domain name and certificates but for this tutorial we'll use the ones provided by IBM.
+There are ways to use your own domain name and certificates but for this lab we'll use the ones provided by IBM.
 
 Update your copy of the yaml file to use the values you obtained.
 Replace `<ingress-subdomain>` with the Ingress Subdomain and replace `<ingress-secret>` with the Ingress Secret.
@@ -466,7 +466,7 @@ The following network traffic is allowed by default:
 Network policies let you create additional restrictions on what traffic is allowed.
 For example you may want to restrict external inbound or outbound traffic to certain IP addresses.
 
-For this tutorial we'll use a network policy to restrict traffic between pods.
+For this lab we'll use a network policy to restrict traffic between pods.
 Let's say that we want to limit access to the redis servers to just the guestbook application.
 First we can observe that the redis servers are open to any pod by spinning up a Linux shell
 inside a pod and making a network connection to the redis servers' IP addresses and ports.
