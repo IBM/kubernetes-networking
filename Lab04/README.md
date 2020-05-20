@@ -1,5 +1,13 @@
 # Lab04 - Ingress and Application Load Balancer (ALB)
 
+See: https://kubernetes.io/docs/concepts/services-networking/ingress/
+
+## What is Ingress
+
+Ingress is a load balancer and router for container clusters.
+
+## Kubernetes Networking
+
 Before we start and create our own Ingress object, let us dive a little bit into the networking management on an IBM Cloud Kubernetes (IKS) service.
 
 When you created a Service of type LoadBalancer, a NodePort was created as well. To access the application via the service NodePort, get the public IP address of the worker nodes and the NodePort of the Service.
