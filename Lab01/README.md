@@ -183,11 +183,8 @@ spec:
 
 When looking up the service `my-database-svc.prod.svc.cluster.local`, the cluster DNS Service returns a CNAME record for `my.database.example.com`.
 
+Go to [Lab02](../Lab02/README.md) to learn more about the ServiceType NodePort.
+
 ## Kubernetes Networking Extra
 
-To learn more in-depth background information about Kubernetes Networking, go [here](README2.md). Otherwise, go to [Lab02](../Lab02/README.md) to learn more about the ServiceType NodePort.
-
-## Resources
-- [Choosing an app exposure service](https://cloud.ibm.com/docs/containers?topic=containers-cs_network_planning)
-- [ExternalName Service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname)
-- [supported protocols](https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support)
+To learn more in-depth background information about Kubernetes Networking, go [here](README2.md). 

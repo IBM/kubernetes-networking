@@ -65,3 +65,9 @@ The `node-local-dns` is the `NodeLocal` DNS caching agent for improved cluster D
 
 
 Go to [Lab02](../Lab02/README.md) to learn more about ServiceType NodePort.
+
+
+## Resources
+- [Choosing an app exposure service](https://cloud.ibm.com/docs/containers?topic=containers-cs_network_planning)
+- [ExternalName Service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname)
+- [supported protocols](https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support)
