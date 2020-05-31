@@ -1,18 +1,18 @@
 # Lab04 - Ingress and Application Load Balancer (ALB)
 
-See: https://kubernetes.io/docs/concepts/services-networking/ingress/
+## Pre-requisites
 
-## What is Ingress
+Finish [Lab01](../Lab01/README.md), [Lab02](../Lab02/README.md) and [Lab03](../Lab03/README.md).
 
-Ingress is a load balancer and router for container clusters.
 
 ## Kubernetes Networking
 
-Before we start and create our own Ingress object, let us dive a little bit into the networking management on an IBM Cloud Kubernetes (IKS) service.
+Before we start and create our own Ingress object, let's dive a little bit into the network management on an IBM Cloud Kubernetes (IKS) service.
 
 When you created a Service of type LoadBalancer, a NodePort was created as well. To access the application via the service NodePort, get the public IP address of the worker nodes and the NodePort of the Service.
 
 List the service details,
+
 ```
 % kubectl get svc guestbook
 NAME        TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)          AGE
@@ -20,6 +20,7 @@ guestbook   LoadBalancer   172.21.88.33   169.60.156.141   3000:30462/TCP   108m
 ```
 
 List the worker nodes on the cluster,
+
 ```
 % ibmcloud ks worker ls --cluster $CLUSTER_NAME
 OK
@@ -27,10 +28,12 @@ ID                                                       Public IP        Privat
 kube-br0ktged0io7g05iakcg-remkohdevik-default-0000012b   169.62.128.232   10.187.222.185   u3c.2x4.encrypted   normal   Ready    dal13   1.16.9_1531   
 kube-br0ktged0io7g05iakcg-remkohdevik-default-000002e8   169.62.128.235   10.187.222.188   u3c.2x4.encrypted   normal   Ready    dal13   1.16.9_1531   
 ```
+
 You can access the application via the worker node public IP address and service NodePort at http://169.60.156.141:30462.
 
 
 When you created the standard cluster in the very beginning, IKS automatically provisioned a portable public subnet and a portable private subnet for the VLAN. List the subnets,
+
 ```
 % ibmcloud ks subnets --provider classic | grep br0ktged0io7g05iakcg   
 2422910    10.186.196.112/29    10.186.196.113    2847992    private    br0ktged0io7g05iakcg    dal13
@@ -38,6 +41,7 @@ When you created the standard cluster in the very beginning, IKS automatically p
 ```
 
 or list the resources for the cluster,
+
 ```
 % ibmcloud ks cluster get --show-resources -c $CLUSTER_NAME
 OK
@@ -106,21 +110,23 @@ To list all of the portable IP addresses in the IKS cluster, both used and avail
 ```
 
 One of the public IP addresses on the public VLAN's subnet is assigned to the NLB. List the registered NLB host names and IP addresses in a cluster,
+
 ```
 % ibmcloud ks nlb-dns ls --cluster $CLUSTER_NAME
 OK
 Hostname    IP(s)    Health Monitor    SSL Cert Status    SSL Cert Secret    Name    Secret Namespace
 remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud    169.60.156.138    None    created    remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000    default 
 ```
+
 You see that the portable IP address `169.60.156.138` is assigned to the NLB. You can access the application via the portable IP address of the NLB and service NodePort at http://169.60.156.138:30462.
 
 ## Create an Ingress
 
-`Ingress` is a Kubernetes API object that manages external access to the services in a cluster. You can use `Ingress` to expose multiple app services to a public or private network by using a unique public or private route. The Ingress API also supports TLS termination, virtual hosts, and path-based routing.
+`Ingress` is a load balancer and router for container clusters and is a Kubernetes API object that manages external access to the services in a cluster. You can use `Ingress` to expose multiple app services to a public or private network by using a unique public or private route. The Ingress API also supports TLS termination, virtual hosts, and path-based routing.
 
-When you create a standard cluster, an Ingress subdomain is registered by default for your cluster. The paths to your app services are appended to the public route.
+When you create a standard cluster, an Ingress subdomain is already registered by default for your cluster. The paths to your app services are appended to the public route.
 
-In a standard cluster on IKS, the Ingress Application Load Balancer (ALB) is a layer 7 load balancer which implements the NGINX Ingress controller. A layer 4 LoadBalancer Service exposes the ALB so that the ALB can receive external requests that come into the cluster. The ALB then routes requests to app pods in your cluster based on distinguishing layer 7 protocol characteristics, such as headers. 
+In a standard cluster on IKS, the Ingress `Application Load Balancer (ALB)` is a layer 7 load balancer which implements the `NGINX` Ingress controller. A layer 4 LoadBalancer Service exposes the ALB so that the ALB can receive external requests that come into the cluster. The ALB then routes requests to app pods in your cluster based on distinguishing layer 7 protocol characteristics, such as headers. 
 
 ![Single-zone cluster Ingress ALB traffic](../images/cs_ingress_singlezone.png)
 
@@ -128,52 +134,65 @@ To expose an app using Ingress, you must define an `Ingress` resource. The Ingre
 
 ## Changes to Guestbook for Ingress
 
-I want to deploy two versions of the guestbook: version 1 and version 2. To access version 1, I add a path `/guestbook/v1` and to access version 2, I add a path `/guestbook/v2`, while the path `guestbook` defaults to version 1. 
+I want to deploy two versions of the guestbook: version 1 and version 2. To access version 1, I add a path `/guestbook/v1` and to access version 2, I add a path `/guestbook/v2`. In this lab, we will only implement the path to version 1, cause extra changes to the selectors would be required to separate version 1 and version 2 when their services look for the pods to forward requests to, and it is outside the scope of this lab. 
 
-First, modify service for guestbook-v1 and rename the service to `guestbook-v1`. Then, create a deployment of Guestbook v2 and add a Service.
+You need the Ingress Subdomain and Ingress Secret of your cluster to configure your Ingress resource. 
 
 ```
-% k get svc                
-NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-guestbook-v1   ClusterIP   172.21.156.122   <none>        3000/TCP   3s
-guestbook-v2   ClusterIP   172.21.231.162   <none>        80/TCP     116s
+$ ibmcloud ks cluster get --show-resources -c $CLUSTER_NAME
 ```
 
-Create the following Ingress declaration using rewrite paths,
+Create an Ingress resource using a `rewrite path`. Change the `hosts` and `host` to the `Ingress Subdomain` of your cluster, and change the `secretName` to the value `Ingress Secret` of your cluster. 
 ```
-% echo 'apiVersion: extensions/v1beta1
+$ echo 'apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: apps-ingress
+  name: guestbook-ingress
   annotations:
     ingress.bluemix.net/rewrite-path: >-
-      serviceName=guestbook-v1 rewrite=/;serviceName=guestbook-v2 rewrite=/
+      serviceName=guestbook rewrite=/
 spec:
   tls:
   - hosts:
-    - remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
-    secretName: remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000
+    - <your Ingress Subdomain>
+    secretName: <your Ingress Secret>
   rules:
-  - host: remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
+  - host: <your Ingress Subdomain>
     http:
       paths:
       - path: /guestbook/v1
         backend:
-          serviceName: guestbook-v1
-          servicePort: 3000
-      - path: /guestbook/v2
-        backend:
-          serviceName: guestbook-v2
-          servicePort: 80
+          serviceName: guestbook
+          servicePort: 3000' > guestbook-ingress.yaml
 ```
-will create an access path to app1 at https://remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/app1
 
-To use subdomain paths, 
+The above resource will create an access path to guestbook at https://remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/guestbook/v1. 
+
+If you need to change the values for the hosts, secretName and host, edit the `guestbook-ingress.yaml` file,
+
+```
+$ vi guestbook-ingress.yaml
+```
+
+Then create the Ingress for guestbook,
+
+```
+$ kubectl create -f guestbook-ingress.yaml
+ingress.extensions/guestbook-ingress created
+```
+
+Try to access the guestbook using the Ingress Subdomain with the path to the service, e.g. http://remkohdev-iks116-294603-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/guestbook/v1.
+
+![Ingress Guestbook v1](../images/ingress-guestbook.png)
+
+Note that the style of the guestbook application is now broken. This is because the relative paths to the style resources in the application were not set correctly and these need to be refactored to take reverse proxy paths into account. For the purpose of this lab however, we can ignore this.
+
+If you instead want to use subdomain paths instead of URI paths, 
 ```
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: apps-ingress
+  name: guestbook-ingress
 spec:
   tls:
   - hosts:
@@ -181,33 +200,19 @@ spec:
     secretName: remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44fc2b2-0000
   rules:
     - host: >-
-        app1.remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
+        guestbook-v1.remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
       http:
         paths:
           - backend:
-              serviceName: app1
-              servicePort: 80
+              serviceName: guestbook-v1
+              servicePort: 3000
     - host: >-
-        app2.remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
+        guestbook-v2.remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
       http:
         paths:
           - backend:
-              serviceName: app2
-              servicePort: 80
-    - host: >-
-        app3.remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
-      http:
-        paths:
-          - backend:
-              serviceName: app3
-              servicePort: 80
+              serviceName: guestbook-v2
+              servicePort: 3000
 ```
-will create an access path to app1 at https://app1.remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/
-
-
-## Resources
-
-- https://medium.com/google-cloud/understanding-kubernetes-networking-ingress-1bc341c84078
-- https://github.com/ibm-cloud-docs/containers/blob/master/cs_ingress.md
-- [Kong, "the world's most popular open source API Gateway"](https://konghq.com/kong/), [tutorial with Kong Ingress](https://medium.com/swlh/kubernetes-ingress-simplified-e0b9dc32f9fd)
+This Ingress resource will create an access path to app1 at https://guestbook-v1.remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/
 

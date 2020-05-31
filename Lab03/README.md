@@ -2,7 +2,7 @@
 
 ## Pre-requisites
 
-Finish [Lab01](README.md) and [Lab02](README.md).
+Finish [Lab01](../Lab01/README.md), and [Lab02](../Lab02/README.md).
 
 ## LoadBalancer
 
