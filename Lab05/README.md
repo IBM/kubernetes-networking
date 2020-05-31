@@ -1,4 +1,4 @@
-# Lab05 - Kubernetes and Calico Network Policies
+# Lab05 - Kubernetes Network Policy and Calico 
 
 Every IBM Cloud Kubernetes Service cluster is set up with a network plug-in called Calico. Default network policies are set up to secure the public network interface of every worker node in the cluster.
 

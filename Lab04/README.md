@@ -168,7 +168,9 @@ spec:
 
 The above resource will create an access path to guestbook at https://remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/guestbook/v1. 
 
-If you need to change the values for the hosts, secretName and host, edit the `guestbook-ingress.yaml` file,
+You can further [customize Ingres routing with annotations](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation) to customize the ALB settings, TLS settings, request and response annocations, service limits, user authentication, or error actions. 
+
+Change the values for the hosts, secretName and host, edit the `guestbook-ingress.yaml` file to make the necessary changes,
 
 ```
 $ vi guestbook-ingress.yaml
@@ -216,3 +218,5 @@ spec:
 ```
 This Ingress resource will create an access path to app1 at https://guestbook-v1.remkohdev-iks116-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud/
 
+
+Go to [Lab05](../Lab05/README.md) to learn more about Network Policy and Calico.
