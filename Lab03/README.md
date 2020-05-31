@@ -20,7 +20,7 @@ Services of type `LoadBalancer` have some limitations. You cannot configure the 
 
 Note that the LoadBalancer service type is implemented differently depending on your cluster's infrastructure provider. On IKS (IBM Kubernetes Service), `classic clusters` implement a Network Load Balancer (NLB) 1.0 by default. To set up DSR load balancing with an NLB 2.0 see [here](https://cloud.ibm.com/docs/containers?topic=containers-loadbalancer-v2).
 
-Every standard cluster on IKS is provisioned with four portable public and four portable private IP addresses that you can use to create a layer 4 TCP/UDP network load balancer (NLB) for your app. The portable public and private IP addresses that are assigned to the NLB are permanent and do not change. 
+Every standard cluster on IKS is provisioned with four portable public and four portable private IP addresses that you can use to create a layer 4 TCP/UDP Network Load Balancer (NLB) for your app. The portable public and private IP addresses that are assigned to the NLB are permanent and do not change. 
 
 When you create a Kubernetes LoadBalancer service for an app in your IKS cluster, a layer 7 Virtual Private Cloud (VPC) load balancer is automatically created in your VPC outside of your cluster. The VPC load balancer is multizonal and routes requests for your app through the private NodePorts that are automatically opened on your worker nodes. 
 

@@ -1,6 +1,14 @@
 # Lab01 - Extra
 
-## Kubernetes Networking
+## Kubernetes Networking in-depth
+
+The following image demonstrates how Kubernetes forwards public network traffic through kube-proxy and NodePort, LoadBalancer, or Ingress services in IBM Cloud Kubernetes Service.
+
+![IKS public network traffic](../images/cs_network_planning_ov-01.png)
+
+The following image shows what features each of the different ServiceTypes supports on IBM Cloud.
+
+![IKS public network traffic](../images/kubernetes-network-service-types.png)
 
 The services network is implemented by a kubernetes component called kube-proxy collaborating with a linux kernel module called netfilter to trap and reroute traffic sent to the cluster IP so that it is sent to a healthy pod instead
 
