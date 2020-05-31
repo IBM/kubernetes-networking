@@ -4,37 +4,37 @@
 
 If you did not already clone the guestbook to your client, do so now. 
 
-    ```
-    $ git clone https://github.com/IBM/guestbook.git
-    $ ls -al
-    ```
+```
+$ git clone https://github.com/IBM/guestbook.git
+$ ls -al
+```
 
 Deploy the `v1/guestbook` application,
 
-    ```
-    $ cd guestbook/v1
-    $ kubectl create -f guestbook-deployment.yaml
-    deployment.apps/guestbook-v1 created
-    ```
+```
+$ cd guestbook/v1
+$ kubectl create -f guestbook-deployment.yaml
+deployment.apps/guestbook-v1 created
+```
 
 The guestbook application was deployed, that is a Kubernetes `Deployment` object was created. 
 
-    ```
-    $ kubectl get all
-    NAME    READY    STATUS    RESTARTS    AGE
-    pod/guestbook-v1-98dd9c654-6trfh    1/1    Running    0    2m6s
-    pod/guestbook-v1-98dd9c654-fm5tj    1/1    Running    0    2m6s
-    pod/guestbook-v1-98dd9c654-kmk7g    1/1    Running    0    2m6s
+```
+$ kubectl get all
+NAME    READY    STATUS    RESTARTS    AGE
+pod/guestbook-v1-98dd9c654-6trfh    1/1    Running    0    2m6s
+pod/guestbook-v1-98dd9c654-fm5tj    1/1    Running    0    2m6s
+pod/guestbook-v1-98dd9c654-kmk7g    1/1    Running    0    2m6s
 
-    NAME    TYPE    CLUSTER-IP    EXTERNAL-IP    PORT(S)    AGE
-    service/kubernetes    ClusterIP    172.21.0.1    <none>    443/TCP    29m
+NAME    TYPE    CLUSTER-IP    EXTERNAL-IP    PORT(S)    AGE
+service/kubernetes    ClusterIP    172.21.0.1    <none>    443/TCP    29m
 
-    NAME    READY    UP-TO-DATE    AVAILABLE    AGE
-    deployment.apps/guestbook-v1    3/3    3    3    2m6s
+NAME    READY    UP-TO-DATE    AVAILABLE    AGE
+deployment.apps/guestbook-v1    3/3    3    3    2m6s
 
-    NAME    DESIRED    CURRENT    READY    AGE
-    replicaset.apps/guestbook-v1-98dd9c654    3    3    3    2m6s
-    ```
+NAME    DESIRED    CURRENT    READY    AGE
+replicaset.apps/guestbook-v1-98dd9c654    3    3    3    2m6s
+```
 
 The deployment created also a ReplicaSet with 3 replicas of the pods. Because we did not create a Service for the Guestbook containers running in pods, they cannot yet be accessed. 
 
@@ -45,20 +45,23 @@ With a `Service` object, you can use built-in Kubernetes `service discovery` to 
 The Endpoints object in Kubernetes is the list of IP and port addresses and are created automatically when a Service is created and configured with the pods matching the selector of the Service. A Service can be configured without a selector, in that case Kubernetes does not create an associated Endpoints object.
 
 Let's look at the declaration for the `guestbook-service.yaml`,
+
 ```
+$ cat guestbook-service.yaml
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: guestbook
-  labels:
+name: guestbook
+labels:
     app: guestbook
 spec:
-  ports:
-  - port: 3000
+ports:
+- port: 3000
     targetPort: http-server
-  selector:
+selector:
     app: guestbook
-  type: LoadBalancer
+type: LoadBalancer
 ```
 
 The `spec` defines a few important attributes: `selector`, `ports` and `type`. Ignore the `type` for a moment. The set of Pods that a Service targets, is determined by the selector and labels. When a Service has no selector, the corresponding `Endpoints` object is not created automatically. This can be useful in cases where you want to define an Endpoint manually, for instance in the case of an external database instance.
@@ -66,6 +69,8 @@ The `spec` defines a few important attributes: `selector`, `ports` and `type`. I
 The Service maps the incoming `port` to a `targetPort`. By default the `targetPort` is set to the same value as the incoming `port` field. A port definition in Pods can have a name, and you can reference these names in the `targetPort` attribute of a Service instead of the port number. In the Service example of the guestbook, the `guestbook-deployment.yaml` file should have the corresponding port defined that the Service references by name,
 
 ```
+$ cat guestbook-deployment.yaml
+
 ports:
 - name: http-server
   containerPort: 3000
@@ -112,12 +117,14 @@ spec:
 ```
 
 Then create the Service object with the default type for the guestbook Pods,
+
 ```
 $ kubectl create -f guestbook-service.yaml
 service/guestbook created
 ```
 
 Describe the Service,
+
 ```
 $ kubectl describe svc guestbook
 Name:              guestbook
@@ -137,6 +144,7 @@ Events:            <none>
 You see that Kubernetes by default creates a Service of type `ClusterIP`. The service is now available and discoverable, but only within the cluster.
 
 Get the endpoints that were created as part of the Service,
+
 ```
 $ kubectl get endpoints
 NAME         ENDPOINTS                                               AGE
