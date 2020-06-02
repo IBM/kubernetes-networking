@@ -6,7 +6,7 @@ Finish [Lab01](../Lab01/README.md), and [Lab02](../Lab02/README.md).
 
 ## LoadBalancer
 
-In the previous two labs, you created a service for the guestbook application with a clusterIP and then added a NodePort to the Service. But you still want a load balancer of some kind in front of the cluster, whether your clients are internal or coming in over the public network. A load balancer acts as a reverse proxy and distributes network or application traffic across a number of servers.
+In the previous two labs, you created a service for the `helloworld` application with a clusterIP and then added a NodePort to the Service. But you still want a load balancer of some kind in front of the cluster, whether your clients are internal or coming in over the public network. A load balancer acts as a reverse proxy and distributes network or application traffic across a number of servers.
 
 To use a load balancer for distributing client traffic to the nodes in a cluster, you need a public IP address that the clients can connect to, and you need IP addresses on the nodes themselves to which the load balancer can forward the requests.
 
@@ -26,7 +26,7 @@ In a `free cluster` on IKS, the cluster's worker nodes are connected to an IBM-o
 
 ## Load Balancing Methods
 
-Before we create a load balancer with `NLB v1.0 + subdomain` for the Guestbook application, review the different Load Balancing Methods on IKS:
+Before we create a load balancer with `NLB v1.0 + subdomain` for the `helloworld` application, review the different Load Balancing Methods on IKS:
 
 - `NodePort` exposes the app via a port and public IP address on a worker node.
 - `NLB v1.0 + subdomain` uses basic load balancing that exposes the app with an IP address or a subdomain.
@@ -37,44 +37,45 @@ Before we create a load balancer with `NLB v1.0 + subdomain` for the Guestbook a
 
 ## Create a Network Load Balancer v1.0
 
-In the previous lab, you already created a `NodePort` Service. Patch the service for Guestback and change the type to `LoadBalancer`.
+In the previous lab, you already created a `NodePort` Service. Patch the service for `helloworld` and change the type to `LoadBalancer`.
 
 ```
-$ kubectl patch svc guestbook -p '{"spec": {"type": "LoadBalancer"}}'
-service/guestbook patched
+$ kubectl patch svc helloworld -p '{"spec": {"type": "LoadBalancer"}}'
+service/helloworld patched
 ```
 
 If your cluster has more than 1 worker node, a LoadBalancer is created and an external IP address is assigned to access the service. If your cluster is a free cluster or only has 1 worker node, the EXTERNAL-IP will say `pending` because in vain the cluster is waiting on the asynchronous response.
 
 ```
-$ kubectl get svc guestbook
+$ kubectl get svc helloworld
 NAME    TYPE    CLUSTER-IP    EXTERNAL-IP    PORT(S)    AGE
-guestbook    LoadBalancer    172.21.0.211    169.48.75.82    3000:30202/TCP    62s
+helloworld   LoadBalancer   172.21.161.255   169.48.67.163   8080:31777/TCP   24m
 ```
 
-Describe the guestbook LoadBalancer Service,
+Describe the `helloworld` LoadBalancer Service,
 
 ```
-$ kubectl describe svc guestbook
-Name:                     guestbook
+$ kubectl describe svc helloworld
+Name:                     helloworld
 Namespace:                default
-Labels:                   app=guestbook
+Labels:                   app=helloworld
 Annotations:              <none>
-Selector:                 app=guestbook
+Selector:                 app=helloworld
 Type:                     LoadBalancer
-IP:                       172.21.0.211
-LoadBalancer Ingress:     169.48.75.82
-Port:                     <unset>  3000/TCP
+IP:                       172.21.161.255
+LoadBalancer Ingress:     169.48.67.163
+Port:                     <unset>  8080/TCP
 TargetPort:               http-server/TCP
-NodePort:                 <unset>  30202/TCP
-Endpoints:                172.30.63.95:3000,172.30.63.96:3000,172.30.89.213:3000
+NodePort:                 <unset>  31777/TCP
+Endpoints:                172.30.153.79:8080,172.30.50.134:8080,172.30.50.135:8080
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
-  Type    Reason    Age    From    Message
-  ----    ------    ----   ----    -------
-  Normal    EnsuringLoadBalancer    95s    service-controller    Ensuring load balancer
-  Normal    EnsuredLoadBalancer    94s    service-controller    Ensured load balancer
+  Type    Reason                Age   From                Message
+  ----    ------                ----  ----                -------
+  Normal  Type                  58s   service-controller  NodePort -> LoadBalancer
+  Normal  EnsuringLoadBalancer  58s   service-controller  Ensuring load balancer
+  Normal  EnsuredLoadBalancer   58s   service-controller  Ensured load balancer
 ```
 
 A Service of type LoadBalancer was created, 1 of 4 portable public IP addresses were assigned to the Service. 
@@ -84,11 +85,13 @@ When you create a standard cluster, IKS automatically provisions a portable publ
 - The portable public subnet provides 5 usable IP addresses. 1 portable public IP address is used by the default public Ingress ALB. The remaining 4 portable public IP addresses can be used to expose single apps to the internet by creating public network load balancer services, or NLBs.
 - The portable private subnet provides 5 usable IP addresses. 1 portable private IP address is used by the default private Ingress ALB. The remaining 4 portable private IP addresses can be used to expose single apps to a private network by creating private load balancer services, or NLBs.
 
-Now to access the NLB for the Service of the Guestbook from the internet, you can use the public IP address of the NLB and the assigned port of the service in the format `<IP_address>:<port>`. NodePorts are accessible on every public and private IP address of every worker node within the cluster.
+Now to access the NLB for the Service of the `helloworld` from the internet, you can use the public IP address of the NLB and the assigned port of the service in the format `<IP_address>:<port>`. NodePorts are accessible on every public and private IP address of every worker node within the cluster.
 
-Access the guestbook app in a browser or with Curl,
+Access the `helloworld` app in a browser or with Curl,
 ```
-$ curl 169.48.75.82:30202
+$ PUBLIC_ID=169.48.67.163
+$ curl -L -X POST "http://$PUBLIC_IP:$PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "remko" }'
+{"id":"f979a034-bada-41cb-8c67-fb5fd36d0db3","sender":"remko","message":"Hello remko (direct)","host":null}
 ```
 
 The TCP/UDP Network Load Balancer (NLB) 1.0 that was created with ServiceType `LoadBalancer`, uses Iptables, a Linux kernel feature to load balance requests across an app's pods. The image below shows the traffic flow for a single-zone cluster using an NLB v1.0.
@@ -102,14 +105,14 @@ The TCP/UDP Network Load Balancer (NLB) 1.0 that was created with ServiceType `L
 If you would create not 1 but 5 services of type `LoadBalancer`, an error will occur trying to `sync load balancer` and `ensure load balancer` for the fifth load balancer, because no cloud provider IPs are available anymore after 4 IPs were used for the first 4 load balancers,
 
 ```
-% kubectl describe svc guestbook5  
+% kubectl describe svc helloworld5  
 ...
 Events:
   Type    Reason    Age    From    Message
   ----    ------    ---    ----    -------
   Normal    EnsuringLoadBalancer    2s (x2 over 7s)    service-controller    Ensuring load balancer
-  Warning    CreatingCloudLoadBalancerFailed    2s (x2 over 7s)    ibm-cloud-provider    Error on cloud load balancer a1378a01307d5441cad76a736105fea3 for service default/guestbook5 with UID 1378a013-07d5-441c-ad76-a736105fea3f: No cloud provider IPs are available to fulfill the load balancer service request. Add a portable subnet to the cluster and try again. See https://cloud.ibm.com/docs/containers?topic=containers-cs_troubleshoot_network#cs_troubleshoot_network for details.
-  Warning    SyncLoadBalancerFailed    2s (x2 over 7s)    service-controller    Error syncing load balancer: failed to ensure load balancer: Error on cloud load balancer a1378a01307d5441cad76a736105fea3 for service default/guestbook5 with UID 1378a013-07d5-441c-ad76-a736105fea3f: No cloud provider IPs are available to fulfill the load balancer service request. Add a portable subnet to the cluster and try again. See https://cloud.ibm.com/docs/containers?topic=containers-cs_troubleshoot_network#cs_troubleshoot_network for details.
+  Warning    CreatingCloudLoadBalancerFailed    2s (x2 over 7s)    ibm-cloud-provider    Error on cloud load balancer a1378a01307d5441cad76a736105fea3 for service default/helloworld5 with UID 1378a013-07d5-441c-ad76-a736105fea3f: No cloud provider IPs are available to fulfill the load balancer service request. Add a portable subnet to the cluster and try again. See https://cloud.ibm.com/docs/containers?topic=containers-cs_troubleshoot_network#cs_troubleshoot_network for details.
+  Warning    SyncLoadBalancerFailed    2s (x2 over 7s)    service-controller    Error syncing load balancer: failed to ensure load balancer: Error on cloud load balancer a1378a01307d5441cad76a736105fea3 for service default/helloworld5 with UID 1378a013-07d5-441c-ad76-a736105fea3f: No cloud provider IPs are available to fulfill the load balancer service request. Add a portable subnet to the cluster and try again. See https://cloud.ibm.com/docs/containers?topic=containers-cs_troubleshoot_network#cs_troubleshoot_network for details.
   ```
 
 

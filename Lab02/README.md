@@ -14,56 +14,57 @@ A gateway router typically sits in front of the cluster and forwards  packets to
 
 A service of type `NodePort` is a ClusterIP service with an additional capability: it is reachable at the public IP address of the node as well as at the assigned cluster IP on the services network. The way this is accomplished is pretty straightforward: when kubernetes creates a NodePort service, `kube-proxy` allocates a port in the range 30000–32767 and opens this port on the `eth0` interface of every node (thus the name `NodePort`). Connections to this port are forwarded to the service’s cluster IP.
 
-Patch the existing Service for guestbook to `type: NodePort`,
+Patch the existing Service for `helloworld` to `type: NodePort`,
 
 ```
-$ kubectl patch svc guestbook -p '{"spec": {"type": "NodePort"}}'
-service/guestbook patched
+$ kubectl patch svc helloworld -p '{"spec": {"type": "NodePort"}}'
+service/helloworld patched
 ```
 
-Or edit the file `guestbook-service.yaml` and set `type: NodePort`,
+Or edit the file `helloworld-service.yaml` and set `type: NodePort`,
 
 ```
-$ vi guestbook-service.yaml
+$ vi helloworld-service.yaml
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: guestbook
+  name: helloworld
   labels:
-    app: guestbook
+    app: helloworld
 spec:
-  selector:
-    app: guestbook
   ports:
-  - port: 3000
+  - port: 8080
     targetPort: http-server
+  selector:
+    app: helloworld
   type: NodePort
 ```
 
 and then apply the changes to the configuration from file,
 
 ```
-$ kubectl apply -f guestbook-svc-tmp.yaml  
+$ kubectl apply -f helloworld-service.yaml  
 Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
-service/guestbook configured
+service/helloworld configured
 ```
 
 Describe the Service,
 
 ```
-$ kubectl describe svc guestbook
-Name:                     guestbook
+$ kubectl describe svc helloworld
+
+Name:                     helloworld
 Namespace:                default
-Labels:                   app=guestbook
+Labels:                   app=helloworld
 Annotations:              <none>
-Selector:                 app=guestbook
+Selector:                 app=helloworld
 Type:                     NodePort
-IP:                       172.21.50.224
-Port:                     <unset>  3000/TCP
+IP:                       172.21.161.255
+Port:                     <unset>  8080/TCP
 TargetPort:               http-server/TCP
-NodePort:                 <unset>  30947/TCP
-Endpoints:                172.30.228.207:3000,172.30.55.3:3000,172.30.55.4:3000
+NodePort:                 <unset>  31777/TCP
+Endpoints:                172.30.153.79:8080,172.30.50.134:8080,172.30.50.135:8080
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>
@@ -88,12 +89,17 @@ Or to get the first worker node's public IP address:
 
 ```
 $ ibmcloud ks workers --cluster $CLUSTER_NAME --json | jq '.[0]' | jq -r '.publicIP'
-169.62.128.236
+150.238.93.101
+$ PUBLIC_IP=150.238.93.101
+$ PORT=31777
 ```
 
-Open a browser to access your service using the public IP and the NodePort, http://<publicIP>:<nodeport value>, e.g. http://169.62.128.236:30947/.
+Test the deployment,
+```
+$ curl -L -X POST "http://$PUBLIC_IP:$PORT/api/messages" -H 'Content-Type: application/json' -H 'Content-Type: text/plain' -d '{ "sender": "remko" }'
+{"id":"f979a034-bada-41cb-8c67-fb5fd36d0db3","sender":"remko","message":"Hello remko (direct)","host":null}
+```
 
-![Guestbook via NodePort](../images/guestbook-nodeport.png)
 
 The client connects to the load balancer via a public IP address on the worker node. The load balancer selects a node and connects to it. Kube-proxy receives this connection and forwards it to the service at the cluster IP. At this point the request matches the netfilter rules and gets redirected to the server pod.
 

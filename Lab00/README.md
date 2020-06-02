@@ -7,7 +7,7 @@ I recommended using the IBM Cloud shell with tools pre-installed to run the labs
 1. From the Cloud shell, clone the guestbook application,
 
     ```
-    $ git clone https://github.com/IBM/guestbook.git
+    $ git clone https://github.com/remkohdev/helloworld.git
     $ ls -al
     ```
 

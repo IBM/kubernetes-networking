@@ -1,6 +1,6 @@
 # Kubernetes Networking
 
-In this Kubernetes Networking workshop, you will deploy the Guestbook application from https://github.com/IBM/guestbook.git and apply different service types and networking policies to controll access to the cluster and application.
+In this Kubernetes Networking workshop, you will deploy a `helloworld` application from `https://github.com/remkohdev/helloworld` and apply different service types and networking policies to controll access to the cluster and application.
 
 # Labs
 
