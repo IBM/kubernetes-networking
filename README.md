@@ -73,7 +73,7 @@ Once the cluster is provisioned (state is `normal`), the kubernetes client CLI `
 Run `ibmcloud ks cluster-config myStandardCluster` which will create a config file on your workstation.
 
 ```console
-$ ibmcloud ks cluster-config myStandardCluster
+$ ibmcloud ks cluster config --cluster myStandardCluster
 OK
 The configuration for mycluster was downloaded successfully. Export environment
 variables to start using Kubernetes.
@@ -310,7 +310,7 @@ http://169.46.35.163:3000
 Using the NodePort service requires us to first find the public addresses of the worker nodes.
 
 ```console
-$ ibmcloud ks workers myStandardCluster
+$ ibmcloud ks workers --cluster myStandardCluster
 OK
 ID                                                 Public IP        Private IP       Machine Type        State    Status   Zone    Version
 kube-dal10-crfc5514ef25ac44da9924ff2309020bb3-w1   169.47.252.42    10.177.184.220   u2c.2x4.encrypted   normal   Ready    dal10   1.10.7_1520*
@@ -390,7 +390,7 @@ There are a couple of updates that need to be made to the yaml before we can giv
 Run the following command:
 
 ```console
-$ ibmcloud ks cluster-get myStandardCluster
+$ ibmcloud ks cluster get --cluster myStandardCluster
 Retrieving cluster myStandardCluster...
 OK
 
