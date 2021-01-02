@@ -4,13 +4,14 @@ In this Kubernetes Networking workshop, you will deploy a `helloworld` applicati
 
 # Labs
 
-1. Lab00 - Setup 
-1. Lab01 - Services and ClusterIP, see [Lab01](Lab01/README.md)
-2. Lab02 - NodePort, see [Lab02](Lab02/README.md)
-3. Lab03 - Loadbalancer and Network Load Balancer (NLB) 1.0, see [Lab03](Lab03/README.md),
-4. Lab04 - Ingress and Application Load Balancer (ALB), see [Lab04](Lab04/README.md)
-5. Lab05 - Kubernetes Network Policy and Calico, see [Lab05](Lab05/README.md)
-
+1. [Setup](docs/setup.md)
+2. [Services](docs/services.md)
+3. [ClusterIP](docs/clusterip.md)
+4. [NodePort](docs/nodeport.md)
+5. [Loadbalancer and NLB](docs/loadbalancer.md),
+6. [ExternalName](docs/externalname.md)
+7. Lab04 - Ingress and Application Load Balancer (ALB), see [Lab04](Lab04/README.md)
+8. Lab05 - Kubernetes Network Policy and Calico, see [Lab05](Lab05/README.md)
 
 # Prerequisites
 
@@ -19,3 +20,8 @@ In this Kubernetes Networking workshop, you will deploy a `helloworld` applicati
     - For Lab02 and Lab04 about Service type `LoadBalancer` and `Ingress` you need to have a Kubernetes cluster with a minimum of two worker nodes.
     - For Lab05 about `Kubernetes Network Policy` and `Calico`, you need.
 1. Client, recommended to use IBM Cloud shell at https://shell.cloud.ibm.com.
+
+# Todo
+
+- [ ] Understanding the DNS Operator, https://docs.openshift.com/container-platform/4.5/networking/dns-operator.html, https://docs.openshift.com/container-platform/4.5/networking/cluster-network-operator.html
+- [ ] 

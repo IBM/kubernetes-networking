@@ -1,10 +1,10 @@
-# Lab04 - Extra
+# HelloWorld App Proxy Setup
 
 I want to deploy two versions of `helloworld`, a direct `helloworld` and a `helloworld-proxy`, which is a proxy to the `helloworld` application. To access the direct version, I add a path `/helloworld`. To access the proxy version, I add a path `/helloworld/proxy`. 
 
 First deploy the proxy.
 
-```
+```               
 $ kubectl create -f helloworld-proxy-deployment.yaml
 $ kubectl create -f helloworld-proxy-service-loadbalancer.yaml
 ```
@@ -28,7 +28,6 @@ $ $ curl -L -X POST "http://169.48.67.164:30940/proxy/api/messages" -H 'Content-
 The proxy will add a `proxy` message to the created message.
 
 You need the Ingress Subdomain and Ingress Secret of your cluster to configure your Ingress resource. 
-
 
 ## Resources
 

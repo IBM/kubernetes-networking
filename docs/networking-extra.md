@@ -1,4 +1,4 @@
-# Lab01 - Extra
+# Kubernetes Networking Extra
 
 ## Kubernetes Networking in-depth
 
@@ -22,50 +22,49 @@ One way is to examine the netfilter rules using the iptables utility. Any packet
 
 But routers operating on layer 3 packets don’t know healthy services from unhealthy. Kube-proxy’s role is to actively manage netfilter. We can’t easily create a stable static route between the gateway router and the nodes using the service network (cluster IP).
 
-## Kube Proxy
+## Kube-Proxy
 
-Every node in a Kubernetes cluster runs a kube-proxy. To provide basic load balancing of all TCP and UDP network traffic for services, a local Kubernetes network proxy, kube-proxy, runs as a daemon on each worker node in the kube-system namespace. kube-proxy uses Iptables rules, a Linux kernel feature, to direct requests to the pod behind a service equally, independent of pods' in-cluster IP addresses and the worker node that they are deployed to. Kube-proxy is responsible for implementing a form of virtual IP for Services of type other than ExternalName. Kubernetes relies on proxying to forward inbound traffic to backends. 
+Kubernetes relies on proxying to forward inbound traffic to backends. When you use the name of the service, it looks up the name in the cluster DNS provider and routes the request to the in-cluster IP address of the service.
+
+A Kubernetes cluster runs a local Kubernetes network proxy, `kube-proxy`, as a daemon on each worker node in the kube-system namespace, which provides basic load balancing for services.
+
+The default load balancing mode in Kubernetes is `iptables` and rules, a Linux kernel feature, to direct requests to the pods behind a service equally. The native method for load distribution in `iptables` mode is `random selection`. 
+
+An older kube-proxy mode is `userspace`, which uses `round-robin` load distribution, allocating the next available pod on an IP list, then rotating the list.
 
 Proxy modes:
-- User space
-- iptables
-- IPVS
-
-## Discovering Services
-
-Kubernetes supports 2 primary modes of finding a Service:
-- environment variables and 
-- DNS.
-
-### Environment Variables
-
-When a Pod is run on a Node, the kubelet adds a set of environment variables for each active Service. It supports both Docker links compatible variables (see makeLinkVariables) and simpler {SVCNAME}_SERVICE_HOST and {SVCNAME}_SERVICE_PORT variables
+- userspace
+- iptables (default) (NLB 1.0 uses iptables)
+- IPVS (NLB 2.0 uses IP Virtual Server (IPVS))
 
 ## DNS
 
-A cluster-aware DNS server, such as CoreDNS, watches the Kubernetes API for new Services and creates a set of DNS records for each one. If DNS has been enabled throughout your cluster then all Pods should automatically be able to resolve Services by their DNS name.
+A cluster-aware DNS server, such as [CoreDNS](https://coredns.io/), watches the Kubernetes API for new Services and creates a set of DNS records for each service. If DNS has been enabled throughout your cluster then all Pods should automatically be able to resolve Services by their DNS name.
 
-Kubernetes also supports DNS SRV (Service) records for named ports. If the "my-service.my-ns" Service has a port named "http" with the protocol set to TCP, you can do a DNS SRV query for _http._tcp.my-service.my-ns to discover the port number for "http", as well as the IP address.
+Kubernetes also supports DNS SRV (DNS Service) records for named ports. If the "my-service.my-ns" Service has a port named "http" with the protocol set to TCP, you can do a DNS SRV query for _http._tcp.my-service.my-ns to discover the port number for "http", as well as the IP address.
 
 The Kubernetes DNS server is the only way to access ExternalName Services.
 
 Kubernetes offers a DNS cluster addon, which most of the supported environments enable by default. In Kubernetes version 1.11 and later, CoreDNS is recommended and is installed by default with kubeadm.
 
 To verify if the CoreDNS deployment is available,
+
 ```
-$ kubectl get deployment -n kube-system | grep dns-autoscaler
-coredns-autoscaler                   1/1     1            1           11d
+kubectl get deployment -n kube-system | grep dns
 
-$ kubectl get configmap -n kube-system | grep dns
-coredns                              1      11d
-coredns-autoscaler                   1      11d
-node-local-dns                       1      11d
+coredns               3/3    3    3    7h51m
+coredns-autoscaler    1/1    1    1    7h51m
+
+kubectl get configmap -n kube-system | grep dns
+
+coredns               1    11d
+coredns-autoscaler    1    11d
+node-local-dns        1    11d
 ```
-The `node-local-dns` is the `NodeLocal` DNS caching agent for improved cluster DNS performance. `NodeLocal` DNS cache is a beta feature.
 
+The `node-local-dns` is the `NodeLocal DNSCaching` agent for improved cluster DNS performance. [`NodeLocal DNSCache`](https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/) is a feature introduced as stable in v1.18.
 
-Go to [Lab02](../Lab02/README.md) to learn more about ServiceType NodePort.
-
+Next, go back to continue.
 
 ## Resources
 - [Choosing an app exposure service](https://cloud.ibm.com/docs/containers?topic=containers-cs_network_planning)
