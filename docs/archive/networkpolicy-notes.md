@@ -1,16 +1,5 @@
-```
-kubectl get networkpolicy
-kubectl delete networkpolicy helloworld-allow-to-label
-```
 
 
-```
-$ wget https://github.com/projectcalico/calicoctl/releases/download/v3.14.1/calicoctl
-$ chmod 755 calicoctl
-$ echo 'export PATH=$HOME:$PATH' > .bash_profile
-$ source .bash_profile
-$ ibmcloud ks cluster config --cluster remkohdev-iks116-2n-cluster --admin --network
-```
 
 find your cloud shell name
 ```
