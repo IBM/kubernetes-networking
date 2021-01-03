@@ -1,6 +1,6 @@
 # Kubernetes Networking
 
-In this Kubernetes Networking workshop, you will deploy a `helloworld` application from `https://github.com/remkohdev/helloworld` and apply different service types and networking policies to controll access to the cluster and application.
+In this Kubernetes Networking workshop, you will use different ways to control traffic on a Kubernetes cluster, from Service types, load balancing and Ingress, Network Policy and Calico, and VPC Gen2.
 
 ## Prerequirements
 
@@ -27,3 +27,4 @@ Go to [Setup](setup.md) for more details.
 8. [Network Policy](networkpolicy.md) 
 9. [Calico](calico.md)
 10. [VPC Gen2](vpcgen2.md)
+11. [Airgap](airgap.md)

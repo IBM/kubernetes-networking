@@ -1,27 +1,38 @@
 # Kubernetes Networking
 
-In this Kubernetes Networking workshop, you will deploy a `helloworld` application from `https://github.com/remkohdev/helloworld` and apply different service types and networking policies to controll access to the cluster and application.
+In this Kubernetes Networking workshop, you will use different ways to control traffic on a Kubernetes cluster, from Service types, load balancing and Ingress, Network Policy and Calico, and VPC Gen2.
 
-# Labs
+## Labs
 
 1. [Setup](docs/setup.md)
 2. [Services](docs/services.md)
 3. [ClusterIP](docs/clusterip.md)
 4. [NodePort](docs/nodeport.md)
-5. [Loadbalancer and NLB](docs/loadbalancer.md),
+5. [Loadbalancer NLB](docs/loadbalancer.md),
 6. [ExternalName](docs/externalname.md)
-7. Lab04 - Ingress and Application Load Balancer (ALB), see [Lab04](Lab04/README.md)
-8. Lab05 - Kubernetes Network Policy and Calico, see [Lab05](Lab05/README.md)
+7. [Ingress ALB](docs/ingress-alb.md)
+8. [Network Policy](docs/networkpolicy.md) 
+9. [Calico](docs/calico.md)
+10. [VPC Gen2](docs/vpcgen2.md)
+11. [Airgap](docs/airgap.md)
 
-# Prerequisites
+## Prerequisites
 
 1. Kubernetes Cluster
-    - For Lab01 and Lab02 about Service types `ClusterIP` and `NodePort` you can use a single worker node Kubernetes cluster.
-    - For Lab02 and Lab04 about Service type `LoadBalancer` and `Ingress` you need to have a Kubernetes cluster with a minimum of two worker nodes.
-    - For Lab05 about `Kubernetes Network Policy` and `Calico`, you need.
-1. Client, recommended to use IBM Cloud shell at https://shell.cloud.ibm.com.
+2. ClientTerminal
 
-# Todo
+## Technologies
 
-- [ ] Understanding the DNS Operator, https://docs.openshift.com/container-platform/4.5/networking/dns-operator.html, https://docs.openshift.com/container-platform/4.5/networking/cluster-network-operator.html
-- [ ] 
+This workshop was tested using the following technologies:
+
+* IBM Cloud Kubernetes Service (IKS) version 1.19, 2 worker nodes, flavor u3c.2x4
+* Calico client version v3.17.1
+* Calico cluster version v3.16.5
+* ibmcloud version 1.3.0
+* ibmcloud container-service/kubernetes-service   1.0.28
+* vpc-infrastructure/infrastructure-service 0.7.5
+* kubectl version 1.19
+
+Contributors:
+* Remko de Knikker, [remkohdev](https://github.com/remkohdev),
+* Tim Robinson, [timroster](https://github.com/timroster),
