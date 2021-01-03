@@ -4,17 +4,17 @@
 
 The following image demonstrates how Kubernetes forwards public network traffic through kube-proxy and NodePort, LoadBalancer, or Ingress services in IBM Cloud Kubernetes Service.
 
-![IKS public network traffic](../images/cs_network_planning_ov-01.png)
+![IKS public network traffic](images/cs_network_planning_ov-01.png)
 
 The following image shows what features each of the different ServiceTypes supports on IBM Cloud.
 
-![IKS public network traffic](../images/kubernetes-network-service-types.png)
+![IKS public network traffic](images/kubernetes-network-service-types.png)
 
 The services network is implemented by a kubernetes component called kube-proxy collaborating with a linux kernel module called netfilter to trap and reroute traffic sent to the cluster IP so that it is sent to a healthy pod instead
 
 Connections and requests operate at OSI layer 4 (tcp) or layer 7 (http, rpc, etc). Netfilter rules are routing rules, and they operate on IP packets at layer 3. All routers, including netfilter, make routing decisions based more or less solely on information contained in the packet; generally where it is from and where it is going. So to describe this behavior in layer 3 terms: each packet destined for the service at10.3.241.152:80 that arrives at a node’s eth0 interface is processed by netfilter, matches the rules established for our service, and is forwarded to the IP of a healthy pod.
 
-![Layer 3 Forwarding](../images/kube-layer3-networking.png)
+![Layer 3 Forwarding](images/kube-layer3-networking.png)
 
 External clients that call into our pods has to make use of this same routing infrastructure. The cluster IP and port is the “front end”. The cluster IP of a service is only reachable from a node’s ethernet interface. How can we forward traffic from a publicly visible IP endpoint to an IP that is only reachable once the packet is already on a node?
 

@@ -64,9 +64,9 @@ kubectl calico -h
 1. If you are using federated SSO login, use the `-sso` flag instead.
 1. Select the account in which the cluster was created.
 
-    ![Login to IBM Cloud](../images/shell-login-to-cloud.png)
+    ![Login to IBM Cloud](images/shell-login-to-cloud.png)
 
-1. Optionally, list all clusters and set the `KS_CLUSTER_NAME` environment variable to the correct cluster name,
+2. Optionally, list all clusters and set the `KS_CLUSTER_NAME` environment variable to the correct cluster name,
 
     ```
     ibmcloud ks clusters
@@ -74,14 +74,14 @@ kubectl calico -h
     MY_NS=my-apps
     ```
 
-1. Download the cluster configuration to the client,
+3. Download the cluster configuration to the client,
 
     ```
     ibmcloud ks cluster config --cluster $KS_CLUSTER_NAME
     kubectl config current-context
     ```
 
-1. The config should be set to a `clustername/clusterid` pair,
+4. The config should be set to a `clustername/clusterid` pair,
 
 ## HelloWorld App
 

@@ -24,8 +24,7 @@ nav:
     - VPC Gen2: vpcgen2.md
     - Airgap: airgap.md
   - References:
-    - Additional resources: references/RESOURCES.md
-    - Contributors: references/CONTRIBUTORS.md
+    - Contributors: references/contributors.md
 
 ## DO NOT CHANGE BELOW THIS LINE
 

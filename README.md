@@ -11,10 +11,9 @@ In this Kubernetes Networking workshop, you will use different ways to control t
 5. [Loadbalancer NLB](docs/loadbalancer.md),
 6. [ExternalName](docs/externalname.md)
 7. [Ingress ALB](docs/ingress-alb.md)
-8. [Network Policy](docs/networkpolicy.md) 
-9. [Calico](docs/calico.md)
-10. [VPC Gen2](docs/vpcgen2.md)
-11. [Airgap](docs/airgap.md)
+8. [Network Policy and Calico](docs/networkpolicy.md)
+9.  [VPC Gen2](docs/vpcgen2.md)
+10. [Airgap](docs/airgap.md)
 
 ## Prerequisites
 
