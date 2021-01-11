@@ -4,14 +4,10 @@ In this Kubernetes Networking workshop, you will use different ways to control t
 
 ## Prerequirements
 
-1. Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
-1. Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
-1. CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
-1. Kubernetes cluster v1.18:
-    - for labs in `Services`, `ClusterIP`, and `NodePort`, you need a Kubernetes cluster with at least 1 worker node.
-    - for labs in  `LoadBalancer` and `Ingress` you need a Kubernetes cluster with at least 2 worker nodes.
-    - for labs in `Network Policy` and `Calico`, you need a Kubernetes cluster with at least 2 worker nodes.
-    - for labs in `VPC Gen2`, you need a Kubernetes cluster with at least 1 worker node.
+* Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
+* Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
+* CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
+* Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ). 
 
 Go to [Setup](setup.md) for more details.
 
