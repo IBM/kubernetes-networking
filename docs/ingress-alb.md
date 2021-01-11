@@ -168,11 +168,23 @@ metadata:
 One of the public IP addresses on the public VLAN's subnet is assigned to the NLB. List the registered NLB host names and IP addresses in a cluster,
 
 ```
-ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME
+$ ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME --output json
 
-OK
-Hostname     IP(s)    Health Monitor    SSL Cert Status    SSL Cert Secret Name    Secret Namespace
-remkohdev-iks118-1n-clu-47d7983a425e05fef831e694b7945b16-0000.us-south.containers.appdomain.cloud    169.46.16.242    None    created    remkohdev-iks118-1n-clu-47d7983a425e05fef831e694b7945b16-0000    default
+[
+    {
+        "clusterID": "bvmvv8vd0a5t7uq0eii0",
+        "nlbIP": "[\"169.61.252.2\"]",
+        "nlbIPArray": [
+            "169.61.252.2"
+        ],
+        "nlbType": "public",
+        "nlbHost": "remkohdev-test-iks119-2-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud",
+        "secretNamespace": "default",
+        "nlbMonitorState": "None",
+        "nlbSslSecretName": "remkohdev-test-iks119-2-2bef1f4b4097001da9502000c44fc2b2-0000",
+        "nlbSslSecretStatus": "created"
+    }
+]
 ```
 
 And retrieve the NodePort via,
