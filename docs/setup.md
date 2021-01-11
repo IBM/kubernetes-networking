@@ -33,7 +33,8 @@ This workshop was tested using the Labs environment at CognitiveLabs. To access 
 2. Optionally, list all clusters and set the `KS_CLUSTER_NAME` environment variable to the correct cluster name,
 
     ```
-    ibmcloud ks clusters
+    KS_NAME_SUB=<substring>
+    ibmcloud ks clusters --output json | jq -c 'map(select(.name | contains('\"$KS_NAME_SUB\"')))'
     KS_CLUSTER_NAME=<your cluster name>
     MY_NS=my-apps
     ```
