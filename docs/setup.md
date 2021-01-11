@@ -34,7 +34,7 @@ This workshop was tested using the Labs environment at CognitiveLabs. To access 
 
     ```
     KS_NAME_SUB=<substring>
-    ibmcloud ks clusters --output json | jq -c 'map(select(.name | contains('\"$KS_NAME_SUB\"')))'
+    ibmcloud ks clusters --output json | jq -r 'map(select(.name | contains('\"$KS_NAME_SUB\"')))'
     KS_CLUSTER_NAME=<your cluster name>
     MY_NS=my-apps
     ```
