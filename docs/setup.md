@@ -5,17 +5,11 @@
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
 * Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
 * CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
-* Kubernetes cluster v1.18:
-    - for labs in `Services`, `ClusterIP`, and `NodePort`, you need a Kubernetes cluster with at least 1 worker node.
-    - for labs in  `LoadBalancer` and `Ingress` you need a Kubernetes cluster with at least 2 worker nodes.
-    - for labs in `Network Policy` and `Calico`, you need a Kubernetes cluster with at least 2 worker nodes.
-    - for labs in `VPC Gen2`, you need a Kubernetes cluster with at least 1 worker node.
+* Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ). 
 
 ## Setup Kubernetes Cluster
 
-* To create a free IBM Cloud Kubernetes Service (IKS) with 1 worker node, you can upgrade the free IBM Cloud account to a free `Pay-As-You-Go` account. To upgrade, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
-* To create a free IBM Cloud Kubernetes Service (IKS) cluster with 1 worker node, 
-* To grant permissions to an existing Kubernetes cluster, as part of an IBM managed workshop, you can access an existing cluster using your IBM Cloud account and IBM Id. To grant access permissions to a cluster, go [here](https://ibm.github.io/workshop-setup/GRANTCLUSTER/).
+* To use an IBM provided Kubernetes cluster with your IBM Cloud account and IBMId, grant access permissions to the cluster, as instructed [here](https://ibm.github.io/workshop-setup/GRANTCLUSTER/).
 * To connect to a managed `Red Hat OpenShift Kubernetes Service (ROKS)`, go [here](https://ibm.github.io/workshop-setup/ROKS/).
 
 ## Setup Client Terminal
