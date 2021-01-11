@@ -216,11 +216,9 @@ In a standard cluster on IKS, the Ingress Application Load Balancer (ALB) is a l
 
 ## Create an Ingress Resource for the HelloWorld App
 
-Instead of using `<external-ip>:<nodeport>` to access the HelloWorld app, I want to access our HelloWorld aplication via the URL `<subdomain>/<path>`.
+Instead of using `<external-ip>:<nodeport>` to access the HelloWorld app, I want to access our HelloWorld aplication via the URL `<subdomain>:<nodeport>/<path>`. 
 
-To access the app via the Ingress subdomain and a path rule, I define a path `/hello` in the Ingress resource.
-
-To configure your Ingress resource, you first also need the Ingress Subdomain and Ingress Secret of your cluster. Both were already created by IKS when you created the cluster. 
+To configure your Ingress resource, you need the Ingress Subdomain and Ingress Secret of your cluster. Both were already created by IKS when you created the cluster. 
 
 ```
 INGRESS_SUBDOMAIN=$(ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME --json | jq -r '.[0].nlbHost')
@@ -240,7 +238,7 @@ INGRESS_SECRET=$(ibmcloud ks cluster get --show-resources -c $KS_CLUSTER_NAME --
 echo $INGRESS_SECRET
 ```
 
-Create the Ingress resource using a `rewrite path` and change the `hosts` and `host` to the `Ingress Subdomain` of your cluster, and change the `secretName` to the value `Ingress Secret` of your cluster. 
+Create the Ingress resource and change the `hosts` and `host` to the `Ingress Subdomain` of your cluster, and change the `secretName` to the value `Ingress Secret` of your cluster. You can use annotations like `rewrite path` to customize the Ingress resource. See [https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation).
 
 ```
 echo "apiVersion: extensions/v1beta1
@@ -291,7 +289,7 @@ spec:
               number: 8080" > helloworld-ingress.yaml
 ```
 
-The above resource will create an access path to helloworld at https://$INGRESS_SUBDOMAIN/hello. 
+The above resource will create an access path to the helloworld at http://$INGRESS_SUBDOMAIN:$PORT/. 
 
 You can further [customize Ingres routing with annotations](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation) to customize the ALB settings, TLS settings, request and response annocations, service limits, user authentication, or error actions. 
 
