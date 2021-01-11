@@ -14,12 +14,43 @@ Finish the [Services](services.md), [ClusterIP](clusterip.md), [NodePort](nodepo
 When you create a standard cluster in IBM Cloud Kubernetes Service (IKS), a portable public subnet and a portable private subnet for the VLAN are automatically provisioned. You need account permissions to list the subnets,
 
 ```
-ibmcloud ks subnets --provider classic
+KS_CLUSTER_ID=$(ibmcloud ks cluster get --cluster $KS_CLUSTER_NAME --output json | jq -r '.id')
+echo $KS_CLUSTER_ID
 
-OK
-ID        Network            Gateway         VLAN ID   Type      Bound Cluster          Zone   
-2471290   10.176.98.248/29   10.176.98.249   3009946   private   bvlntf2d0fe4l9hnres0   dal10   
-2078743   169.46.16.240/29   169.46.16.241   3009944   public    bvlntf2d0fe4l9hnres0   dal10 
+ibmcloud ks subnets --provider classic --output json | jq -r '.[] | select ( .properties.bound_cluster=='\"$KS_CLUSTER_ID\"' )'
+
+{
+  "id": "2051509",
+  "type": "private",
+  "vlan_id": "2953608",
+  "ip_addresses": [],
+  "properties": {
+    "cidr": "29",
+    "network_identifier": "10.177.211.88",
+    "note": "",
+    "subnet_type": "secondary_on_vlan",
+    "display_label": "10.177.211.88/29",
+    "gateway": "10.177.211.89",
+    "bound_cluster": "bvmvv8vd0a5t7uq0eii0",
+    "datacenter": "dal10"
+  }
+}
+{
+  "id": "2506746",
+  "type": "public",
+  "vlan_id": "2953606",
+  "ip_addresses": [],
+  "properties": {
+    "cidr": "29",
+    "network_identifier": "169.61.252.0",
+    "note": "",
+    "subnet_type": "secondary_on_vlan",
+    "display_label": "169.61.252.0/29",
+    "gateway": "169.61.252.1",
+    "bound_cluster": "bvmvv8vd0a5t7uq0eii0",
+    "datacenter": "dal10"
+  }
+}
 ```
 
 or list the resources for the cluster,
