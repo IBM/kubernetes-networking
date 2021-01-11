@@ -173,9 +173,9 @@ $ ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME --output json
 [
     {
         "clusterID": "bvmvv8vd0a5t7uq0eii0",
-        "nlbIP": "[\"169.61.252.2\"]",
+        "nlbIP": "[\"169.46.16.243\"]",
         "nlbIPArray": [
-            "169.61.252.2"
+            "169.46.16.243"
         ],
         "nlbType": "public",
         "nlbHost": "remkohdev-test-iks119-2-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud",
