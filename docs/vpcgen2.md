@@ -1,6 +1,6 @@
-# Airgap and Secure a Kubernetes Cluster with VPC Gen2
+# Secure a Kubernetes Cluster with VPC Gen2
 
-This tutorial explains how to `air-gap` and secure an OpenShift or Kubernetes cluster and physically isolate our cluster network. Measured by strict industry specific controls for `airgapping` a network, like the Financial Services industry, this tutorial does not airgap the cluster. To airgap a cluster by more strict standards additional measures are needed. For more information about `air-gap`, go [here](airgap.md).
+This tutorial explains how to get started with an `air-gap` and secure an OpenShift or Kubernetes cluster and physically isolate our cluster network. Measured by strict industry specific controls for `airgapping` a network, like the Financial Services industry, this tutorial does not airgap the cluster. To airgap a cluster by more strict standards additional measures are needed. For more information about `air-gap`, go [here](airgap.md).
 
 ## Prerequirements
 
