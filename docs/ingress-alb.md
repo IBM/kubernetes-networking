@@ -194,7 +194,7 @@ PORT=$(kubectl get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0
 echo $PORT
 ```
 
-You see that the portable IP address `169.46.16.242` is assigned to the NLB. You can access the application via the portable IP address of the LoadBalancer NLB and service NodePort at http://169.46.16.242:$PORT. But LoadBalancer also has limitations.
+You see that the portable IP address is assigned to the NLB. You can access the application via the portable IP address of the LoadBalancer NLB and service NodePort at http://$PORTABLE_IP:$PORT. But LoadBalancer also has limitations.
 
 ## Ingress ALB
 
