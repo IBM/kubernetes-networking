@@ -31,11 +31,22 @@ The client terminal needs to have `Docker`, `kubectl`, for OpenShift you need th
 Install calicoctl,
 
 ```
-$ curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.17.1/calicoctl
-$ chmod +x calicoctl
-$ echo 'export PATH=$HOME:$PATH' > .bash_profile
-$ source .bash_profile
-$ ibmcloud ks cluster config --cluster $KS_CLUSTER_NAME --admin --network
+curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.17.1/calicoctl
+chmod +x calicoctl
+echo "export PATH=$(pwd):$PATH" > $HOME/.bash_profile
+source $HOME/.bash_profile
+ibmcloud ks cluster config --cluster $KS_CLUSTER_NAME --admin --network
+```
+
+Test the version,
+
+```
+$ calicoctl version
+
+Client Version:    v3.17.1
+Git commit:        8871aca3
+Cluster Version:   v3.16.5
+Cluster Type:      typha,kdd,k8s,operator,openshift,bgp
 ```
 
 With Docker container,
