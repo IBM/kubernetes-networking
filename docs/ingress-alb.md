@@ -56,42 +56,42 @@ ibmcloud ks subnets --provider classic --output json | jq -r '.[] | select ( .pr
 or list the resources for the cluster,
 
 ```
-ibmcloud ks cluster get --show-resources -c $KS_CLUSTER_NAME
+$ ibmcloud ks cluster get --show-resources -c $KS_CLUSTER_NAME
 
-Retrieving cluster remkohdev-iks118-1n-cluster1 and all its resources...
+Retrieving cluster remkohdev-test-iks119-2n-c1 and all its resources...
 OK
                                    
-Name:                           remkohdev-iks118-1n-cluster1   
-ID:                             bvlntf2d0fe4l9hnres0   
+Name:                           remkohdev-test-iks119-2n-c1   
+ID:                             bvmvv8vd0a5t7uq0eii0   
 State:                          normal   
 Status:                         -   
-Created:                        2020-12-29T19:10:03+0000   
+Created:                        2020-12-31T16:44:26+0000   
 Location:                       dal10   
 Pod Subnet:                     172.30.0.0/16   
 Service Subnet:                 172.21.0.0/16   
-Master URL:                     https://c111.us-south.containers.cloud.ibm.com:31666   
-Public Service Endpoint URL:    https://c111.us-south.containers.cloud.ibm.com:31666   
+Master URL:                     https://c111.us-south.containers.cloud.ibm.com:31710   
+Public Service Endpoint URL:    https://c111.us-south.containers.cloud.ibm.com:31710   
 Private Service Endpoint URL:   -   
 Master Location:                Dallas   
-Master Status:                  Ready (1 day ago)   
+Master Status:                  Ready (2 days ago)   
 Master State:                   deployed   
 Master Health:                  normal   
-Ingress Subdomain:              remkohdev-iks118-1n-clu-47d7983a425e05fef831e694b7945b16-0000.us-south.containers.appdomain.cloud   
-Ingress Secret:                 remkohdev-iks118-1n-clu-47d7983a425e05fef831e694b7945b16-0000   
+Ingress Subdomain:              remkohdev-test-iks119-2-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud   
+Ingress Secret:                 remkohdev-test-iks119-2-2bef1f4b4097001da9502000c44fc2b2-0000   
 Ingress Status:                 healthy   
 Ingress Message:                All Ingress components are healthy   
-Workers:                        1   
+Workers:                        2   
 Worker Zones:                   dal10   
-Version:                        1.18.13_1535   
+Version:                        1.19.6_1531   
 Creator:                        -   
 Monitoring Dashboard:           -   
-Resource Group ID:              68af6383f717459686457a6434c4d19f   
-Resource Group Name:            Default   
+Resource Group ID:              fdd290732f7d47909181a189494e2990   
+Resource Group Name:            default   
 
 Subnet VLANs
 VLAN ID   Subnet CIDR        Public   User-managed   
-3009946   10.176.98.248/29   false    false   
-3009944   169.46.16.240/29   true     false 
+2953606   169.61.252.0/29    true     false   
+2953608   10.177.211.88/29   false    false
 ```
 
 The portable public subnet provides 5 usable IP addresses. 1 portable public IP address is used by the default public Ingress ALB. The remaining 4 portable public IP addresses can be used to expose single apps to the internet by creating public Network Load Balancer (NLB) services.
