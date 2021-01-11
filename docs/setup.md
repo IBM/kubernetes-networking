@@ -14,48 +14,7 @@
 
 ## Setup Client Terminal
 
-I recommended using the browser based client terminal that is party of the Labs environment at CognitiveLabs. to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/). 
-
-Alternatively, you can also use the IBM Cloud shell with tools pre-installed to run the labs at https://shell.cloud.ibm.com.
-
-The client terminal needs to have `Docker`, `kubectl`, for OpenShift you need the `oc` CLI, the `IBM Cloud CLI` and the `IBM Cloud Kubernetes Service plug-in`.
-
-## Install Calicoctl
-
-Install calicoctl,
-
-```
-curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.17.1/calicoctl
-chmod +x calicoctl
-echo "export PATH=$(pwd):$PATH" > $HOME/.bash_profile
-source $HOME/.bash_profile
-ibmcloud ks cluster config --cluster $KS_CLUSTER_NAME --admin --network
-```
-
-Test the version,
-
-```
-$ calicoctl version
-
-Client Version:    v3.17.1
-Git commit:        8871aca3
-Cluster Version:   v3.16.5
-Cluster Type:      typha,kdd,k8s,operator,openshift,bgp
-```
-
-With Docker container,
-
-```
-docker pull calico/ctl:v3.17.1
-```
-
-As kubectl plugin,
-
-```
-curl -o kubectl-calico -L  https://github.com/projectcalico/calicoctl/releases/download/v3.17.1/calicoctl
-chmod +x kubectl-calico
-kubectl calico -h
-```
+This workshop was tested using the Labs environment at CognitiveLabs. To access a client terminal at CognitiveLabs.ai, follow the instructions [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/). 
 
 ## Login to IBM Cloud
 
@@ -87,6 +46,37 @@ kubectl calico -h
     ```
 
 4. The config should be set to a `clustername/clusterid` pair,
+
+## Install Calicoctl
+
+Install calicoctl,
+
+```
+curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.17.1/calicoctl
+chmod +x calicoctl
+echo "export PATH=$(pwd):$PATH" > $HOME/.bash_profile
+source $HOME/.bash_profile
+ibmcloud ks cluster config --cluster $KS_CLUSTER_NAME --admin --network
+```
+
+Test the version,
+
+```
+$ calicoctl version
+
+Client Version:    v3.17.1
+Git commit:        8871aca3
+Cluster Version:   v3.16.5
+Cluster Type:      typha,kdd,k8s,operator,openshift,bgp
+```
+
+As kubectl plugin,
+
+```
+curl -o kubectl-calico -L  https://github.com/projectcalico/calicoctl/releases/download/v3.17.1/calicoctl
+chmod +x kubectl-calico
+kubectl calico -h
+```
 
 ## HelloWorld App
 
