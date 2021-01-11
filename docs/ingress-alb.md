@@ -267,7 +267,7 @@ spec:
 In version 1.19 syntax,
 
 ```
-apiVersion: networking.k8s.io/v1
+echo "apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: helloworld-ingress
@@ -288,7 +288,7 @@ spec:
           service:
             name: helloworld
             port: 
-              number: 8080
+              number: 8080" > helloworld-ingress.yaml
 ```
 
 The above resource will create an access path to helloworld at https://$INGRESS_SUBDOMAIN/hello. 
