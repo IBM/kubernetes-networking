@@ -101,6 +101,7 @@ If you don't have the repository already, clone it to your local machine,
 
 ```
 git clone https://github.com/remkohdev/helloworld.git
+cd helloworld
 ls -al
 ```
 
