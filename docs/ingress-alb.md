@@ -315,10 +315,17 @@ kubectl create -f helloworld-ingress.yaml -n $MY_NS
 ingress.networking.k8s.io/helloworld-ingress created
 ```
 
+To find the service port again,
+
+```
+PORT=$(kubectl get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
+echo $PORT
+```
+
 Try to access the `helloworld` API and the proxy using the Ingress Subdomain with the path to the service,
 
 ```
-curl -L -X POST "https://$INGRESS_SUBDOMAIN/hello/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "world3" }'
+curl -L -X POST "http://$INGRESS_SUBDOMAIN:$PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "world3" }'
 
 {"id":"40221ee9-06ac-4be2-97bc-2675c7cbb1e7","sender":"world3","message":"Hello world3 (direct)","host":null}%
 ```
