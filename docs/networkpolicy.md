@@ -181,6 +181,16 @@ kubectl create -f helloworld-policy-denyall.yaml -n $MY_NS
 networkpolicy.networking.k8s.io/helloworld-deny-all created
 ```
 
+If you need the `PUBLIC_IP` of the `helloworld` app again,
+
+```
+PUBLIC_IP=$(ibmcloud ks workers --cluster $KS_CLUSTER_NAME --json | jq '.[0]' | jq -r '.publicIP')
+echo $PUBLIC_IP
+
+PORT=$(kubectl get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
+echo $PORT
+```
+
 Test both the `helloworld` and the `helloworld-proxy` apps,
 
 ```
