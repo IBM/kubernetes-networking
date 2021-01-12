@@ -301,7 +301,7 @@ spec:
               number: 8080" > helloworld-ingress.yaml
 ```
 
-The above resource will create an access path to the helloworld at http://$INGRESS_SUBDOMAIN:$PORT/. 
+The above resource will create an access path to the helloworld at `http://$INGRESS_SUBDOMAIN:$PORT/`. 
 
 You can further [customize Ingres routing with annotations](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation) to customize the ALB settings, TLS settings, request and response annocations, service limits, user authentication, or error actions. 
 
@@ -330,7 +330,8 @@ curl -L -X POST "http://$INGRESS_SUBDOMAIN:$PORT/api/messages" -H 'Content-Type:
 {"id":"40221ee9-06ac-4be2-97bc-2675c7cbb1e7","sender":"world3","message":"Hello world3 (direct)","host":null}%
 ```
 
-If you instead want to use subdomain paths instead of URI paths, 
+If you instead want to use subdomain paths instead of URI paths,
+
 ```
 echo "apiVersion: extensions/v1beta1
 kind: Ingress
