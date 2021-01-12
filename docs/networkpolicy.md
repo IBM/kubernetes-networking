@@ -157,7 +157,7 @@ curl -L -X POST "http://$PROXY_HOST:$PROXY_NODEPORT/proxy/api/messages" -H 'Cont
 
 The source code for the helloworld application can be found [here](https://github.com/remkohdev/helloworld/blob/master/src/main/java/com/example/helloworld/APIController.java).
 
-## Apply Network Policy - Allow No Traffic
+## Apply Network Policy - Deny All Traffic
 
 Define the Network Policy file to deny all traffic,
 
@@ -213,71 +213,52 @@ helloworld         LoadBalancer   172.21.145.243   169.61.252.3   8080:30663/TCP
 helloworld-proxy   LoadBalancer   172.21.74.243    169.61.252.4   8080:30005/TCP   141m
 ```
 
-## Apply Network Policy - Allow Only Traffic From Proxy
+## Apply Network Policy - Allow Only Traffic to Pod
 
 Let's allow direct ingress traffic to the `helloworld` app on port `8080`, but not allow traffic to the `helloworld-proxy` app. 
 
 Define the Network Policy file,
 
 ```
-echo 'apiVersion: projectcalico.org/v3
-kind: GlobalNetworkPolicy
+echo 'apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
-  name: helloworld-allow
+  name: allow-helloworld
 spec:
-  selector: app == 'helloworld'
-  types:
-  - Ingress
+  policyTypes:
+    - Ingress
+  podSelector:
+    matchLabels:
+      app: helloworld
   ingress:
-  - action: Allow
-    protocol: TCP
-    source:
-      selector: role == 'helloworld-proxy'
-    destination: 
-      ports:
-      - 8080' > helloworld-calico-allow.yaml
+    - {}' > helloworld-allow.yaml
 ```
 
 Create the Network Policy,
 
 ```
-calicoctl create -f helloworld-calico-allow.yaml
+calicoctl create -f helloworld-allow.yaml -n $MY_NS
 
-Successfully created 1 'GlobalNetworkPolicy' resource(s)
+networkpolicy.networking.k8s.io/allow-helloworld created
 ```
 
 Review the existing NetworkPolices in the project namespace,
 
 ```
-kubectl get networkpolicies -n $MY_NS
-NAME                  POD-SELECTOR   AGE
-helloworld-deny-all   <none>         3h10m
-```
-
-Review the existing GlobalNetworkPolicies,
-
-```
-kubectl get globalnetworkpolicies
-
-NAME                                AGE
-default.allow-all-outbound          33h
-default.allow-all-private-default   33h
-default.allow-bigfix-port           33h
-default.allow-icmp                  33h
-default.allow-node-port-dnat        33h
-default.allow-sys-mgmt              33h
-default.allow-vrrp                  33h
-default.helloworld-allow            14ms
+$ kubectl get networkpolicies -n $MY_NS
+NAME                  POD-SELECTOR     AGE
+allow-helloworld      app=helloworld   53m
+helloworld-deny-all   <none>           125m
 ```
 
 Test the `helloworld` and the `helloworld-proxy' apps again,
 
 ```
-curl -L -X POST "http://$PUBLIC_IP:$PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "remko" }'
+curl -L -X POST "http://$PUBLIC_IP:$PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "remko4" }'
 
-{"id":"19b0a0c0-ef05-4c91-8dd1-330e40d252ef","sender":"remko","message":"Hello remko (direct)","host":null}
+{"id":"fa172490-b685-40f9-8f6a-0de35119839a","sender":"remko4","message":"Hello remko4 (direct)","host":null}
 
-curl -L -X POST "http://$PROXY_HOST:$PROXY_PORT/proxy/api/messages" -H 'Content-Type: application/json' -H 'Content-Type: application/json' -d '{ "sender": "remko", "host": "helloworld:8080" }'
+curl -L -X POST "http://$PROXY_HOST:$PROXY_PORT/proxy/api/messages" -H 'Content-Type: application/json' -H 'Content-Type: application/json' -d '{ "sender": "remko4", "host": "helloworld:8080" }'
 
 curl: (7) Failed to connect to 169.61.252.4 port 80: Operation timed out
 ```
@@ -285,6 +266,6 @@ curl: (7) Failed to connect to 169.61.252.4 port 80: Operation timed out
 ## Cleanup
 
 ```
-kubectl delete globalnetworkpolicy default.helloworld-allow
+kubectl delete  networkpolicy allow-helloworld
 kubectl delete networkpolicy helloworld-deny-all
 ```
