@@ -147,13 +147,15 @@ PROXY_NODEPORT=$(kubectl get svc helloworld-proxy -n $MY_NS --output json | jq -
 echo $PROXY_NODEPORT
 ```
 
-Test the `helloworld-proxy` app, add the `host: helloworld:8080` property in the data object, which tells the `helloworld-proxy` app to proxy the message to the `host` app, and send the request to the `/proxy/api/messages` endpoint of our `helloworld-proxy` app,
+Test the `helloworld-proxy` app, add the `host: helloworld:8080` property in the data object, which tells the `helloworld-proxy` app to proxy the message to the `host` app, and send the request to the `/api/messages` endpoint of our `helloworld` app on port `8080` using the internal DNS for service discovery. Because it is an internal request, the proxy uses the container port rather than the NodePort, which is used for external requests.
 
 ```
 curl -L -X POST "http://$PROXY_HOST:$PROXY_NODEPORT/proxy/api/messages" -H 'Content-Type: application/json' -H 'Content-Type: application/json' -d '{ "sender": "remko", "host": "helloworld:8080" }'
 
 {"id":"6e5ef78f-9e09-42f8-8294-347ece7cd07f","sender":"remko","message":"Hello remko (proxy)","host":"helloworld:8080"}
 ```
+
+The source code for the helloworld application can be found [here](https://github.com/remkohdev/helloworld/blob/master/src/main/java/com/example/helloworld/APIController.java).
 
 ## Apply Network Policy - Allow No Traffic
 
