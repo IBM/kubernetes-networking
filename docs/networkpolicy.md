@@ -97,6 +97,13 @@ For this tutorial, we will use an additional app called `helloworld-proxy`, whic
 
 ![helloworld proxy architecture](images/helloworld-proxy.png)
 
+If you don't have the repository already, clone it to your local machine,
+
+```
+git clone https://github.com/remkohdev/helloworld.git
+ls -al
+```
+
 Deploy the `helloworld` proxy to the same namespace as the `helloworld` app,
 
 ```
