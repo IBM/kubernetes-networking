@@ -240,6 +240,18 @@ echo $INGRESS_SECRET
 
 Create the Ingress resource and change the `hosts` and `host` to the `Ingress Subdomain` of your cluster, and change the `secretName` to the value `Ingress Secret` of your cluster. You can use annotations like `rewrite path` to customize the Ingress resource. See [https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation).
 
+Find the Kubernetes version,
+
+```
+$ kubectl get nodes -o wide
+
+NAME            STATUS   ROLES    AGE   VERSION        INTERNAL-IP     EXTERNAL-IP      OS-IMAGE             KERNEL-VERSION       CONTAINER-RUNTIME
+10.38.216.204   Ready    <none>   18h   v1.18.13+IKS   10.38.216.204   150.239.30.245   Ubuntu 18.04.5 LTS   4.15.0-128-generic   containerd://1.3.9
+10.38.216.208   Ready    <none>   18h   v1.18.13+IKS   10.38.216.208   150.239.30.252   Ubuntu 18.04.5 LTS   4.15.0-128-generic   containerd://1.3.9
+```
+
+In version 1.18 syntax,
+
 ```
 echo "apiVersion: extensions/v1beta1
 kind: Ingress
