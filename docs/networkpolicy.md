@@ -266,6 +266,6 @@ curl: (7) Failed to connect to 169.61.252.4 port 80: Operation timed out
 ## Cleanup
 
 ```
-kubectl delete  networkpolicy allow-helloworld
-kubectl delete networkpolicy helloworld-deny-all
+kubectl delete  networkpolicy allow-helloworld -n $MY_NS
+kubectl delete networkpolicy helloworld-deny-all -n $MY_NS
 ```
