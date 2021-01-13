@@ -237,7 +237,7 @@ spec:
 Create the Network Policy,
 
 ```
-calicoctl create -f helloworld-allow.yaml -n $MY_NS
+kubectl create -f helloworld-allow.yaml -n $MY_NS
 
 networkpolicy.networking.k8s.io/allow-helloworld created
 ```
