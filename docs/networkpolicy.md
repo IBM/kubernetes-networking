@@ -265,7 +265,21 @@ curl: (7) Failed to connect to 169.61.252.4 port 80: Operation timed out
 
 ## Cleanup
 
+Delete the NetworkPolicies in your namespace,
+
 ```
 kubectl delete  networkpolicy allow-helloworld -n $MY_NS
 kubectl delete networkpolicy helloworld-deny-all -n $MY_NS
+```
+
+Delete the previously created resources,
+
+```
+kubectl get all -n $MY_NS
+
+kubectl delete deployment helloworld -n $MY_NS
+kubectl delete deployment helloworld-proxy -n $MY_NS
+kubectl delete svc helloworld -n $MY_NS
+kubectl delete svc helloworld-proxy -n $MY_NS
+kubectl delete namespace $MY_NS
 ```
