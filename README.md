@@ -1,6 +1,15 @@
 # Kubernetes Networking
 
-In this Kubernetes Networking workshop, you will use different ways to control traffic on a Kubernetes cluster, from Service types, load balancing and Ingress, Network Policy and Calico, and VPC Gen2.
+In this Kubernetes Networking workshop, you will use different ways to control traffic on a Kubernetes cluster, from Service types, load balancing and Ingress, Network Policy and Calico, and VPC Gen2. 
+
+This series of workshops on Kubernetes Networking is accompanied by a [lecture on Kubernetes Networking](pdf/KubernetesNetworking-Lecture.pdf).
+
+Kubernetes Networking is part of the series `Kubernetes Security`, which includes:
+
+1. Kubernetes Security,
+1. Kubernetes Networking,
+1. Kubernetes Storage,
+1. Kubernetes Automation (DevOps, IaC, CI/CD).
 
 ## Labs
 

@@ -1,8 +1,17 @@
 # Kubernetes Networking
 
-In this Kubernetes Networking workshop, you will use different ways to control traffic on a Kubernetes cluster, from Service types, load balancing and Ingress, Network Policy and Calico, and VPC Gen2.
+In this Kubernetes Networking workshop, you will use different ways to control traffic on a Kubernetes cluster, from Service types, load balancing and Ingress, Network Policy and Calico, and VPC Gen2. 
 
-## Prerequirements
+This series of workshops on Kubernetes Networking is accompanied by a [lecture on Kubernetes Networking](https://raw.githubusercontent.com/remkohdev/kubernetes-networking/master/pdf/KubernetesNetworking-Lecture.pdf).
+
+Kubernetes Networking is part of the series `Kubernetes Security`, which includes:
+
+1. Kubernetes Security,
+2. Kubernetes Networking,
+3. Kubernetes Storage,
+4. Kubernetes Automation (DevOps, IaC, CI/CD).
+
+## Prerequirementss
 
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
 * Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
