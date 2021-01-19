@@ -22,7 +22,6 @@ Kubernetes Networking is part of the series `Kubernetes Security`, which include
 7. [Ingress ALB](docs/ingress-alb.md)
 8. [Network Policy and Calico](docs/networkpolicy.md)
 9.  [VPC Gen2](docs/vpcgen2.md)
-10. [Airgap](docs/airgap.md)
 
 ## Prerequisites
 
