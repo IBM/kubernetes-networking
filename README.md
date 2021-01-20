@@ -26,7 +26,7 @@ Continue your learning by visiting the [Istio workshop](https://ibm.github.io/is
 * CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
 * Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ). 
 
-Go to [Setup](setup.md) for more details.
+Go to [Setup](docs/setup.md) for more details.
 
 # Labs
 
