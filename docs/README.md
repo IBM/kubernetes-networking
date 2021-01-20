@@ -1,6 +1,6 @@
 # Kubernetes Networking
 
-This Kubernetes Networking workshop consists of the following workshops:
+The Kubernetes Networking series consists of the following topics:
 
 1. **Kubernetes Networking 101** (60 mins), you will use different ways to control traffic on a Kubernetes cluster with Service types, Ingress, Network Policy and Calico.
 2. **Kubernetes Network Security using a Virtual Private Cloud (VPC)** (90 mins), you will deploy a guestbook application to a Kubernetes cluster in a Virtual Private Cloud (VPC) Gen2, you will create the VPC, add a subnet, attach a public gateway, and update a security group with rules to allow inbound traffic to the guestbook application.
