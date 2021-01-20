@@ -1,11 +1,11 @@
 # Project information
 site_name: Kubernetes Networking
-site_url: https://remkohdev.github.io/kubernetes-networking
+site_url: https://ibm.github.io/kubernetes-networking
 site_author: IBM Developer
 
 # Repository
 repo_name: kubernetes-networking
-repo_url: https://github.com/remkohdev/kubernetes-networking
+repo_url: https://github.com/IBM/kubernetes-networking
 edit_uri: edit/master/docs
 
 # Navigation
