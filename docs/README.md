@@ -14,6 +14,10 @@ Kubernetes Networking is part of the series `Kubernetes Security`, which include
 3. Kubernetes Storage,
 4. Kubernetes Automation (DevOps, IaC, CI/CD).
 
+## Next steps 
+
+Continue your learning by visiting the [Istio workshop](https://ibm.github.io/istio101/). With Istio, you can manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
+
 ## Prerequirementss
 
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
@@ -34,4 +38,19 @@ Go to [Setup](setup.md) for more details.
 7. [Ingress ALB](ingress-alb.md)
 8. [Network Policy and Calico](networkpolicy.md) 
 9.  [VPC Gen2](vpcgen2.md)
-10. [Airgap](airgap.md)
+
+## Technologies
+
+This workshop was tested using the following technologies:
+
+* IBM Cloud Kubernetes Service (IKS) version 1.19, 2 worker nodes, flavor u3c.2x4
+* Calico client version v3.17.1
+* Calico cluster version v3.16.5
+* ibmcloud version 1.3.0
+* ibmcloud container-service/kubernetes-service   1.0.28
+* vpc-infrastructure/infrastructure-service 0.7.5
+* kubectl version 1.19
+
+## Contributors
+
+* Remko de Knikker, [remkohdev](https://github.com/remkohdev)

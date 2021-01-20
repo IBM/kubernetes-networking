@@ -12,22 +12,30 @@ Kubernetes Networking is part of the series `Kubernetes Security`, which include
 1. Kubernetes Storage,
 1. Kubernetes Automation (DevOps, IaC, CI/CD).
 
-## Labs
+## Next steps 
 
-1. [Setup](docs/setup.md)
-2. [Services](docs/services.md)
-3. [ClusterIP](docs/clusterip.md)
-4. [NodePort](docs/nodeport.md)
-5. [Loadbalancer NLB](docs/loadbalancer.md),
-6. [ExternalName](docs/externalname.md)
-7. [Ingress ALB](docs/ingress-alb.md)
-8. [Network Policy and Calico](docs/networkpolicy.md)
-9.  [VPC Gen2](docs/vpcgen2.md)
+Continue your learning by visiting the [Istio workshop](https://ibm.github.io/istio101/). With Istio, you can manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
 
-## Prerequisites
+## Prerequirementss
 
-1. Kubernetes Cluster
-2. ClientTerminal
+* Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
+* Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
+* CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
+* Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ). 
+
+Go to [Setup](setup.md) for more details.
+
+# Labs
+
+1. [Setup](setup.md)
+2. [Services](services.md)
+3. [ClusterIP](clusterip.md)
+4. [NodePort](nodeport.md)
+5. [Loadbalancer NLB](loadbalancer.md)
+6. [ExternalName](externalname.md)
+7. [Ingress ALB](ingress-alb.md)
+8. [Network Policy and Calico](networkpolicy.md) 
+9.  [VPC Gen2](vpcgen2.md)
 
 ## Technologies
 
@@ -41,6 +49,6 @@ This workshop was tested using the following technologies:
 * vpc-infrastructure/infrastructure-service 0.7.5
 * kubectl version 1.19
 
-Contributors:
-* Remko de Knikker, [remkohdev](https://github.com/remkohdev),
-* Tim Robinson, [timroster](https://github.com/timroster),
+## Contributors
+
+* Remko de Knikker, [remkohdev](https://github.com/remkohdev)
