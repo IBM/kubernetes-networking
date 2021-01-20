@@ -2,30 +2,33 @@
 
 ## Create a Service
 
-If you did not already clone the `helloworld` repository to your client, do so now. 
+Clone the `helloworld` repository to your client, 
 
-```
+```console
 git clone https://github.com/remkohdev/helloworld.git
 ls -al
+cd helloworld
+```
+
+Create a separate namespace for the deployment,
+
+```console
+MY_NS=my-apps
+kubectl create namespace $MY_NS
 ```
 
 Deploy the `helloworld` application,
 
-```
-cd helloworld
-
-MY_NS=my-apps
-
-kubectl create namespace $MY_NS
-kubectl create -f helloworld-deployment.yaml -n $MY_NS
+```console
+$ kubectl create -f helloworld-deployment.yaml -n $MY_NS
 
 deployment.apps/helloworld created
 ```
 
-The `helloworld` application was deployed, that is a Kubernetes `Deployment` object was created. 
+The `helloworld` application was deployed and a Kubernetes `Deployment` object was created. 
 
-```
-kubectl get all -n $MY_NS
+```console
+$ kubectl get all -n $MY_NS
 
 NAME    READY    STATUS    RESTARTS    AGE
 pod/helloworld-6c76f57b9d-fsbfh    1/1    Running    0    10s
@@ -39,7 +42,9 @@ NAME    DESIRED    CURRENT    READY    AGE
 replicaset.apps/helloworld-6c76f57b9d    3    3    3    10s
 ```
 
-The deployment created also a ReplicaSet with 3 replicas of the pods. Because we did not create a Service for the `helloworld` containers running in pods, they cannot yet be easily accessed. 
+The deployment consists of a `Deployment` object, a `ReplicaSet` with 3 replicas of `Pods`. 
+
+Because we did not create a Service for the `helloworld` containers running in pods, they cannot yet be readily accessed. 
 
 When a Pod is deployed to a worker node, it is assigned a `private IP address` in the 172.30.0.0/16 range. Worker nodes and pods can securely communicate on the private network by using private IP addresses. However, Kubernetes creates and destroys Pods dynamically, which means that the location of the Pods changes dynamically. When a Pod is destroyed or a worker node needs to be re-created, a new private IP address is assigned.
 
@@ -66,9 +71,9 @@ spec:
     app: helloworld
 ```
 
-The `spec` defines a few important attributes: `labels`, `selector` and `port`. The set of Pods that a Service targets, is determined by the selector and labels. When a Service has no selector, the corresponding `Endpoints` object is not created automatically. This can be useful in cases where you want to define an Endpoint manually, for instance in the case of an external database instance.
+The `spec` defines a few important attributes for service discovery: `labels`, `selector` and `port`. The set of Pods that a Service targets, is determined by the selector and labels. When a Service has no selector, the corresponding `Endpoints` object is not created automatically. This can be useful in cases where you want to define an Endpoint manually, for instance in the case of an external database instance.
 
-The Service maps the incoming `port` to a `targetPort`. By default the `targetPort` is set to the same value as the incoming `port` field. A port definition in Pods can have a name, and you can reference these names in the `targetPort` attribute of a Service instead of the port number. In the Service example of `helloworld`, the `helloworld-deployment.yaml` file should have the corresponding port defined that the Service references by name,
+The Service maps the incoming `port` to athe container's `targetPort`. By default the `targetPort` is set to the same value as the incoming `port` field. A port definition in Pods can also have a name, and you can reference these names in the `targetPort` attribute of a Service instead of the port number. In the Service example of `helloworld`, the `helloworld-deployment.yaml` file should have the corresponding port defined that the Service references by name,
 
 ```
 cat helloworld-deployment.yaml
@@ -78,17 +83,17 @@ ports:
   containerPort: 8080
 ```
 
-This even works for pods available via the same network protocol on different port numbers. Kubernetes supports multiple port definitions on a Service object. 
+This even works for pods available via the same network protocol on different port numbers, as Kubernetes supports multiple port definitions on a Service object. 
 
 The default protocol for Services is TCP, see other [supported protocols](https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support). 
 
 ## ServiceTypes
 
-Before you create a Service for the `helloworld` application, let's first understand what types of services exist. Kubernetes `ServiceTypes` allow you to specify what kind of Service you want. 
+Before you create a Service object for the `helloworld` application, let's first review the types of services. Kubernetes `ServiceTypes` allow you to specify what kind of Service you want. 
 
 The default type is `ClusterIP`. To expose a Service onto an external IP address, you have to create a ServiceType other than ClusterIP.
 
-ServiceType values and their behaviors are:
+Available Service types:
 
 - **ClusterIP**: Exposes the Service on a cluster-internal IP. This is the default ServiceType.
 - **NodePort**: Exposes the Service on each Node’s IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You’ll be able to contact the NodePort Service, from outside the cluster, by requesting <NodeIP>:<NodePort>.

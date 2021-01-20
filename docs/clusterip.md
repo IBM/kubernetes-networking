@@ -6,18 +6,17 @@ Now we have a basic understanding of the different ServiceTypes on Kubernetes, i
 
 Create the Service object with the default type,
 
-```
-MY_NS=my-apps
-
-kubectl create -f helloworld-service.yaml -n $MY_NS
+```console
+$ kubectl create -f helloworld-service.yaml -n $MY_NS
 
 service/helloworld created
 ```
+<i>MY_NS=my-apps</i>
 
 Describe the Service,
 
-```
-kubectl describe svc helloworld -n $MY_NS
+```console
+$ kubectl describe svc helloworld -n $MY_NS
 
 Name:              helloworld
 Namespace:         my-apps
@@ -38,7 +37,7 @@ You see that Kubernetes by default creates a Service of type `ClusterIP`. The se
 Get the endpoints that were created as part of the Service,
 
 ```
-kubectl get endpoints -n $MY_NS
+$ kubectl get endpoints -n $MY_NS
 
 NAME    ENDPOINTS    AGE
 helloworld    172.30.20.145:8080,172.30.20.146:8080,172.30.20.147:8080    42m

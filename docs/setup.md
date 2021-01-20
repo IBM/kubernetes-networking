@@ -50,6 +50,8 @@ This workshop was tested using the Labs environment at CognitiveLabs. To access 
 
 ## Install Calicoctl
 
+**Currently not required**
+
 Install calicoctl,
 
 ```
@@ -78,12 +80,3 @@ curl -o kubectl-calico -L  https://github.com/projectcalico/calicoctl/releases/d
 chmod +x kubectl-calico
 kubectl calico -h
 ```
-
-## HelloWorld App
-
-1. From the Cloud shell, clone the guestbook application,
-
-    ```
-    $ git clone https://github.com/remkohdev/helloworld.git
-    $ ls -al
-    ```

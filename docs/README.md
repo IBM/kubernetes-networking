@@ -24,21 +24,23 @@ Continue your learning by visiting the [Istio workshop](https://ibm.github.io/is
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
 * Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
 * CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
-* Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ). 
+* Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ).
 
 Go to [Setup](setup.md) for more details.
 
 # Labs
 
 1. [Setup](setup.md)
-2. [Services](services.md)
-3. [ClusterIP](clusterip.md)
-4. [NodePort](nodeport.md)
-5. [Loadbalancer NLB](loadbalancer.md)
-6. [ExternalName](externalname.md)
-7. [Ingress ALB](ingress-alb.md)
-8. [Network Policy and Calico](networkpolicy.md) 
-9.  [VPC Gen2](vpcgen2.md)
+2. **Lab1 Kubernetes Networking 101**
+    1. [Services](services.md)
+    2. [ClusterIP](clusterip.md)
+    3. [NodePort](nodeport.md)
+    4. [Loadbalancer NLB](loadbalancer.md)
+    5. [ExternalName](externalname.md)
+    6. [Ingress ALB](ingress-alb.md)
+    7. [Network Policy and Calico](networkpolicy.md) 
+3. **Lab2 Using a VPC**
+    1. [VPC Gen2](vpcgen2.md)
 
 ## Technologies
 
