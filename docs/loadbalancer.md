@@ -10,7 +10,7 @@ In the previous labs, you created a service for the `helloworld` application wit
 
 The `LoadBalancer` service in Kubernetes configures an L4 TCP Load Balancer that forwards and balances traffic from the internet to your backend application.
 
-To use a load balancer for distributing client traffic to the nodes in a cluster, you need a public IP address that the clients can connect to, and you need IP addresses on the nodes themselves to which the load balancer can forward the requests.
+To use a load balancer for distributing client traffic to the nodes in a cluster, you need a public IP address that the clients can connect to, and you need IP addresses on the nodes themselves to which the load balancer can forward the requests. 
 
 Services of type `LoadBalancer` have some limitations. It cannot do TLS termination, do virtual hosts or path-based routing, so you can’t use a single load balancer to proxy to multiple services. These limitations led to the addition in Kubernetes v1.2 of a separate kubernetes resource called `Ingress`. 
 
@@ -36,7 +36,7 @@ See: [Classic: About network load balancers (NLBs)](https://cloud.ibm.com/docs/c
 
 ## Load Balancing Methods on IKS
 
-Before we create a load balancer with `NLB v1.0 + subdomain` for the `helloworld` application, review the different Load Balancing Methods on IKS:
+Before we create the `LoadBalancer` service for the `helloworld` application, review the different Load Balancing options for IKS:
 
 - `NodePort` exposes the app via a port and public IP address on a worker node using `kube-proxy`.
 - `LoadBalancer NLB v1.0 + subdomain` uses basic load balancing that exposes the app with an IP address or a subdomain.
@@ -45,7 +45,7 @@ Before we create a load balancer with `NLB v1.0 + subdomain` for the `helloworld
 - `Ingress with public ALB` uses HTTPS load balancing that exposes the app with a subdomain and uses custom routing rules and SSL termination for multiple apps. Customize the ALB routing rules with [annotations](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation).
 - `Custom Ingress + NLB` uses HTTPS load balancing with a custom Ingress that exposes the app with the IBM-provided ALB subdomain and uses custom routing rules.
 
-## Create a Network Load Balancer v1.0
+## Create a LoadBalancer
 
 In the previous lab, you already created a `NodePort` Service. 
 
@@ -62,16 +62,27 @@ kubectl patch svc helloworld -p '{"spec": {"type": "LoadBalancer"}}' -n $MY_NS
 The `TYPE` should be set to `LoadBalancer` now, and an `EXTERNAL-IP` should be assigned.
 
 ```
-kubectl get svc helloworld -n $MY_NS
+$ kubectl get svc helloworld -n $MY_NS
 
 NAME    TYPE    CLUSTER-IP    EXTERNAL-IP    PORT(S)    AGE
 helloworld   LoadBalancer   172.21.161.255   169.48.67.163   8080:31777/TCP   24m
 ```
 
+**If you use a FREE Kubernetes Service with single node**, you will see,
+
+```
+$ kubectl get svc helloworld -n $MY_NS
+
+NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+helloworld   LoadBalancer   172.21.23.149   <pending>     8080:32287/TCP   15m
+```
+
+Because you do not own a subnet with public IP addresses, the `EXTERNAL-IP` will remain `<pending>`. If you describe the service, you will see an error message: `Failed to get available cloud provider IPs for load balancer services: Clusters with one node must use services of type NodePort. See https://cloud.ibm.com/docs/containers?topic=containers-cs_troubleshoot_lb for details.`.
+
 Describe the `helloworld` LoadBalancer Service,
 
 ```
-kubectl describe svc helloworld -n $MY_NS
+$ kubectl describe svc helloworld -n $MY_NS
 
 Name:                     helloworld
 Namespace:                my-apps

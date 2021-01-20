@@ -12,19 +12,19 @@ To allow external traffic into a kubernetes cluster, you need a `NodePort` Servi
 
 A gateway router typically sits in front of the cluster and forwards  packets to the node. The load balancer on the node routes requests to the pods. If a client wants to connect to our service on port 80 we can’t just send packets directly to that port on the nodes’ interfaces. The network that netfilter is set up to forward packets for is not easily routable from the gateway to the nodes. Therefor, kubernetes creates a bridge between these networks with something called a NodePort.
 
-A service of type `NodePort` is a ClusterIP service with an additional capability: it is reachable at the public IP address of the node as well as at the assigned cluster IP on the services network. The way this is accomplished is pretty straightforward: when kubernetes creates a NodePort service, `kube-proxy` allocates a port in the range 30000–32767 and opens this port on the `eth0` interface of every node (thus the name `NodePort`). Connections to this port are forwarded to the service’s cluster IP.
+A service of type `NodePort` is a ClusterIP service with an additional capability: it is reachable at the public IP address of the node as well as at the assigned cluster IP on the services network. The way this is accomplished is pretty straightforward: when kubernetes creates a NodePort service, `kube-proxy` allocates a port in the range 30000–32767 and opens this port on the `eth0` interface of every node (the `NodePort`). Connections to this port are then forwarded to the service’s cluster IP.
 
 Patch the existing Service for `helloworld` to `type: NodePort` using the `kubectl patch` command,
 
-```
-kubectl patch svc helloworld -p '{"spec": {"type": "NodePort"}}' -n $MY_NS
+```console
+$ kubectl patch svc helloworld -p '{"spec": {"type": "NodePort"}}' -n $MY_NS
 
 service/helloworld patched
 ```
 
 Or apply the specification defined in the file `helloworld-service-nodeport.yaml` to set `type: NodePort`,
 
-```
+```console
 apiVersion: v1
 kind: Service
 metadata:
@@ -42,8 +42,8 @@ spec:
 
 Apply the changes to the configuration from file,
 
-```
-kubectl apply -f helloworld-service-nodeport.yaml -n $MY_NS
+```console
+$ kubectl apply -f helloworld-service-nodeport.yaml -n $MY_NS
 
 Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
 service/helloworld configured
@@ -51,8 +51,8 @@ service/helloworld configured
 
 Describe the Service,
 
-```
-kubectl describe svc helloworld -n $MY_NS
+```console
+$ kubectl describe svc helloworld -n $MY_NS
 
 Name:                     helloworld
 Namespace:                my-apps
@@ -76,8 +76,8 @@ You can now connect to the service via the public IP address of either worker no
 
 Retrieve the Public IP address of the worker nodes,
 
-```
-ibmcloud ks workers --cluster $KS_CLUSTER_NAME
+```console
+$ ibmcloud ks workers --cluster $KS_CLUSTER_NAME
 
 OK
 ID    Public IP    Private IP    Flavor    State    Status    Zone    Version
@@ -86,7 +86,7 @@ kube-bvlntf2d0fe4l9hnres0-remkohdevik-default-00000145    150.238.221.67    10.3
 
 Or to get the first worker node's public IP address and the NodePort of the service:
 
-```
+```console
 PUBLIC_IP=$(ibmcloud ks workers --cluster $KS_CLUSTER_NAME --json | jq '.[0]' | jq -r '.publicIP')
 echo $PUBLIC_IP
 
@@ -96,7 +96,7 @@ echo $PORT
 
 Test the deployment,
 
-```
+```console
 curl -L -X POST "http://$PUBLIC_IP:$PORT/api/messages" -H 'Content-Type: application/json' -H 'Content-Type: text/plain' -d '{ "sender": "world1" }'
 
 {"id":"f979a034-bada-41cb-8c67-fb5fd36d0db3","sender":"remko","message":"Hello world1 (direct)","host":null}

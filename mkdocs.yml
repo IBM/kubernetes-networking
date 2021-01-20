@@ -14,20 +14,22 @@ nav:
     - About the workshop: README.md
   - Workshop:
     - Setup: setup.md
-    - Service Types:
-      - Services: services.md
-      - ClusterIP: clusterip.md
-      - NodePort: nodeport.md
-      - Loadbalancer and NLB: loadbalancer.md
-      - ExternalName: externalname.md
-    - Ingress and ALB: ingress-alb.md
-    - Network Policies:
-      - Network Policy and Calico: networkpolicy.md
-#      - Open Policy Agent (OPA): opa.md
-    - VPC:
+    - <b>Lab1 Networking 101</b>:
+      - Service Types:
+        - Services: services.md
+        - ClusterIP: clusterip.md
+        - NodePort: nodeport.md
+        - Loadbalancer and NLB: loadbalancer.md
+        - ExternalName: externalname.md
+      - Ingress and ALB: ingress-alb.md
+      - Network Policies:
+        - Network Policy and Calico: networkpolicy.md
+#   - Open Policy Agent (OPA): opa.md
+    - <b>Lab2 Using a VPC</b>:
       - VPC Gen2: vpcgen2.md
-      - Load Balancer for VPC: vpcgen2-loadbalancer.md
-      - Airgap: airgap.md
+      - Background:
+        - Load Balancer for VPC: vpcgen2-loadbalancer.md
+        - Airgap: airgap.md
   - References:
     - Contributors: references/contributors.md
 
