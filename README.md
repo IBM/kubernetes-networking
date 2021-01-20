@@ -30,15 +30,15 @@ Go to [Setup](setup.md) for more details.
 
 # Labs
 
-1. [Setup](setup.md)
-2. [Services](services.md)
-3. [ClusterIP](clusterip.md)
-4. [NodePort](nodeport.md)
-5. [Loadbalancer NLB](loadbalancer.md)
-6. [ExternalName](externalname.md)
-7. [Ingress ALB](ingress-alb.md)
-8. [Network Policy and Calico](networkpolicy.md) 
-9.  [VPC Gen2](vpcgen2.md)
+1. [Setup](docs/setup.md)
+2. [Services](docs/services.md)
+3. [ClusterIP](docs/clusterip.md)
+4. [NodePort](docs/nodeport.md)
+5. [Loadbalancer NLB](docs/loadbalancer.md)
+6. [ExternalName](docs/externalname.md)
+7. [Ingress ALB](docs/ingress-alb.md)
+8. [Network Policy and Calico](docs/networkpolicy.md) 
+9.  [VPC Gen2](docs/vpcgen2.md)
 
 ## Technologies
 
