@@ -74,7 +74,7 @@ helloworld   LoadBalancer   172.21.86.16   169.47.155.242   8080:32387/TCP   12m
 **If you use a FREE Kubernetes Service with single node**, you will see,
 
 ```
-$ kubectl get svc helloworld -n $MY_NS
+$ oc get svc helloworld -n $MY_NS
 
 NAME         TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
 helloworld   LoadBalancer   172.21.86.16    <pending>       8080:32387/TCP   12m

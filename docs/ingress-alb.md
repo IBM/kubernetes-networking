@@ -11,14 +11,7 @@ Finish the [Services](services.md), [ClusterIP](clusterip.md), [NodePort](nodepo
 
 ## Network Administration
 
-When you create a standard cluster in IBM Cloud Kubernetes Service (IKS), a portable public subnet and a portable private subnet for the VLAN are automatically provisioned. FYI, you need IBM Cloud account permissions to list the subnets. If you do not have the correct permissions, you will get the following error,
-
-```
-FAILED
-You do not have the correct permissions to perform this action. Ask your account
-administrator to give you the Viewer platform role for the cluster in IBM Cloud
-Identity and Access Management (IAM) and try again. (A0007)
-```
+When you create a standard cluster in IBM Cloud Kubernetes Service (IKS), a portable public subnet and a portable private subnet for the VLAN are automatically provisioned.
 
 To retrieve the cluster id, you need the cluster name. If you do not know the cluster name already, you can list all clusters in the active account,
 
@@ -203,7 +196,7 @@ Create the Ingress specification and change the `hosts` and `host` to the `Ingre
 Find the Kubernetes version,
 
 ```
-$ kubectl get nodes -o wide
+$ oc get nodes -o wide
 
 NAME             STATUS   ROLES           AGE   VERSION           INTERNAL-IP      EXTERNAL-IP      OS-IMAGE   KERNEL-VERSION                CONTAINER-RUNTIME
 10.183.200.134   Ready    master,worker   19h   v1.17.1+40d7dbd   10.183.200.134   169.47.169.205   Red Hat    3.10.0-1160.11.1.el7.x86_64   cri-o://1.17.5-11.rhaos4.4.git7f979af.el7
@@ -278,7 +271,7 @@ ingress.networking.k8s.io/helloworld-ingress created
 To find the service port again,
 
 ```
-NODE_PORT=$(kubectl get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
+NODE_PORT=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
 echo $NODE_PORT
 ```
 

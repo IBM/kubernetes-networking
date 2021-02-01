@@ -75,7 +75,7 @@ To connect to the service, we need the Public IP address of one of the worker no
 PUBLIC_IP=$(oc get nodes -o wide -o json | jq -r '.items[0].status.addresses | .[] | select( .type=="ExternalIP" ) | .address ')
 echo $PUBLIC_IP
 
-NODE_PORT=$(kubectl get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
+NODE_PORT=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
 echo $NODE_PORT
 ```
 
