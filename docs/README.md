@@ -2,8 +2,8 @@
 
 The Kubernetes Networking series consists of the following topics:
 
-1. **Kubernetes Networking 101** (60 mins), you will use different ways to control traffic on a Kubernetes cluster with Service types, Ingress, Network Policy and Calico.
-2. **Kubernetes Network Security using a Virtual Private Cloud (VPC)** (90 mins), you will deploy a guestbook application to a Kubernetes cluster in a Virtual Private Cloud (VPC) Gen2, you will create the VPC, add a subnet, attach a public gateway, and update a security group with rules to allow inbound traffic to the guestbook application.
+1. **Kubernetes Networking 101** (60 mins), you will use different ways to control traffic on a Kubernetes cluster with Service types, Ingress, Network Policy and Calico. Start [here](services.md).
+2. **Kubernetes Network Security using a Virtual Private Cloud (VPC)** (90 mins), you will deploy a guestbook application to a Kubernetes cluster in a Virtual Private Cloud (VPC) Gen2, you will create the VPC, add a subnet, attach a public gateway, and update a security group with rules to allow inbound traffic to the guestbook application. Start [here](vpcgen2.md).
 3. **[Istio](https://ibm.github.io/istio101/)**, use Istio to manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
 
 This series of workshops on Kubernetes Networking is accompanied by a [lecture on Kubernetes Networking](https://raw.githubusercontent.com/IBM/kubernetes-networking/master/pdf/KubernetesNetworking-Lecture.pdf).
@@ -30,17 +30,18 @@ Go to [Setup](setup.md) for more details.
 
 # Labs
 
-1. [Setup](setup.md)
-2. **Lab1 Kubernetes Networking 101**
-    1. [Services](services.md)
-    2. [ClusterIP](clusterip.md)
-    3. [NodePort](nodeport.md)
-    4. [Loadbalancer NLB](loadbalancer.md)
-    5. [ExternalName](externalname.md)
-    6. [Ingress ALB](ingress-alb.md)
-    7. [Network Policy and Calico](networkpolicy.md) 
-3. **Lab2 Using a VPC**
-    1. [VPC Gen2](vpcgen2.md)
+1. **Lab1 Kubernetes Networking 101**
+    1. [Setup](setup1.md)
+    2. [Services](services.md)
+    3. [ClusterIP](clusterip.md)
+    4. [NodePort](nodeport.md)
+    5. [Loadbalancer NLB](loadbalancer.md)
+    6. [ExternalName](externalname.md)
+    7. [Ingress ALB](ingress-alb.md)
+    8. [Network Policy and Calico](networkpolicy.md) 
+2. **Lab2 Using a VPC**
+    1. [Setup](setup2.md)
+    2. [VPC Gen2](vpcgen2.md)
 
 ## Technologies
 

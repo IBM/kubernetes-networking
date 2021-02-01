@@ -1,45 +1,91 @@
 # Services
 
-## Create a Service
+This tutorial will demonstrate different ways to control traffic on a Kubernetes cluster using Service types, Ingress, Route, Network Policy and Calico. You will learn basic networking and security concepts on Kubernetes.
 
-Clone the `helloworld` repository to your client, 
+## Setup
 
-```console
-git clone https://github.com/remkohdev/helloworld.git
-ls -al
-cd helloworld
+For setup and pre-requisities, go [here](setup1.md).
+
+Make sure you are connected to the Kubernetes cluster.
+
+```
+$ oc config current-context
+
+my-apps/c115-e-us-south-containers-cloud-ibm-com:32370/IAM#remkohdev@us.ibm.com
 ```
 
-Create a separate namespace for the deployment,
+If you are not connected to your cluster, finish the [setup](setup1.md).
+
+## Deploy the Helloworld App
+
+To deploy the application to a Kubernetes cluster in an isolated namespace, we create a separate namespace for the application. Throughout the tutorial I will use environment variables in the commands. 
+
+First, create an environment variable for a namespace to deploy our application,
 
 ```console
 MY_NS=my-apps
-kubectl create namespace $MY_NS
+echo $MY_NS
 ```
 
-Deploy the `helloworld` application,
+Create the namespace,
 
 ```console
-$ kubectl create -f helloworld-deployment.yaml -n $MY_NS
+$ oc new-project $MY_NS
+
+Now using project "my-apps" on server "https://c109-e.us-east.containers.cloud.ibm.com:31345".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app ruby~https://github.com/sclorg/ruby-ex.git
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=gcr.io/hello-minikube-zero-install/hello-node
+```
+
+Or if you already created the namespace, switch to the namespace where you want to deploy the application to,
+
+```
+$ oc project $MY_NS
+
+Now using project "my-apps" on server "https://c109-e.us-east.containers.cloud.ibm.com:31345".
+```
+
+In this workshop, we use a `helloworld` application. The source code and Kubernetes resource specifications are included in the repository. Make sure, you cloned the `helloworld` repository to your client, 
+
+```console
+git clone https://github.com/remkohdev/helloworld.git
+cd helloworld
+ls -al
+```
+
+Now you can deploy the `helloworld` application in an isolated namespace, this is the first step to create some level of isolation and limit a possible attack surface,
+
+```console
+$ oc create -f helloworld-deployment.yaml -n $MY_NS
 
 deployment.apps/helloworld created
 ```
 
-The `helloworld` application was deployed and a Kubernetes `Deployment` object was created. 
+On OpenShift you do not have to specify the namespace to deploy to the current namespace, but for clarity I added the flag `-n $MY_NS`.
+
+If you don't have the source code for the Helloworld app with the Kubernetes specification files, go to the [setup](setup1.md) to `Get Helloworld Source Code`.
+
+The `helloworld` application is now deployed and a Kubernetes `Deployment` object was created. 
 
 ```console
-$ kubectl get all -n $MY_NS
+$ oc get all -n $MY_NS
 
-NAME    READY    STATUS    RESTARTS    AGE
-pod/helloworld-6c76f57b9d-fsbfh    1/1    Running    0    10s
-pod/helloworld-6c76f57b9d-gwk5j    1/1    Running    0    10s
-pod/helloworld-6c76f57b9d-jfbrz    1/1    Running    0    10s
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/helloworld-5f8b6b587b-qqqjs   1/1     Running   0          73s
+pod/helloworld-5f8b6b587b-rwkf9   1/1     Running   0          73s
+pod/helloworld-5f8b6b587b-tbpts   1/1     Running   0          73s
 
-NAME    READY    UP-TO-DATE    AVAILABLE    AGE
-deployment.apps/helloworld    3/3    3    3    10s
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/helloworld   3/3     3            3           73s
 
-NAME    DESIRED    CURRENT    READY    AGE
-replicaset.apps/helloworld-6c76f57b9d    3    3    3    10s
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/helloworld-5f8b6b587b   3         3         3       73s
 ```
 
 The deployment consists of a `Deployment` object, a `ReplicaSet` with 3 replicas of `Pods`. 
@@ -50,46 +96,11 @@ When a Pod is deployed to a worker node, it is assigned a `private IP address` i
 
 With a `Service` object, you can use built-in Kubernetes `service discovery` to expose Pods. A Service defines a set of Pods and a policy to access those Pods. Kubernetes assigns a single DNS name for a set of Pods and can load balance across Pods. When you create a Service, a set of pods and `EndPoints` are created to manage access to the pods.
 
-The Endpoints object in Kubernetes is the list of IP and port addresses and are created automatically when a Service is created and configured with the pods matching the `selector` of the Service. A Service can be configured without a selector, in that case Kubernetes does not create an associated Endpoints object.
-
-Let's look at the declaration for the `helloworld-service.yaml`,
-
-```
-cat helloworld-service.yaml
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: helloworld
-  labels:
-    app: helloworld
-spec:
-  ports:
-  - port: 8080
-    targetPort: http-server
-  selector:
-    app: helloworld
-```
-
-The `spec` defines a few important attributes for service discovery: `labels`, `selector` and `port`. The set of Pods that a Service targets, is determined by the selector and labels. When a Service has no selector, the corresponding `Endpoints` object is not created automatically. This can be useful in cases where you want to define an Endpoint manually, for instance in the case of an external database instance.
-
-The Service maps the incoming `port` to athe container's `targetPort`. By default the `targetPort` is set to the same value as the incoming `port` field. A port definition in Pods can also have a name, and you can reference these names in the `targetPort` attribute of a Service instead of the port number. In the Service example of `helloworld`, the `helloworld-deployment.yaml` file should have the corresponding port defined that the Service references by name,
-
-```
-cat helloworld-deployment.yaml
-
-ports:
-- name: http-server
-  containerPort: 8080
-```
-
-This even works for pods available via the same network protocol on different port numbers, as Kubernetes supports multiple port definitions on a Service object. 
-
-The default protocol for Services is TCP, see other [supported protocols](https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support). 
+The Endpoints object in Kubernetes contains a list of IP and port addresses and are created automatically when a Service is created and configured with the pods matching the `selector` of the Service.
 
 ## ServiceTypes
 
-Before you create a Service object for the `helloworld` application, let's first review the types of services. Kubernetes `ServiceTypes` allow you to specify what kind of Service you want. 
+Before we create the Service for the `helloworld` application, briefly review the types of services.
 
 The default type is `ClusterIP`. To expose a Service onto an external IP address, you have to create a ServiceType other than ClusterIP.
 
@@ -100,6 +111,10 @@ Available Service types:
 - **LoadBalancer**: Exposes the Service externally using a cloud provider’s load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
 - **ExternalName**: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record.
 
-You can also use `Ingress` in place of `Service` to expose HTTP/HTTPS Services. Ingress however is technically not a ServiceType, but it acts as the entry point for your cluster and lets you consolidate routing rules into a single resource.
+You can also use `Ingress` in place of `Service` to expose HTTP/HTTPS Services. Ingress however is technically not a ServiceType, but it acts as the entry point for your cluster and lets you consolidate routing rules into a single resource. 
+
+A `Route` is similar to `Ingress` and was created on OpenShift before the introduction of `Ingress` in Kubernetes. Route has additional capabilities such as splitting traffic between multiple backends and sticky sessions. Route design principles heavily influenced the Ingress design.
+
+## Next
 
 Next, go to [ClusterIP](clusterip.md) to learn more about ServiceType ClusterIP.

@@ -4,11 +4,9 @@ This tutorial explains how to start to `air-gap` and secure an OpenShift or Kube
 
 The first step to secure your cluster is to create a Virtual Private Cloud (VPC) and add rules to a `Security Group` of an Application Load Balancer (ALB) to allow certain inbound traffic. You can add a gateway like `API Connect` to the VPC and expose the gateway to manage traffic, for instance by using OAuth, rate limiting and API key access control. 
 
-## Prerequirements
+## Setup
 
-* Free IBM Cloud account, for new account registration go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/), 
-* Upgrade to free Pay-As-You-Go account, for upgrade go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/),
-* Client terminal at CognitiveClass.ai, for setup go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
+For setup and pre-requisities, go [here](setup2.md).
 
 ## About
 
