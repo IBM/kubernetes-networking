@@ -13,8 +13,8 @@ nav:
   - Welcome:
     - About the workshop: README.md
   - Workshop:
-    - Setup: setup.md
     - <b>Lab1 Networking 101</b>:
+      - Setup: setup1.md
       - Service Types:
         - Services: services.md
         - ClusterIP: clusterip.md
@@ -22,10 +22,12 @@ nav:
         - Loadbalancer and NLB: loadbalancer.md
         - ExternalName: externalname.md
       - Ingress and ALB: ingress-alb.md
+      - Route: route.md
       - Network Policies:
         - Network Policy and Calico: networkpolicy.md
 #   - Open Policy Agent (OPA): opa.md
     - <b>Lab2 Using a VPC</b>:
+      - Setup: setup2.md
       - VPC Gen2: vpcgen2.md
       - Background:
         - Load Balancer for VPC: vpcgen2-loadbalancer.md
