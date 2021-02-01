@@ -71,17 +71,6 @@ NAME         TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)          AGE
 helloworld   LoadBalancer   172.21.86.16   169.47.155.242   8080:32387/TCP   12m
 ```
 
-**If you use a FREE Kubernetes Service with single node**, you will see,
-
-```
-$ oc get svc helloworld -n $MY_NS
-
-NAME         TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
-helloworld   LoadBalancer   172.21.86.16    <pending>       8080:32387/TCP   12m
-```
-
-**Note:** Because on a FREE Kubernetes Service with single node, you do not control the subnet with public IP addresses, the `EXTERNAL-IP` will remain `<pending>`. If you describe the service, you will see an error message: `Failed to get available cloud provider IPs for load balancer services: Clusters with one node must use services of type NodePort. See https://cloud.ibm.com/docs/containers?topic=containers-cs_troubleshoot_lb for details.`.
-
 To access the Service of the `helloworld` from the public internet, you can use the public IP address of the NLB and the assigned NodePort of the service in the format `<IP_address>:<NodePort>`.
 
 ```
