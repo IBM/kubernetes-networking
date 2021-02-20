@@ -11,14 +11,7 @@ Finish the [Services](services.md), [ClusterIP](clusterip.md), [NodePort](nodepo
 
 ## Network Administration
 
-When you create a standard cluster in IBM Cloud Kubernetes Service (IKS), a portable public subnet and a portable private subnet for the VLAN are automatically provisioned. FYI, you need IBM Cloud account permissions to list the subnets. If you do not have the correct permissions, you will get the following error,
-
-```
-FAILED
-You do not have the correct permissions to perform this action. Ask your account
-administrator to give you the Viewer platform role for the cluster in IBM Cloud
-Identity and Access Management (IAM) and try again. (A0007)
-```
+When you create a standard cluster in IBM Cloud Kubernetes Service (IKS), a portable public subnet and a portable private subnet for the VLAN are automatically provisioned.
 
 To retrieve the cluster id, you need the cluster name. If you do not know the cluster name already, you can list all clusters in the active account,
 
@@ -32,15 +25,6 @@ Create an environment variable and set the cluster name,
 KS_CLUSTER_NAME=<cluster name>
 echo $KS_CLUSTER_NAME
 ```
-
-Retrieve the cluster id,
-
-```
-KS_CLUSTER_ID=$(ibmcloud ks cluster get --cluster $KS_CLUSTER_NAME --json | jq -r '.id')
-echo $KS_CLUSTER_ID
-```
-
-**Note:** if the `--json` is not recognized, use the `-h` flag for help and review if the flag `--output json` is available for the version of the IBM Cloud CLI.
 
 The portable public subnet for your cluster on IBM Cloud provides 5 usable IP addresses. 1 portable public IP address is used by the default public Ingress ALB. The remaining 4 portable public IP addresses can be used to expose single apps to the internet by creating public Network Load Balancer (NLB) services.
 
@@ -150,7 +134,7 @@ NODE_PORT=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0
 echo $NODE_PORT
 ```
 
-You see that the portable IP address is assigned to the NLB. You can access the application via the portable IP address of the LoadBalancer NLB and service NodePort at `http://$PORTABLE_IP:$NODE_PORT`. But LoadBalancer also has limitations.
+You see that the portable IP address was assigned to the NLB of the LoadBalancer service.
 
 ## Ingress ALB
 
@@ -158,17 +142,15 @@ You see that the portable IP address is assigned to the NLB. You can access the 
 
 Ingress consists of **three components**:
 
-* Ingress resources
-* Application load balancers (ALBs)
-* A load balancer to handle incoming requests across zones. 
-
-Classic clusters have a the multizone load balancer (MZLB) , VPC clusters have a VPC load balancer in your VPC.
+* Ingress resources,
+* Application load balancers (ALBs),
+* A load balancer to handle incoming requests across zones.
 
 To expose an app with Ingress, create a Kubernetes service of type `LoadBalancer` and register this Service with Ingress by defining an Ingress resource. One Ingress resource is required per namespace where you have apps that you want to expose. 
 
 The Ingress resource is a Kubernetes resource that defines the rules for how to route incoming requests for apps. The Ingress resource also specifies the path to your app services. When you created a standard IKS cluster, an Ingress subdomain is already registered by default for your cluster. The paths to your app services are appended to the public route.
 
-In a standard cluster on IKS, the Ingress Application Load Balancer (ALB) is a layer 7 (L7) load balancer which implements the [`NGINX` Ingress controller](https://docs.nginx.com/nginx-controller/). A layer 4 (L4) LoadBalancer service exposes the ALB so that the ALB can receive external requests to your cluster. The ALB routes requests to app pods in your cluster based on distinguishing L7 protocol characteristics, such as HTTP request headers. 
+In a standard cluster on IKS, the Ingress Application Load Balancer (ALB) is a layer 7 (L7) load balancer which implements the [`NGINX` Ingress controller](https://docs.nginx.com/nginx-controller/).
 
 In a [Red Hat OpenShift Kubernetes Service (ROKS) cluster](https://cloud.ibm.com/docs/openshift?topic=openshift-ingress-about-roks4), the router is a layer 7 load balancer which implements an [`HAProxy` Ingress controller](https://github.com/haproxytech/kubernetes-ingress).
 
@@ -203,7 +185,7 @@ Create the Ingress specification and change the `hosts` and `host` to the `Ingre
 Find the Kubernetes version,
 
 ```
-$ kubectl get nodes -o wide
+$ oc get nodes -o wide
 
 NAME             STATUS   ROLES           AGE   VERSION           INTERNAL-IP      EXTERNAL-IP      OS-IMAGE   KERNEL-VERSION                CONTAINER-RUNTIME
 10.183.200.134   Ready    master,worker   19h   v1.17.1+40d7dbd   10.183.200.134   169.47.169.205   Red Hat    3.10.0-1160.11.1.el7.x86_64   cri-o://1.17.5-11.rhaos4.4.git7f979af.el7
@@ -278,7 +260,7 @@ ingress.networking.k8s.io/helloworld-ingress created
 To find the service port again,
 
 ```
-NODE_PORT=$(kubectl get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
+NODE_PORT=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
 echo $NODE_PORT
 ```
 

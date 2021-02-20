@@ -79,7 +79,7 @@ This workshop was tested using:
 
     ```console
     ibmcloud ks cluster config --cluster $KS_CLUSTER_NAME
-    kubectl config current-context
+    oc config current-context
     ```
 
 1. The config should be set to a `clustername/clusterid` pair,
