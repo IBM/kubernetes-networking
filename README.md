@@ -58,3 +58,5 @@ This workshop was tested using the following technologies:
 ## Contributors
 
 * Remko de Knikker, [remkohdev](https://github.com/remkohdev)
+* Masa Abushamleh, [nerdingitout](https://github.com/nerdingitout)
+* Youssef Alnemr, [Nnemr](https://github.com/nnemr)
