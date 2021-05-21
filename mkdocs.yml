@@ -14,24 +14,26 @@ nav:
     - About the workshop: README.md
   - Workshop:
     - <b>Lab1 Networking 101</b>:
-      - Setup: setup1.md
+      - Setup: setup/setup1.md
       - Service Types:
-        - Services: services.md
-        - ClusterIP: clusterip.md
-        - NodePort: nodeport.md
-        - Loadbalancer and NLB: loadbalancer.md
-        - ExternalName: externalname.md
-      - Ingress and ALB: ingress-alb.md
-      - Route: route.md
-      - Network Policies:
-        - Network Policy and Calico: networkpolicy.md
+        - Services: services/services.md
+        - ClusterIP: services/clusterip.md
+        - NodePort: services/nodeport.md
+        - Loadbalancer and NLB: services/loadbalancer.md
+        - ExternalName: services/externalname.md
+      - Ingress and ALB: services/ingress-alb.md
+      - Route: route/route.md
+    - <b>Lab2 Secured Routes</b>:
+      - Route: route/secured-routes.md
+    - <b>Lab3 Network Policies</b>:
+      - Network Policy and Calico: calico/networkpolicy.md
 #   - Open Policy Agent (OPA): opa.md
-    - <b>Lab2 Using a VPC</b>:
-      - Setup: setup2.md
-      - VPC Gen2: vpcgen2.md
+    - <b>Lab4 Secure a Cluster using VPC</b>:
+      - Setup: setup/setup2.md
+      - VPC Gen2: vpc/vpcgen2.md
       - Background:
-        - Load Balancer for VPC: vpcgen2-loadbalancer.md
-        - Airgap: airgap.md
+        - Load Balancer for VPC: vpc/vpcgen2-loadbalancer.md
+        - Airgap: vpc/airgap.md
   - References:
     - Contributors: references/contributors.md
 
