@@ -14,7 +14,7 @@
 
 ## Setup Client Terminal
 
-This workshop was tested using the Labs environment at CognitiveLabs. To access a client terminal at CognitiveLabs.ai, follow the instructions [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/). 
+This workshop was tested using the Labs environment at CognitiveLabs. To access a client terminal at CognitiveLabs.ai, follow the instructions [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
 
 ## Login to IBM Cloud
 
@@ -62,7 +62,7 @@ This workshop was tested using the Labs environment at CognitiveLabs. To access 
 
 ## Install Calicoctl
 
-**Currently not required**
+Calicoctl is **not needed** for the current lab.
 
 Install calicoctl,
 

@@ -1,8 +1,8 @@
-# Secure a Kubernetes Cluster with VPC Gen2
+# Secure a Kubernetes Cluster with VPC
 
 This tutorial explains how to start to `air-gap` and secure an OpenShift or Kubernetes cluster and physically isolate your cluster using a Virtual Private Cloud (VPC). Using an air gapped cluster is one of the first things you will do to secure your container deployments. For more information about `air-gap`, go [here](airgap.md).
 
-The first step to secure your cluster is to create a Virtual Private Cloud (VPC) and add rules to a `Security Group` of an Application Load Balancer (ALB) to allow certain inbound traffic. You can add a gateway like `API Connect` to the VPC and expose the gateway to manage traffic, for instance by using OAuth, rate limiting and API key access control. 
+The first step to secure your cluster is to create a Virtual Private Cloud (VPC) and add rules to a `Security Group` of an Application Load Balancer (ALB) to allow certain inbound traffic. You can add a gateway like `API Connect` to the VPC and expose the gateway to manage traffic, for instance by using OAuth, rate limiting and API key access control.
 
 ## Setup
 
@@ -12,7 +12,7 @@ For setup and pre-requisities, go [here](setup2.md).
 
 With Red Hat OpenShift Kubernetes (ROKS) or IBM Cloud Kubernetes Service (IKS) on VPC Generation 2 Computeon IBM Cloud, you can create an OpenShift or Kubernetes cluster in Virtual Private Cloud (VPC) infrastructure in a matter of minutes. OpenShift is a more enterprise-ready secure Container Orchestration (CO) platform, but in this tutorial I use a plain managed Kubernetes service because it is more accessible and affordable. If you want however, you can choose to use OpenShift instead.
 
-This tutorial uses a free IBM Cloud account, a free Pay-As-You-Go account, a free IBM Cloud Kubernetes Service (IKS) service with Kubernetes v1.18 with 1 worker node, and a free Virtual Private Cloud (VPC) service. 
+This tutorial uses a free IBM Cloud account, a free Pay-As-You-Go account, a free IBM Cloud Kubernetes Service (IKS) service with Kubernetes v1.18 with 1 worker node, and a free Virtual Private Cloud (VPC) service.
 
 This tutorial is based on the official documentation for [creating a cluster in your Virtual Private Cloud (VPC) on generation 2 compute](https://cloud.ibm.com/docs/containers?topic=containers-vpc_ks_tutorial).
 
@@ -28,7 +28,7 @@ Steps:
 1. Cleanup
 1. [Optional] Using UI to Create a Cluster with VPC Generation 2 Compute
 
-## Setup
+## Setup CLI
 
 Add the VPC infrastructure service plug-in to the IBM Cloud CLI in the client terminal,
 
@@ -248,7 +248,7 @@ MY_PUBLIC_GATEWAY_ID2=$(ibmcloud is subnets --output json | jq -r '.[] | select(
 echo $MY_PUBLIC_GATEWAY_ID2
 ```
 
-To check the new infrastructure in the IBM Cloud dashboard, go to your [subnets for VPC](https://cloud.ibm.com/vpc-ext/network/subnets), 
+To check the new infrastructure in the IBM Cloud dashboard, go to your [subnets for VPC](https://cloud.ibm.com/vpc-ext/network/subnets),
 
 ![VPC Subnets](images/ibmcloud-vpcext-subnets.png)
 
@@ -261,7 +261,6 @@ You should see a public gateway attached with a floating IP.
 ## Create a Kubernetes Cluster
 
 Create a cluster in your VPC in the same zone as the subnet. By default, your cluster is created with a public and a private service endpoint. You can use the public service endpoint to access the Kubernetes master,
-
 
 We already defined environment variables for the region, zone and Kubernetes version, but start to check these are valid and available,
 
@@ -284,16 +283,16 @@ Review your IBM Cloud account resources,
 
 Click the linked cluster name of the cluster you just created. If you do not see the cluster listed yet, wait and refresh the page. Check the status of the new cluster,
 
-```
+```bash
 ibmcloud ks clusters
 
 MY_CLUSTER_ID=$(ibmcloud ks clusters --output json --provider vpc-gen2 | jq -r '.[] | select( .name=='\"$MY_CLUSTER_NAME\"') | .id ')
 echo $MY_CLUSTER_ID
 ```
 
-To continue with the next step, the cluster status and the Ingress status must indicate to be available. The cluster might take about 15 minutes to complete. 
+To continue with the next step, the cluster status and the Ingress status must indicate to be available. The cluster might take about 15 minutes to complete.
 
-```
+```bash
 ibmcloud ks cluster get --cluster $MY_CLUSTER_ID
 ```
 
@@ -305,7 +304,7 @@ Once the cluster is fully provisioned including the Ingress Application Load Bal
 
 Or via the CLI,
 
-```console
+```bash
 $ ibmcloud ks cluster get --cluster $MY_CLUSTER_ID
 Retrieving cluster c031jqqd0rll2ksfg97g...
 OK
@@ -355,14 +354,14 @@ public-crc031jqqd0rll2ksfg97g-alb1    true      enabled    public    f128a85f-us
 
 Now the cluster is fully provisioned successfully, you can connect to your cluster and set the `current-context` of the `kubectl`,
 
-```
+```bash
 ibmcloud ks cluster config --cluster $MY_CLUSTER_ID
 kubectl config current-context
 ```
 
 If you have multiple configuration and contexts, you can easily switch between contexts,
 
-```console
+```bash
 kubectl config use-context $MY_CLUSTER_NAME/$MY_CLUSTER_ID
 ```
 
@@ -376,7 +375,7 @@ kubectl expose deployment guestbook --type="LoadBalancer" --port=3000 --target-p
 
 List the created service for guestbook,
 
-```console
+```bash
 $ kubectl get svc -n $MY_NAMESPACE
 
 NAME        TYPE           CLUSTER-IP     EXTERNAL-IP                            PORT(S)          AGE
@@ -385,7 +384,7 @@ guestbook   LoadBalancer   172.21.48.26   7a6a66a7-us-south.lb.appdomain.cloud  
 
 Create environment variables for the public IP address of the `LoadBalancer` service, the `NodePort`, and the port,
 
-```console
+```bash
 SVC_EXTERNAL_IP=$(kubectl get svc -n $MY_NAMESPACE --output json | jq -r '.items[] | .status.loadBalancer.ingress[0].hostname ')
 echo $SVC_EXTERNAL_IP
 
@@ -402,7 +401,7 @@ echo $SVC_PORT
 
 Try to send a request to the guestbook application,
 
-```console
+```bash
 curl http://$SVC_EXTERNAL_IP:$SVC_PORT
 
 curl: (52) Empty reply from server
@@ -416,7 +415,7 @@ To allow any traffic to applications that are deployed on your cluster's worker 
 
 Update the security group and add an inbound rule for the NodePort of the service you created when exposing the guestbook deployment. I only want to allow ingress traffic on the NodePort, so I set the minimum and maximum value of allowed inbound ports to the same NodePort value.
 
-```console
+```bash
 $ ibmcloud is security-group-rule-add $MY_DEFAULT_SG_ID inbound tcp --port-min $SVC_NODEPORT --port-max $SVC_NODEPORT
 
 Creating rule for security group r006-b4f498ea-1e71-489e-95f0-0e64cf8d520f under account Remko de Knikker as user b.newell2@remkoh.dev...
@@ -462,19 +461,19 @@ If you want to understand better how the load balancing for VPC works, review th
 
 You can try removing the inbound rule again to check if the VPC rejects the request again,
 
-```
+```bash
 ibmcloud is security-group-rule-delete $MY_DEFAULT_SG_ID $MY_DEFAULT_SG_RULE_ID
 ```
 
 ## Conclusion
 
-You are awesome! You secured your Kubernetes cluster with a Virtual Private Cloud (VPC) and started to air-gap the cluster, blocking direct access to your cluster. Security is an important integral part of any software application development and "<i>airgapping</i>" your cluster by adding a VPC Generation 2 is a first step in securing your cluster, network and containers.
+You are awesome! You secured your Kubernetes cluster with a Virtual Private Cloud (VPC) and started to air-gap the cluster, blocking direct access to your cluster. Security is an important integral part of any software application development and `airgapping` your cluster by adding a VPC Generation 2 is a first step in securing your cluster, network and containers.
 
 ## Cleanup
 
 To conclude, you can choose to delete your Kubernetes resources for this tutorial,
 
-```console
+```bash
 $ ibmcloud ks cluster rm --cluster $MY_CLUSTER_NAME
 
 Do you want to delete the persistent storage for this cluster? If yes, the data cannot be recovered. If no, you can delete the persistent storage later in your IBM Cloud infrastructure account. [y/N]> y
@@ -487,7 +486,7 @@ Now the Kubernetes cluster is deleted, we need to first remove the public gatewa
 
 Delete the Gateways, Load Balancers, Network Interfaces, subnet, public gateways, and finally delete the VPC,
 
-```
+```bash
 ibmcloud is security-group-rules $MY_DEFAULT_SG_ID --output json 
 
 MY_DEFAULT_SG_RULE_ID=$(ibmcloud is security-group-rules $MY_DEFAULT_SG_ID --output json | jq -r --arg SVC_NODEPORT $SVC_NODEPORT  '.[] | select( .port_max==($SVC_NODEPORT|tonumber)) | .id ')
@@ -496,7 +495,7 @@ echo $MY_DEFAULT_SG_RULE_ID
 
 Delete the rule for the security group,
 
-```
+```bash
 $ ibmcloud is security-group-rule-delete $MY_DEFAULT_SG_ID $MY_DEFAULT_SG_RULE_ID
 This will delete security group rule r006-4f5f795f-fa90-44e4-b9c4-cb9457a2a421 and cannot be undone. Continue [y/N] ?> y
 Deleting rule r006-4f5f795f-fa90-44e4-b9c4-cb9457a2a421 from security group  r006-db96d593-c224-497d-888c-03d84f6d8e98 under account Remko de Knikker as user b.newell2@remkoh.dev...
@@ -506,7 +505,7 @@ Rule r006-4f5f795f-fa90-44e4-b9c4-cb9457a2a421 is deleted.
 
 Detach the public gateway from the subnet,
 
-```
+```bash
 $ ibmcloud is subnet-public-gateway-detach $MY_VPC_SUBNET_ID
 Detaching public gateway from subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 under account Remko de Knikker as user b.newell2@remkoh.dev...
 OK
@@ -515,7 +514,7 @@ Public gateway is detached.
 
 Delete the public gateway,
 
-```
+```bash
 ibmcloud is public-gateways
 PUBLIC_GATEWAY_ID=$(ibmcloud is public-gateways --output json | jq '.[0]' | jq -r '.id' ) 
 echo $PUBLIC_GATEWAY_ID
@@ -529,7 +528,7 @@ Public gateway r006-f4603b78-839b-42a5-949c-76403948821a is deleted.
 
 Delete the subnet,
 
-```
+```bash
 $ ibmcloud is subnet-delete $MY_VPC_SUBNET_ID
 This will delete Subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 and cannot be undone. Continue [y/N] ?> y
 Deleting subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 under account Remko de Knikker as user b.newell2@remkoh.dev...
@@ -539,7 +538,7 @@ Subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 is deleted.
 
 Delete the Virtual Private Cloud,
 
-```
+```bash
 MY_VPC_ID=$(ibmcloud is vpcs --output json | jq -r '.[] | select( .name=='\"$MY_VPC_NAME\"') | .id ')
 echo $MY_VPC_ID
 

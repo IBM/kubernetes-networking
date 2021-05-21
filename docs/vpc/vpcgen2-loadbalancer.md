@@ -1,4 +1,4 @@
-## Understanding the Load Balancer for VPC
+# Understanding the Load Balancer for VPC
 
 To access the guestbook application via the Load Balancer for VPC, we are using the `port` of the Service object instead of the `NodePort`, which is the port we allowed inbound traffic on and which is the port value we used to access our deployment without a VPC. To see why, let's take a step back and go to the list of [Load balancers for VPC](https://cloud.ibm.com/vpc-ext/network/loadBalancers).
 
@@ -8,9 +8,9 @@ Click the load balancer with the hostname that corresponds to the `External IP` 
 
 ![Load balancer for VPC Details](images/ibmcloud-loadbalancer-details.png)
 
-You see a few tabs under the long name for `Back-end pools` and `Front-end listeners`. You see the `Hostname` that corresponds to the external IP of the `LoadBalancer` service for the guestbook application. And you see a `Health status` panel with a `Pool name` value of `tcp-3000-32219` with a `Listener protocol and port` of value `TCP - 3000`. 
+You see a few tabs under the long name for `Back-end pools` and `Front-end listeners`. You see the `Hostname` that corresponds to the external IP of the `LoadBalancer` service for the guestbook application. And you see a `Health status` panel with a `Pool name` value of `tcp-3000-32219` with a `Listener protocol and port` of value `TCP - 3000`.
 
-Click on the `Back-end pool` tab and expand the `tcp-3000-32219` pool. 
+Click on the `Back-end pool` tab and expand the `tcp-3000-32219` pool.
 
 ![Load balancer for VPC - Back-end pool](images/back-end-pool.png)
 
@@ -24,7 +24,7 @@ That tells us that it is the load balancer for VPC that maps external traffic to
 
 You can also use the CLI to analyze how the traffic flows. Let's inspect the guestbook Service of type LoadBalancer resource in more detail.
 
-```
+```bash
 kubectl get svc -n $MY_NAMESPACE --output json 
 
 {
@@ -160,18 +160,18 @@ An `Ingress` deployment consists of three components:
 * an internal L7 Application Load Balancer (ALB),
 * an external L4 load balancer to handle incoming requests across zones. For classic clusters, this component is the Multi-Zone Load Balancer (MZLB) that IBM Cloud Kubernetes Service creates for you. For VPC clusters, this component is the VPC load balancer created in your VPC.
 
-To expose an app by using Ingress, you must create a Kubernetes service for your app and register this service with Ingress by defining an Ingress resource. (To learn how, go to [Ingress and ALB](ingress-alb.md)). 
+To expose an app by using Ingress, you must create a Kubernetes service for your app and register this service with Ingress by defining an Ingress resource. (To learn how, go to [Ingress and ALB](ingress-alb.md)).
 
 The following diagram shows how Ingress directs communication from the internet to an app in a VPC multizone cluster.
 
 ![VPC Architecture](images/vpc-architecture.png)
 [source](https://cloud.ibm.com/docs/containers?topic=containers-ingress-about#architecture-vpc)
 
-A VPC load balancer listens for external traffic, and based on the resolved IP address, the VPC load balancer sends the request to an available Application Load Balancer (ALB). The Application Load Balancer (ALB) listens for incoming HTTP, HTTPS, or TCP service requests, checks if routing rules exist for the application, and then forwards requests to the appropriate app pod according to the rules defined in the Ingress resource. 
+A VPC load balancer listens for external traffic, and based on the resolved IP address, the VPC load balancer sends the request to an available Application Load Balancer (ALB). The Application Load Balancer (ALB) listens for incoming HTTP, HTTPS, or TCP service requests, checks if routing rules exist for the application, and then forwards requests to the appropriate app pod according to the rules defined in the Ingress resource.
 
 In the IKS instance, there is a private and a public Ingress ALB installed, the private Ingress ALB is disabled.
 
-```
+```bash
 ibmcloud ks ingress alb ls -c $MY_CLUSTER_NAME
 
 OK
@@ -182,7 +182,7 @@ public-crbvhau5gd0do97g1vvo50-alb1    true    enabled    public    1e7d00e2-us-s
 
 List the VPC Load Balancers that were created,
 
-```
+```bash
 ibmcloud is load-balancers
 
 Listing load balancers for generation 2 compute in all resource groups and region us-south under account Remko de Knikker as user b.newell2@remkoh.dev...
@@ -196,7 +196,7 @@ The `Family` property is listed as value `Application` (Application Load Balance
 
 Inspect details for each VPC ALB and inspect Listeners, Pools and Pool Members,
 
-```
+```bash
 MY_LOAD_BALANCER_ID=r006-7a6a66a7-9871-473e-b105-20640caa0f77
 ibmcloud is load-balancer $MY_LOAD_BALANCER_ID --output json
 
@@ -362,11 +362,11 @@ ibmcloud is load-balancer-pool-member $MY_LOAD_BALANCER_ID $MY_LOAD_BALANCER_POO
 }
 ```
 
-**Note:** above, I manually copy-pasted the IDs of the VPC resources into the next command, instead of using the full jq syntax each time to retrieve the values and set corresponding environment variables. 
+**Note:** above, I manually copy-pasted the IDs of the VPC resources into the next command, instead of using the full jq syntax each time to retrieve the values and set corresponding environment variables.
 
 You see that the second load balancer has a single front-end listener on port 3000 forwarding to a load balancer pool member on port 32219 on IP 10.240.0.4, which is the Private IP of the single worker node of my cluster.
 
-```
+```bash
 kubectl get nodes -o wide
 NAME    STATUS    ROLES    AGE    VERSION    INTERNAL-IP    EXTERNAL-IP   OS-IMAGE    KERNEL-VERSION    CONTAINER-RUNTIME
 10.240.0.4    Ready    <none>    14h    v1.18.13+IKS    10.240.0.4    10.240.0.4    Ubuntu 18.04.5 LTS    4.15.0-128-generic    containerd://1.3.9

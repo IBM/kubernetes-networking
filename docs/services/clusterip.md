@@ -2,11 +2,11 @@
 
 ## Add a Service to `helloworld`
 
-Now we have a basic understanding of service discovery and the different ServiceTypes on Kubernetes, it is time to expose the Deployment of `helloworld` using a new Service specification. 
+Now we have a basic understanding of service discovery and the different ServiceTypes on Kubernetes, it is time to expose the Deployment of `helloworld` using a new Service specification.
 
 Let's look at the definition for the `helloworld-service.yaml`,
 
-```
+```yaml
 cat helloworld-service.yaml
 
 apiVersion: v1
@@ -29,7 +29,7 @@ The Service maps the incoming `port` to the container's `targetPort`. By default
 
 Create the Service object with the default type,
 
-```console
+```bash
 $ oc create -f helloworld-service.yaml -n $MY_NS
 
 service/helloworld created
@@ -37,7 +37,7 @@ service/helloworld created
 
 Describe the Service,
 
-```console
+```bash
 $ oc describe svc helloworld -n $MY_NS
 
 Name:              helloworld

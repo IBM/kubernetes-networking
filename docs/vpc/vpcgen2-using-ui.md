@@ -1,4 +1,4 @@
-## [Optional] Using UI to Create a Cluster with VPC Generation 2 Compute
+# Create a Cluster with VPC using the UI
 
 This section uses the browser and IBM Cloud UI to create a Red Hat OpenShift cluster and VPC. Using the UI, create an IBM Cloud Red Hat OpenShift Kubernetes Service (ROKS), for infrastructure provider choose Generation 2 Compute instead of Classic. For a comparison of infrastructure providers, read Supported Infrastructure Providers, or read an Overview of VPC Networking in IBM Cloud Kubernetes Service (IKS).
 
@@ -24,9 +24,9 @@ Steps:
 1. Cleanup
 1. [Optional] Using UI to Create a Cluster with VPC Generation 2 Compute
 
-# Create a VPC
+## Create a VPC
 
-1. Go to https://cloud.ibm.com/vpc-ext/network/vpcs
+1. Go to [https://cloud.ibm.com/vpc-ext/network/vpcs](https://cloud.ibm.com/vpc-ext/network/vpcs),
 
 ![Virtual Private Clouds list](images/using-ui/vpcs.png)
 
@@ -57,21 +57,21 @@ Steps:
 
 ![Virtual Private Cloud Overview](images/using-ui/vpc-overview.png)
 
-# Create an Additional Subnet
+## Create an Additional Subnet
 
 TODO create subnet $USERNAME-subnet-ussouth3-2
 
-# Create Object Storage
+## Create Object Storage
 
 TODO create `$USERNAME-cos-1`
 
-# Create an OpenShift Cluster
+## Create an OpenShift Cluster
 
 1. Select the `Containers` Category in the [IBM Cloud Catalog](https://cloud.ibm.com/catalog?category=containers#services),
 
 ![IBM Cloud Catalog Containers](images/using-ui/ibmcloud-catalog-containers.png)
 
-1. Select the tile for `Red Hat OpenShift on IBM Cloud, note that this service is tagged as `Satellite Enabled`, `Financial Services Validated`, `IAM-Enabled`, and `Service Endpoint Supported`,
+1. Select the tile for `Red Hat OpenShift` on IBM Cloud, note that this service is tagged as `Satellite Enabled`, `Financial Services Validated`, `IAM-Enabled`, and `Service Endpoint Supported`,
 
 ![New Red Hat OpenShift Cluster](images/using-ui/new-redhat-openshift-cluster.png)
 
@@ -99,7 +99,7 @@ TODO create `$USERNAME-cos-1`
 TODO: check popup notification
 "Your cluster order is complete and your cluster is creating. However, some related components need your attention:
 
-If your cluster runs Kubernetes version 1.18 or earlier, the default security group 'stifled-legendary-hurdle-excavator' (ID 'r006-1bb65293-c287-4bb9-9783-14ee2f83488f') for VPC 'remkohdev-vpc-ussouth2-1' (ID 'r006-f5e669a8-e4f1-4724-97a6-eb4d7f854e2d') must be edited to allow incoming network traffic from the VPC load balancers. For more info, see http://ibm.biz/vpc-sgs"
+If your cluster runs Kubernetes version 1.18 or earlier, the default security group 'stifled-legendary-hurdle-excavator' (ID 'r006-1bb65293-c287-4bb9-9783-14ee2f83488f') for VPC 'remkohdev-vpc-ussouth2-1' (ID 'r006-f5e669a8-e4f1-4724-97a6-eb4d7f854e2d') must be edited to allow incoming network traffic from the VPC load balancers. For more info, see [http://ibm.biz/vpc-sgs"](http://ibm.biz/vpc-sgs").
 
 1. The cluster order is created and the new cluster `Access` page will load,
 
@@ -109,11 +109,9 @@ If your cluster runs Kubernetes version 1.18 or earlier, the default security gr
 
 ![Red Hat OpenShift Cluster Overview](images/using-ui/redhat-openshift-cluster-overview.png)
 
-# 
-
 1. From the IBM Cloud drop down menu in the top left of your page, browse to `VPC Infrastructure`, `VPCs`,
 
 ![IBM Infrastructure VPCs](images/using-ui/ibm-infrastructure-vpcs.png)
 
-1. Go to subnet > 
+1. Go to subnet,
 1. A `Virtual private endpoint gateway for VPC` was created

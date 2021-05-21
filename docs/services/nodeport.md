@@ -4,9 +4,9 @@
 
 Finish the [Services](services.md) and [ClusterIP](clusterip.md) labs.
 
-## NodePort
+## About NodePort
 
-To expose a Service to an external IP address, you have to create a ServiceType other than ClusterIP. When you send a request to the name of the service, `kube-proxy` looks up the name in the cluster `DNS server` and routes the request to the in-cluster IP address of the service. 
+To expose a Service to an external IP address, you have to create a ServiceType other than ClusterIP. When you send a request to the name of the service, `kube-proxy` looks up the name in the cluster `DNS server` and routes the request to the in-cluster IP address of the service.
 
 To allow external traffic into a kubernetes cluster, you need a `NodePort` ServiceType. When kubernetes creates a NodePort service, `kube-proxy` allocates a port in the range **30000-32767** and opens this port on the `eth0` interface of every node (the `NodePort`). Connections to this port are then forwarded to the service’s cluster IP. A gateway router typically sits in front of the cluster and forwards packets to the node.
 
@@ -87,7 +87,7 @@ $ curl -L -X POST "http://$PUBLIC_IP:$NODE_PORT/api/messages" -H 'Content-Type: 
 {"id":"f142f74f-c679-4738-96e3-6518e607efa2","sender":"world1","message":"Hello world1 (direct)","host":null}
 ```
 
-The client connects to your application via a public IP address of a worker node and the NodePort. Each node proxies the port, `kube-proxy` receives the request, and forwards it to the service at the cluster IP. At this point the request matches the netfilter or `iptables` rules and gets redirected to the server pod. 
+The client connects to your application via a public IP address of a worker node and the NodePort. Each node proxies the port, `kube-proxy` receives the request, and forwards it to the service at the cluster IP. At this point the request matches the netfilter or `iptables` rules and gets redirected to the server pod.
 
 However, we still require some level of load balancing. a `LoadBalancer` service is the standard way to expose a service.
 

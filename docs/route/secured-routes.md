@@ -38,9 +38,9 @@ Steps:
 
 ## Login from the CLI & Create Project
 
-* Go to the web console and click on your username at the top right then 'Copy Login Command', then display the token and copy the ```oc login``` command in your terminal.<br>
+* Go to the web console and click on your username at the top right then 'Copy Login Command', then display the token and copy the ```oc login``` command in your terminal.
 
-![login](https://user-images.githubusercontent.com/36239840/97104809-26821500-16d0-11eb-936e-c2b7fb914523.JPG)<br>
+![login](https://user-images.githubusercontent.com/36239840/97104809-26821500-16d0-11eb-936e-c2b7fb914523.JPG)
 
 * Create ```my-route-project``` project.
 
@@ -106,7 +106,7 @@ oc expose deployment myguestbook --type="NodePort" --port=3000
 
 ## Expose the route
 
-* To view the service that we need to expose. Use the following command.<br>
+* To view the service that we need to expose. Use the following command.
 
 ```bash
 oc get svc
@@ -199,7 +199,7 @@ oc create -f https://raw.githubusercontent.com/nerdingitout/oc-route/main/golang
 
 ![image](https://user-images.githubusercontent.com/36239840/113155813-7bf7ba80-924a-11eb-81b0-1b574e925707.png)
 
-* Create TLS secret using the same secret you extracted earlier. 
+* Create TLS secret using the same secret you extracted earlier.
 
 ```bash
 oc create secret tls mycert --cert /tmp/tls.crt --key /tmp/tls.key

@@ -4,11 +4,11 @@
 
 Finish the [Services](services.md), [ClusterIP](clusterip.md), [NodePort](nodeport.md), and [LoadBalancer](loadbalancer.md) labs.
 
-## External Name
+## About External Name
 
-An [ExternalName Service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) is a special case of Service that does not have selectors and uses DNS names instead, e.g. 
+An [ExternalName Service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) is a special case of Service that does not have selectors and uses DNS names instead, e.g.
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:

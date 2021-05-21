@@ -1,4 +1,4 @@
-# Network Policy and Calico 
+# Network Policy and Calico
 
 ## Prerequirements
 
@@ -10,22 +10,22 @@ Finish the [Services](services.md), [ClusterIP](clusterip.md), [NodePort](nodepo
 * Guestbook Service of type LoadBalancer,
 * An Ingress and Route Ingress controller,
 
-## Network Policy and Calico
+## Network Policies
 
-By default, pods are non-isolated and accept traffic from any source. When defining a pod- or namespace- based NetworkPolicy, labels are used to select pods. If a Pod is matched by selectors in one or more NetworkPolicy objects, then the Pod will accept only connections that are allowed by at least one of those NetworkPolicy's ingress/egress rules. A Pod that is not selected by any NetworkPolicy objects is fully accessible. 
+By default, pods are non-isolated and accept traffic from any source. When defining a pod- or namespace- based NetworkPolicy, labels are used to select pods. If a Pod is matched by selectors in one or more NetworkPolicy objects, then the Pod will accept only connections that are allowed by at least one of those NetworkPolicy's ingress/egress rules. A Pod that is not selected by any NetworkPolicy objects is fully accessible.
 
 Network policies do not conflict, they add up. Thus, order of evaluation does not affect the policy result.
 
 There are four kinds of selectors in an ingress `from` section or egress `to` section:
 
-- podSelector,
-- namespaceSelector,
-- podSelector and namespaceSelector,
-- ipBlock for IP CIDR ranges.
+* podSelector,
+* namespaceSelector,
+* podSelector and namespaceSelector,
+* ipBlock for IP CIDR ranges.
 
 The following example allows traffic from a frontend application to a backend application,
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -58,7 +58,7 @@ spec:
 
 The following example denies all ingress traffic,
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -73,13 +73,13 @@ On IBM Cloud, every Kubernetes Service cluster is set up with a network plug-in 
 
 ## Create helloworld Proxy
 
-For this tutorial, we will use an additional app called `helloworld-proxy`, which proxies requests to the `helloworld` app. 
+For this tutorial, we will use an additional app called `helloworld-proxy`, which proxies requests to the `helloworld` app.
 
 ![helloworld proxy architecture](images/helloworld-proxy.png)
 
 If you don't have the repository already, clone it to your local machine,
 
-```
+```bash
 git clone https://github.com/remkohdev/helloworld.git
 cd helloworld
 ls -al
@@ -87,7 +87,7 @@ ls -al
 
 You should deploy the `helloworld` and `helloworld-proxy` application,
 
-```
+```bash
 oc new-project $MY_NS
 
 oc create -f helloworld-deployment.yaml -n $MY_NS
@@ -101,7 +101,7 @@ oc expose service helloworld-proxy -n $MY_NS
 
 The deployment in your project namespace should now look as follows,
 
-```
+```bash
 oc get all -n $MY_NS
 
 $ oc get all -n $MY_NS
@@ -132,7 +132,7 @@ route.route.openshift.io/helloworld      helloworld-my-apps.remkohdev-roks45-2n-
 
 Get the proxy service details and test the proxy,
 
-```
+```bash
 ROUTE=$(oc get route helloworld -n $MY_NS -o json | jq -r '.spec.host')
 echo $ROUTE
 
@@ -151,7 +151,7 @@ echo $PROXY_NODE_PORT
 
 Test the `helloworld-proxy` app, add the `host: helloworld:8080` property in the data object, which tells the `helloworld-proxy` app to proxy the message to the `host` app, and send the request to the `/api/messages` endpoint of our `helloworld` app on port `8080` using the internal DNS for service discovery. Because it is an internal request, the proxy uses the container port rather than the NodePort, which is used for external requests.
 
-```
+```bash
 $ curl -L -X POST "http://$ROUTE:$NODE_PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "remko", "host": "helloworld:8080" }'
 
 {"id":"ffb70e2f-34be-480c-9b05-53577119ff75","sender":"remko","message":"Hello remko (direct)","host":"helloworld:8080"}
@@ -169,7 +169,7 @@ Adopting a zero trust network model is best practice for securing workloads and 
 
 Define the Network Policy file to deny all traffic,
 
-```
+```bash
 echo 'apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -183,7 +183,7 @@ spec:
 
 Create the Network Policy,
 
-```
+```bash
 $ oc create -f helloworld-policy-denyall.yaml -n $MY_NS
 
 networkpolicy.networking.k8s.io/helloworld-deny-all created
@@ -191,7 +191,7 @@ networkpolicy.networking.k8s.io/helloworld-deny-all created
 
 Test both the `helloworld` and the `helloworld-proxy` apps,
 
-```
+```bash
 $ curl -L -X POST "http://$ROUTE:$NODE_PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "remko" }'
 
 curl: (7) Failed connect to helloworld-my-apps.dte-ocp44-t6knp0-915b3b336cabec458a7c7ec2aa7c625f-0000.us-east.containers.appdomain.cloud:30354; Connection timed out
@@ -203,7 +203,7 @@ curl: (7) Failed connect to helloworld-proxy-my-apps.dte-ocp44-t6knp0-915b3b336c
 
 It takes quite a long time before connections time out. All traffic is denied, despite that we have a LoadBalancer services and routes added to each deployment,
 
-```
+```bash
 $ oc get svc -n $MY_NS
 
 NAME               TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)          AGE
@@ -219,11 +219,11 @@ helloworld-proxy           helloworld-proxy-my-apps.dte-ocp44-t6knp0-915b3b336ca
 
 ## Apply Network Policy - Allow Only Traffic to Pod
 
-Let's allow direct ingress traffic to the `helloworld` app on port `8080`, but not allow traffic to the `helloworld-proxy` app. 
+Let's allow direct ingress traffic to the `helloworld` app on port `8080`, but not allow traffic to the `helloworld-proxy` app.
 
 Define the Network Policy file,
 
-```
+```bash
 echo 'apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -240,7 +240,7 @@ spec:
 
 Create the Network Policy,
 
-```
+```bash
 $ oc create -f helloworld-allow.yaml -n $MY_NS
 
 networkpolicy.networking.k8s.io/allow-helloworld created
@@ -248,7 +248,7 @@ networkpolicy.networking.k8s.io/allow-helloworld created
 
 Review the existing NetworkPolices in the project namespace,
 
-```
+```bash
 $ oc get networkpolicies -n $MY_NS
 
 NAME                  POD-SELECTOR     AGE
@@ -258,7 +258,7 @@ helloworld-deny-all   <none>           21m
 
 Test the `helloworld` and the `helloworld-proxy' apps again,
 
-```
+```bash
 $ curl -L -X POST "http://$ROUTE:$NODE_PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "remko" }'
 
 {"id":"12e59a9e-fa21-41f7-a6d5-823a0ca5d2ea","sender":"remko","message":"Hello remko (direct)","host":null}
@@ -272,14 +272,14 @@ curl: (7) Failed connect to helloworld-proxy-my-apps.dte-ocp44-t6knp0-915b3b336c
 
 Delete the NetworkPolicies in your namespace,
 
-```
+```bash
 oc delete  networkpolicy allow-helloworld -n $MY_NS
 oc delete networkpolicy helloworld-deny-all -n $MY_NS
 ```
 
 Delete the previously created resources,
 
-```
+```bash
 oc delete deployment helloworld -n $MY_NS
 oc delete deployment helloworld-proxy -n $MY_NS
 oc delete svc helloworld -n $MY_NS
@@ -289,7 +289,7 @@ oc delete namespace $MY_NS
 
 Verify all resources are removed,
 
-```
+```bash
 $ oc get all -n $MY_NS
 
 No resources found in my-apps namespace.

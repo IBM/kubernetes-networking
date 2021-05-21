@@ -36,7 +36,7 @@ helloworld   helloworld-my-apps.remkohdev-roks45-2n-clu-2bef1f4b4097001da9502000
 
 Retrieve the created host for the Route and the NodePort of the `helloworld` service,
 
-```
+```bash
 ROUTE=$(oc get routes -n $MY_NS -o json | jq -r '.items[0].spec.host')
 echo $ROUTE
 
@@ -46,7 +46,7 @@ echo $NODE_PORT
 
 Send a request to the Route host for your Service,
 
-```
+```bash
 $ curl -L -X POST "http://$ROUTE:$NODE_PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "world5" }'
 
 {"id":"ba8b9101-6594-420b-8cab-251dc7a2de65","sender":"world5","message":"Hello world5 (direct)","host":null}
@@ -54,4 +54,4 @@ $ curl -L -X POST "http://$ROUTE:$NODE_PORT/api/messages" -H 'Content-Type: appl
 
 ## Next
 
-Next, go to [Network Policy](networkpolicy.md).
+Next, go to [Network Policy](../calico/networkpolicy.md).

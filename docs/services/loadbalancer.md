@@ -6,11 +6,11 @@ Finish the [Services](services.md), [ClusterIP](clusterip.md), and [NodePort](no
 
 ## LoadBalancer
 
-In the previous labs, you created a service for the `helloworld` application with a default clusterIP and then added a NodePort to the Service, which proxies requests to the Service resource. But in a production environment, you still need a type of load balancer, whether client requests are internal or external coming in over the public network. 
+In the previous labs, you created a service for the `helloworld` application with a default clusterIP and then added a NodePort to the Service, which proxies requests to the Service resource. But in a production environment, you still need a type of load balancer, whether client requests are internal or external coming in over the public network.
 
 The `LoadBalancer` service in Kubernetes configures an Open Systems Interconnection (OSI) model Layer 4 (L4) load balancer, which forwards and balances traffic from the internet to your backend application.
 
-To use a load balancer for distributing client traffic to the nodes in a cluster, you need a public IP address that the clients can connect to, and you need IP addresses on the nodes themselves to which the load balancer can forward the requests. 
+To use a load balancer for distributing client traffic to the nodes in a cluster, you need a public IP address that the clients can connect to, and you need IP addresses on the nodes themselves to which the load balancer can forward the requests.
 
 When you create a standard cluster, IKS and ROKS automatically provision a portable public subnet and a portable private subnet. The portable public subnet provides 5 usable IP addresses. 1 portable public IP address is used by the default public `Ingress ALB`. The remaining 4 portable public IP addresses can be used to expose single apps using layer 4 (L4) TCP/UDP Network Load Balancer (NLB).
 
@@ -24,9 +24,9 @@ Because, the creation of the load balancer happens asynchronously with the creat
 
 ## Load Balancer on IBM Cloud
 
-The LoadBalancer service type is implemented differently depending on your cluster's infrastructure provider. On IBM Kubernetes Service (IKS) and Red Hat OpenShift Kubernetes Service (ROKS) on IBM Cloud, `classic clusters` implement by default a Network Load Balancer (NLB) 1.0. 
+The LoadBalancer service type is implemented differently depending on your cluster's infrastructure provider. On IBM Kubernetes Service (IKS) and Red Hat OpenShift Kubernetes Service (ROKS) on IBM Cloud, `classic clusters` implement by default a Network Load Balancer (NLB) 1.0.
 
-Version 1.0 NLBs use `Network Address Translation (NAT)` to rewrite the request packet's source IP address to the IP of worker node where a load balancer pod exists. 
+Version 1.0 NLBs use `Network Address Translation (NAT)` to rewrite the request packet's source IP address to the IP of worker node where a load balancer pod exists.
 
 ![NLB 1.0](images/ks_loadbalancer_nlb1.png)
 
@@ -47,9 +47,9 @@ Before we create the `LoadBalancer` service for the `helloworld` application, re
 
 ## Create a LoadBalancer
 
-In the previous lab, you already created a `NodePort` Service. 
+In the previous lab, you already created a `NodePort` Service.
 
-```
+```bash
 $ oc get svc -n $MY_NS
 
 NAME         TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
@@ -58,13 +58,13 @@ helloworld   NodePort   172.21.86.16   <none>        8080:32387/TCP   12m
 
 Patch the service for `helloworld` and change the type to `LoadBalancer`.
 
-```
+```bash
 oc patch svc helloworld -p '{"spec": {"type": "LoadBalancer"}}' -n $MY_NS
 ```
 
 The `TYPE` should be set to `LoadBalancer` now, and an `EXTERNAL-IP` should be assigned.
 
-```
+```bash
 $ oc get svc helloworld -n $MY_NS
 
 NAME         TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)          AGE
@@ -73,7 +73,7 @@ helloworld   LoadBalancer   172.21.86.16   169.47.155.242   8080:32387/TCP   12m
 
 To access the Service of the `helloworld` from the public internet, you can use the public IP address of the NLB and the assigned NodePort of the service in the format `<IP_address>:<NodePort>`.
 
-```
+```bash
 PUBLIC_IP=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.status.loadBalancer.ingress[0].ip')
 echo $PUBLIC_IP
 
@@ -83,7 +83,7 @@ echo $NODE_PORT
 
 Access the `helloworld` app in a browser or with Curl,
 
-```
+```bash
 $ curl -L -X POST "http://$PUBLIC_IP:$NODE_PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "world2" }'
 
 {"id":"0ebdc166-32cd-4d0d-93b6-f278e4405c6f","sender":"world2","message":"Hello world2 (direct)","host":null}

@@ -1,4 +1,4 @@
-# Airgap
+# What is Airgap
 
 An [`air gap`](https://en.wikipedia.org/wiki/Air_gap_(networking)), `air wall`, `air gapping` or `disconnected network` is a network security measure to ensure that a secure computer network is physically isolated from unsecured networks, such as the public Internet or an unsecured local area network. It means a computer or network has no network interfaces connected to other networks.
 
@@ -15,11 +15,11 @@ In an air-gapped Kubernetes cluster, you would not be able to deploy a Docker Hu
 
 ## Public Service Endpoint
 
-In a properly air-gapped Kubernetes cluster, you are not able to reach the control plane endpoint from outside the airgapped network, e.g. over the Internet. 
+In a properly air-gapped Kubernetes cluster, you are not able to reach the control plane endpoint from outside the airgapped network, e.g. over the Internet.
 
 When you create an IBM Cloud Kubernetes Service with VPC instance, as in:
 
-```
+```bash
 ibmcloud ks cluster create vpc-gen2 --name $MY_CLUSTER_NAME --zone $MY_ZONE --version $KS_VERSION --flavor bx2.2x8 --workers 1 --vpc-id $MY_VPC_ID --subnet-id $MY_VPC_SUBNET_ID
 ```
 
@@ -27,7 +27,7 @@ the created cluster will have public service endpoints. To disable the creation 
 
 ## Best Practices
 
-1. Disable the public gateway for the VPC subnet with the worker nodes. This means that you cannot access the cluster nodes from outside the secure network, which includes for instance a build server and a container registry. 
+1. Disable the public gateway for the VPC subnet with the worker nodes. This means that you cannot access the cluster nodes from outside the secure network, which includes for instance a build server and a container registry.
 
 2. Disable public endpoints for the control plane. When using private only endpoints, orgs can use systems within the VPC to manage the control plane, or set up `Direct Link / VPN` connections to their VPC. If this is not possible, proxying connections through a `haproxy` instance in the VPC is an alternative.
 

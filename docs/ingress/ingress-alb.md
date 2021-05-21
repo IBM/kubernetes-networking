@@ -15,13 +15,13 @@ When you create a standard cluster in IBM Cloud Kubernetes Service (IKS), a port
 
 To retrieve the cluster id, you need the cluster name. If you do not know the cluster name already, you can list all clusters in the active account,
 
-```
+```bash
 ibmcloud ks clusters
 ```
 
 Create an environment variable and set the cluster name,
 
-```
+```bash
 KS_CLUSTER_NAME=<cluster name>
 echo $KS_CLUSTER_NAME
 ```
@@ -30,7 +30,7 @@ The portable public subnet for your cluster on IBM Cloud provides 5 usable IP ad
 
 To list all of the portable IP addresses in the Kubernetes cluster, both used and available, you can retrieve the following `ConfigMap` in the `kube-system` namespace listing the resources of the subnets,
 
-```
+```bash
 $ oc get cm ibm-cloud-provider-vlan-ip-config -n kube-system -o yaml
 
 apiVersion: v1
@@ -107,7 +107,7 @@ One of the public IP addresses on the public VLAN's subnet is assigned to the Ne
 
 List the registered NLB host name and IP address for your cluster (depending on the IBM Cloud CLI version, use `--json` or `--output json`),
 
-```
+```bash
 $ ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME --json
 
 [
@@ -129,7 +129,7 @@ $ ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME --json
 
 And retrieve the NodePort via,
 
-```
+```bash
 NODE_PORT=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
 echo $NODE_PORT
 ```
@@ -146,7 +146,7 @@ Ingress consists of **three components**:
 * Application load balancers (ALBs),
 * A load balancer to handle incoming requests across zones.
 
-To expose an app with Ingress, create a Kubernetes service of type `LoadBalancer` and register this Service with Ingress by defining an Ingress resource. One Ingress resource is required per namespace where you have apps that you want to expose. 
+To expose an app with Ingress, create a Kubernetes service of type `LoadBalancer` and register this Service with Ingress by defining an Ingress resource. One Ingress resource is required per namespace where you have apps that you want to expose.
 
 The Ingress resource is a Kubernetes resource that defines the rules for how to route incoming requests for apps. The Ingress resource also specifies the path to your app services. When you created a standard IKS cluster, an Ingress subdomain is already registered by default for your cluster. The paths to your app services are appended to the public route.
 
@@ -158,11 +158,11 @@ In a [Red Hat OpenShift Kubernetes Service (ROKS) cluster](https://cloud.ibm.com
 
 ## Create an Ingress Resource for the HelloWorld App
 
-Instead of using `<external-ip>:<nodeport>` to access the HelloWorld app, we want to access our HelloWorld aplication via the URL `<Ingress-subdomain>:<nodeport>/<path>`. 
+Instead of using `<external-ip>:<nodeport>` to access the HelloWorld app, we want to access our HelloWorld aplication via the URL `<Ingress-subdomain>:<nodeport>/<path>`.
 
-To configure your Ingress resource, you need the Ingress Subdomain and Ingress Secret of your cluster. Both were already created by IKS when you created the cluster. 
+To configure your Ingress resource, you need the Ingress Subdomain and Ingress Secret of your cluster. Both were already created by IKS when you created the cluster.
 
-```
+```bash
 INGRESS_SUBDOMAIN=$(ibmcloud ks nlb-dns ls --cluster $KS_CLUSTER_NAME --json | jq -r '.[0].nlbHost')
 echo $INGRESS_SUBDOMAIN
 
@@ -172,7 +172,7 @@ echo $INGRESS_SECRET
 
 Or,
 
-```
+```bash
 INGRESS_SUBDOMAIN=$(ibmcloud ks cluster get --show-resources -c $KS_CLUSTER_NAME --json | jq -r '.ingressHostname')
 echo $INGRESS_SUBDOMAIN
 
@@ -184,7 +184,7 @@ Create the Ingress specification and change the `hosts` and `host` to the `Ingre
 
 Find the Kubernetes version,
 
-```
+```bash
 $ oc get nodes -o wide
 
 NAME             STATUS   ROLES           AGE   VERSION           INTERNAL-IP      EXTERNAL-IP      OS-IMAGE   KERNEL-VERSION                CONTAINER-RUNTIME
@@ -194,7 +194,7 @@ NAME             STATUS   ROLES           AGE   VERSION           INTERNAL-IP   
 
 In version 1.17 and 1.18 syntax,
 
-```
+```bash
 echo "apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -218,7 +218,7 @@ spec:
 
 In version 1.19 syntax,
 
-```
+```bash
 echo "apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -243,15 +243,15 @@ spec:
               number: 8080" > helloworld-ingress.yaml
 ```
 
-The above resource will create an access path to the helloworld at `http://$INGRESS_SUBDOMAIN:$PORT/`. 
+The above resource will create an access path to the helloworld at `http://$INGRESS_SUBDOMAIN:$PORT/`.
 
-You can further [customize Ingres routing with annotations](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation) to customize the ALB settings, TLS settings, request and response annocations, service limits, user authentication, or error actions. 
+You can further [customize Ingres routing with annotations](https://cloud.ibm.com/docs/containers?topic=containers-ingress_annotation) to customize the ALB settings, TLS settings, request and response annocations, service limits, user authentication, or error actions.
 
 Make sure, the values for the `hosts`, `secretName` and `host` are set correctly to match the values of the Ingress Subdomain and Secret of your cluster. Edit the `helloworld-ingress.yaml` file to make the necessary changes,
 
 Then create the Ingress for helloworld,
 
-```
+```bash
 $ oc create -f helloworld-ingress.yaml -n $MY_NS
 
 ingress.networking.k8s.io/helloworld-ingress created
@@ -259,14 +259,14 @@ ingress.networking.k8s.io/helloworld-ingress created
 
 To find the service port again,
 
-```
+```bash
 NODE_PORT=$(oc get svc helloworld -n $MY_NS --output json | jq -r '.spec.ports[0].nodePort' )
 echo $NODE_PORT
 ```
 
 Try to access the `helloworld` API and the proxy using the Ingress Subdomain with the path to the service,
 
-```
+```bash
 $ curl -L -X POST "http://$INGRESS_SUBDOMAIN:$NODE_PORT/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "world3" }'
 
 {"id":"c806432d-0f84-45bb-a654-0b6be0146044","sender":"world3","message":"Hello world3 (direct)","host":null}
@@ -274,7 +274,7 @@ $ curl -L -X POST "http://$INGRESS_SUBDOMAIN:$NODE_PORT/api/messages" -H 'Conten
 
 If you instead want to use subdomain paths instead of URI paths,
 
-```
+```bash
 echo "apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -305,7 +305,7 @@ spec:
 
 Delete the previous Ingress resource and create the Ingress resource using subdomain paths.
 
-```
+```bash
 oc get ingress -n $MY_NS
 oc delete ingress helloworld-ingress -n $MY_NS
 oc create -f helloworld-ingress-subdomain.yaml -n $MY_NS
@@ -313,7 +313,7 @@ oc create -f helloworld-ingress-subdomain.yaml -n $MY_NS
 
 Try to access the application using the subdomain,
 
-```
+```bash
 $ curl -L -X POST "http://hello.$INGRESS_SUBDOMAIN/api/messages" -H 'Content-Type: application/json' -d '{ "sender": "world4" }'
 
 {"id":"ea9c00e9-190a-4d83-ab8a-cf6e81c1bb10","sender":"world4","message":"Hello world4 (direct)","host":null}

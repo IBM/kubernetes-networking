@@ -5,7 +5,8 @@ Allocation of an external IP address requires the system to create an external I
 ## Ingress Subdomain
 
 By default, IKS created an Ingress subdomain already when you created the cluster. You can also create a new Ingress subdomain or NLB hostname in addition,
-```
+
+```bash
 % kubectl config current-context
 % ibmcloud ks nlb-dns create classic -cluster remkohdev-iks116-3x-cluster --ip 169.48.75.82
 OK
@@ -14,7 +15,7 @@ NLB hostname was created as remkohdev-iks116-3x-clu-2bef1f4b4097001da9502000c44f
 
 There is also the option to set up Direct Server Return (DSR) load balancing with an NLB 2.0 see [here](https://cloud.ibm.com/docs/containers?topic=containers-loadbalancer-v2).
 
-When you create a Kubernetes LoadBalancer service for an app in your IKS cluster, a layer 7 Virtual Private Cloud (VPC) load balancer is automatically created in your VPC outside of your cluster. The VPC load balancer is multizonal and routes requests for your app through the private NodePorts that are automatically opened on your worker nodes. 
+When you create a Kubernetes LoadBalancer service for an app in your IKS cluster, a layer 7 Virtual Private Cloud (VPC) load balancer is automatically created in your VPC outside of your cluster. The VPC load balancer is multizonal and routes requests for your app through the private NodePorts that are automatically opened on your worker nodes.
 
 In a `free cluster` on IKS, the cluster's worker nodes are connected to an IBM-owned public VLAN and private VLAN by default. Because IBM controls the VLANs, subnets, and IP addresses, you cannot create multizone clusters or add subnets to your cluster, and can use only NodePort services to expose your app.
 
