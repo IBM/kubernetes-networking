@@ -28,11 +28,12 @@ Kubernetes relies on proxying to forward inbound traffic to backends. When you u
 
 A Kubernetes cluster runs a local Kubernetes network proxy, `kube-proxy`, as a daemon on each worker node in the kube-system namespace, which provides basic load balancing for services.
 
-The default load balancing mode in Kubernetes is `iptables` and rules, a Linux kernel feature, to direct requests to the pods behind a service equally. The native method for load distribution in `iptables` mode is `random selection`. 
+The default load balancing mode in Kubernetes is `iptables` and rules, a Linux kernel feature, to direct requests to the pods behind a service equally. The native method for load distribution in `iptables` mode is `random selection`.
 
 An older kube-proxy mode is `userspace`, which uses `round-robin` load distribution, allocating the next available pod on an IP list, then rotating the list.
 
 Proxy modes:
+
 - userspace
 - iptables (default) (NLB 1.0 uses iptables)
 - IPVS (NLB 2.0 uses IP Virtual Server (IPVS))
@@ -49,7 +50,7 @@ Kubernetes offers a DNS cluster addon, which most of the supported environments 
 
 To verify if the CoreDNS deployment is available,
 
-```
+```bash
 kubectl get deployment -n kube-system | grep dns
 
 coredns               3/3    3    3    7h51m
@@ -67,6 +68,7 @@ The `node-local-dns` is the `NodeLocal DNSCaching` agent for improved cluster DN
 Next, go back to continue.
 
 ## Resources
+
 - [Choosing an app exposure service](https://cloud.ibm.com/docs/containers?topic=containers-cs_network_planning)
 - [ExternalName Service](https://kubernetes.io/docs/concepts/services-networking/service/#externalname)
 - [supported protocols](https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support)
