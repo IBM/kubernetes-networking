@@ -2,23 +2,23 @@
 
 To access the guestbook application via the Load Balancer for VPC, we are using the `port` of the Service object instead of the `NodePort`, which is the port we allowed inbound traffic on and which is the port value we used to access our deployment without a VPC. To see why, let's take a step back and go to the list of [Load balancers for VPC](https://cloud.ibm.com/vpc-ext/network/loadBalancers).
 
-![Load balancers fort VPC](images/ibmcloud-loadbalancers-for-vpc.png)
+![Load balancers fort VPC](../images/ibmcloud-loadbalancers-for-vpc.png)
 
 Click the load balancer with the hostname that corresponds to the `External IP` of the `LoadBalacer` service we created earlier.
 
-![Load balancer for VPC Details](images/ibmcloud-loadbalancer-details.png)
+![Load balancer for VPC Details](../images/ibmcloud-loadbalancer-details.png)
 
 You see a few tabs under the long name for `Back-end pools` and `Front-end listeners`. You see the `Hostname` that corresponds to the external IP of the `LoadBalancer` service for the guestbook application. And you see a `Health status` panel with a `Pool name` value of `tcp-3000-32219` with a `Listener protocol and port` of value `TCP - 3000`.
 
 Click on the `Back-end pool` tab and expand the `tcp-3000-32219` pool.
 
-![Load balancer for VPC - Back-end pool](images/back-end-pool.png)
+![Load balancer for VPC - Back-end pool](../images/back-end-pool.png)
 
 Note the `Health port` for the back-end pool is the `NodePort` of the guestbook service, and the distribution method used is `round robin`. You also see that a virtual server is attached on IP address `10.240.0.4`, the private IP address of the worker node of our cluster, and on port `$SVC_NODEPORT`, the `NodePort` value of the guestbook service.
 
 Click on the `Front-end listener` tab and note that `Port` is set to the `port` of the guestbook service. The front-end listener is mapped to the back-end pool `tcp-3000-32219` or `tcp-$SVC_PORT-$SVC_NODEPORT`.
 
-![Load balancer for VPC -Front-end listener](images/front-end-listener.png)
+![Load balancer for VPC -Front-end listener](../images/front-end-listener.png)
 
 That tells us that it is the load balancer for VPC that maps external traffic to our guestbook application via the `hostname:port` of the front end listener to the back-end pool with the private IP of the cluster in the IP range of our VPC `10.240.0.0/24`, and the NodePort of the guestbook service.
 
@@ -164,7 +164,7 @@ To expose an app by using Ingress, you must create a Kubernetes service for your
 
 The following diagram shows how Ingress directs communication from the internet to an app in a VPC multizone cluster.
 
-![VPC Architecture](images/vpc-architecture.png)
+![VPC Architecture](../images/vpc-architecture.png)
 [source](https://cloud.ibm.com/docs/containers?topic=containers-ingress-about#architecture-vpc)
 
 A VPC load balancer listens for external traffic, and based on the resolved IP address, the VPC load balancer sends the request to an available Application Load Balancer (ALB). The Application Load Balancer (ALB) listens for incoming HTTP, HTTPS, or TCP service requests, checks if routing rules exist for the application, and then forwards requests to the appropriate app pod according to the rules defined in the Ingress resource.
