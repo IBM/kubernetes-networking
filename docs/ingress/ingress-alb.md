@@ -321,4 +321,4 @@ $ curl -L -X POST "http://hello.$INGRESS_SUBDOMAIN/api/messages" -H 'Content-Typ
 
 ## Next
 
-Next, go to [Route](route.md).
+Next, go to [Route](../route/route.md).

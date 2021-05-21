@@ -89,4 +89,6 @@ $ curl -L -X POST "http://$PUBLIC_IP:$NODE_PORT/api/messages" -H 'Content-Type: 
 {"id":"0ebdc166-32cd-4d0d-93b6-f278e4405c6f","sender":"world2","message":"Hello world2 (direct)","host":null}
 ```
 
+## Next
+
 Next, go to [ExternalName](externalname.md).

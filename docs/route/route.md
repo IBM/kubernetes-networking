@@ -15,13 +15,11 @@ OpenShift defines four types of Routes based on the type of TLS termination that
 3. Edge, TLS connection between the client and the router service is terminated, and the connection between the router service and your app pod is unencrypted.
 4. Re-encrypt, TLS connection between the client and the router service is terminated, and a new TLS connection between the router service and your app pod is created.
 
-
-
 ## Create a Route
 
 Expose the `helloworld` service as a Route by using the `oc expose` command.
 
-```
+```bash
 $ oc expose service helloworld -n $MY_NS
 
 route.route.openshift.io/helloworld exposed
@@ -29,7 +27,7 @@ route.route.openshift.io/helloworld exposed
 
 Get all routes,
 
-```
+```bash
 $ oc get routes -n $MY_NS
 
 NAME    HOST/PORT    PATH    SERVICES    PORT    TERMINATION    WILDCARD

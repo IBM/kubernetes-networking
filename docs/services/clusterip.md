@@ -56,4 +56,6 @@ Events:            <none>
 
 You see that Kubernetes by default creates a Service of type `ClusterIP`. The service is now available and discoverable, but only within the cluster, using the `Endpoints` and `port` mapping found via the `selector` and `labels`.
 
+## Next
+
 Go to [NodePort](nodeport.md) to learn more about ServiceType NodePort.

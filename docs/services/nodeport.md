@@ -89,4 +89,8 @@ $ curl -L -X POST "http://$PUBLIC_IP:$NODE_PORT/api/messages" -H 'Content-Type: 
 
 The client connects to your application via a public IP address of a worker node and the NodePort. Each node proxies the port, `kube-proxy` receives the request, and forwards it to the service at the cluster IP. At this point the request matches the netfilter or `iptables` rules and gets redirected to the server pod. 
 
-However, we still require some level of load balancing. a `LoadBalancer` service is the standard way to expose a service. Go to [LoadBalancer](loadbalancer.md) to learn more about the ServiceType LoadBalancer.
+However, we still require some level of load balancing. a `LoadBalancer` service is the standard way to expose a service.
+
+## Next
+
+Go to [LoadBalancer](loadbalancer.md) to learn more about ServiceType LoadBalancer.
