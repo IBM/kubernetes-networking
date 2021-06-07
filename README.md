@@ -19,7 +19,7 @@ Kubernetes Networking is part of the series `Kubernetes Security`, which include
 
 Continue your learning by visiting the [Istio workshop](https://ibm.github.io/istio101/). With Istio, you can manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
 
-## Prerequirementss
+## Prerequirements
 
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
 * Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
