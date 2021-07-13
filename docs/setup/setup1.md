@@ -29,12 +29,12 @@
 
 This workshop was tested using:
 
-* the labs environment at CognitiveLabs. To access a client terminal at CognitiveLabs.ai, follow the instructions [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
-* the labs environment at OpenLabs. To access a client terminal and OpenShift cluster at OpenLabs follow the instructions [here](https://ibm.github.io/workshop-setup/OPENLABS/).
+* An [IBM Cloud Shell](https://cloud.ibm.com/shell) instance, image version 1.0.25
 
 ## Login to IBM Cloud
 
-1. Log in to your cluster, e.g. if created in the `us-south` region,
+1. Using IBM Cloud Shell, you will already be logged in,
+1. Using an external shell, log in to IBM Cloud,
 
     ```console
     IBMID=<your IBMID email>
