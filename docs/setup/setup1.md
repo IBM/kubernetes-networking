@@ -44,7 +44,7 @@ This workshop was tested using:
 1. If you are using federated SSO login, use the `-sso` flag instead.
 1. Select the account in which the cluster was created.
 
-    ![Login to IBM Cloud](images/shell-login-to-cloud.png)
+    ![Login to IBM Cloud](../images/shell-login-to-cloud.png)
 
 ## Connect to IKS Cluster
 
