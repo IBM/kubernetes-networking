@@ -31,17 +31,17 @@ Go to [Setup](docs/setup.md) for more details.
 # Labs
 
 2. **Lab1 Kubernetes Networking 101**
-   1. [Setup](docs/setup1.md)
-   2. [Services](docs/services.md)
-   3. [ClusterIP](docs/clusterip.md)
-   4. [NodePort](docs/nodeport.md)
-   5. [Loadbalancer NLB](docs/loadbalancer.md)
-   6. [ExternalName](docs/externalname.md)
-   7. [Ingress ALB](docs/ingress-alb.md)
-   8. [Network Policy and Calico](docs/networkpolicy.md)
+   1. [Setup](docs/setup/setup1.md)
+   2. [Services](docs/services/services.md)
+   3. [ClusterIP](docs/services/clusterip.md)
+   4. [NodePort](docs/services/nodeport.md)
+   5. [Loadbalancer NLB](docs/services/loadbalancer.md)
+   6. [ExternalName](docs/services/externalname.md)
+   7. [Ingress ALB](docs/ingress/ingress-alb.md)
+   8. [Network Policy and Calico](docs/calico/networkpolicy.md)
 3. **Lab2 Using a VPC**
-   1. [Setup](docs/setup2.md)
-   2. [VPC Gen2](docs/vpcgen2.md)
+   1. [Setup](docs/setup/setup2.md)
+   2. [VPC Gen2](docs/vpc/vpcgen2.md)
 
 ## Technologies
 
