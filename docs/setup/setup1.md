@@ -29,12 +29,12 @@
 
 This workshop was tested using:
 
-* the labs environment at CognitiveLabs. To access a client terminal at CognitiveLabs.ai, follow the instructions [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
-* the labs environment at OpenLabs. To access a client terminal and OpenShift cluster at OpenLabs follow the instructions [here](https://ibm.github.io/workshop-setup/OPENLABS/).
+* An [IBM Cloud Shell](https://cloud.ibm.com/shell) instance, image version 1.0.25
 
 ## Login to IBM Cloud
 
-1. Log in to your cluster, e.g. if created in the `us-south` region,
+1. Using IBM Cloud Shell, you will already be logged in,
+1. Using an external shell, log in to IBM Cloud,
 
     ```console
     IBMID=<your IBMID email>
@@ -44,7 +44,7 @@ This workshop was tested using:
 1. If you are using federated SSO login, use the `-sso` flag instead.
 1. Select the account in which the cluster was created.
 
-    ![Login to IBM Cloud](images/shell-login-to-cloud.png)
+    ![Login to IBM Cloud](../images/shell-login-to-cloud.png)
 
 ## Connect to IKS Cluster
 
@@ -95,6 +95,22 @@ This workshop was tested using:
 
     Using project "default".
     ```
+
+## Create Namespace or Project
+
+On Kubernetes,
+
+```bash
+MY_NS=my-apps
+kubectl create namespace $MY_NS
+```
+
+On OpenShift,
+
+```bash
+MY_NS=my-apps
+oc new-project $MY_NS
+```
 
 ## Get Helloworld Source Code
 
