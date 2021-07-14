@@ -21,7 +21,7 @@ nav:
         - NodePort: services/nodeport.md
         - Loadbalancer and NLB: services/loadbalancer.md
         - ExternalName: services/externalname.md      
-    - <b>Lab2: Ingress</b>:
+    - <b>Lab2 Ingress</b>:
       - Ingress and ALB: ingress/ingress-alb.md
       - Route: route/route.md
       - Secured Routes: route/secured-routes.md
