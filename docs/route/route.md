@@ -34,6 +34,29 @@ NAME    HOST/PORT    PATH    SERVICES    PORT    TERMINATION    WILDCARD
 helloworld   helloworld-my-apps.remkohdev-roks45-2n-clu-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud    helloworld    http-server    None
 ```
 
+Describe the route,
+
+```bash
+$ oc describe route helloworld
+Name:                   helloworld
+Namespace:              my-apps
+Created:                3 minutes ago
+Labels:                 app=helloworld
+Annotations:            openshift.io/host.generated=true
+Requested Host:         helloworld-my-apps.remko-lumen-test-roks46-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud
+                           exposed on router default (host remko-lumen-test-roks46-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud) 3 minutes ago
+Path:                   <none>
+TLS Termination:        <none>
+Insecure Policy:        <none>
+Endpoint Port:          http-server
+
+Service:        helloworld
+Weight:         100 (100%)
+Endpoints:      172.30.156.58:8080, 172.30.187.29:8080, 172.30.91.16:8080
+```
+
+No TLS termination strategy has been set.
+
 Retrieve the created host for the Route and the NodePort of the `helloworld` service,
 
 ```bash
@@ -54,4 +77,4 @@ $ curl -L -X POST "http://$ROUTE:$NODE_PORT/api/messages" -H 'Content-Type: appl
 
 ## Next
 
-Next, go to [Network Policy](../calico/networkpolicy.md).
+Next, go to [Secured Routes](secured-routes.md).
