@@ -1,0 +1,52 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+annotations:
+  method: Docker build
+metadata:
+  labels:
+    app: golang-https
+  name: golang-https
+spec:
+  replicas: 1
+  selector:
+    app: golang-https
+    deploymentconfig: golang-https
+    name: golang-https
+  template:
+    metadata:
+      labels:
+        name: golang-https
+        app: golang-https
+        deploymentconfig: golang-https
+    spec:
+      volumes:
+        - name: tls-cert
+          secret:
+            secretName: mycert
+      containers:
+        - image: alnemr1/go-tls:v1
+          name: golang-https
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8443
+              protocol: TCP
+          volumeMounts:
+            - name: tls-cert
+              mountPath: /usr/local/etc/ssl/certs
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: golang-https
+  labels:
+    app: golang-https
+spec:
+  ports:
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
+  selector:
+    app: golang-https
+    deploymentconfig: golang-https
+    name: golang-https
+  type: ClusterIP
