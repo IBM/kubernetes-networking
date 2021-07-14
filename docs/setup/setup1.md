@@ -96,6 +96,22 @@ This workshop was tested using:
     Using project "default".
     ```
 
+## Create Namespace or Project
+
+On Kubernetes,
+
+```bash
+MY_NS=my-apps
+kubectl create namespace $MY_NS
+```
+
+On OpenShift,
+
+```bash
+MY_NS=my-apps
+oc new-project $MY_NS
+```
+
 ## Get Helloworld Source Code
 
 In this workshop, we will use a `helloworld` application. The source code, Maven build file, container images, and Kubernetes resource specifications are included in the repository. To get started, clone the `helloworld` repository to your client,
