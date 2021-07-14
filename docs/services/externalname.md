@@ -23,4 +23,7 @@ When looking up the service `my-database-svc.prod.svc.cluster.local`, the cluste
 
 ## Next
 
-Next, go to [Ingress](../ingress/ingress-alb.md).
+Next,
+
+1. for IKS go to [Ingress](../ingress/ingress-alb.md),
+2. for ROKS go to [Route](../route/route.md)..
