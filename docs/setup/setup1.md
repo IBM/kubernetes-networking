@@ -5,7 +5,7 @@
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
 * Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
 * Client terminal with:
-    * IBM Cloud CLI,
+* IBM Cloud CLI,
     * IBM CLoud CLI Kubernetes Service plugin,
     * IBM CLoud CLI Infrastructure Service plugin,
 * kubectl CLI,

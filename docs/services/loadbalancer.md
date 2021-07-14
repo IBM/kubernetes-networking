@@ -28,11 +28,11 @@ The LoadBalancer service type is implemented differently depending on your clust
 
 Version 1.0 NLBs use `Network Address Translation (NAT)` to rewrite the request packet's source IP address to the IP of worker node where a load balancer pod exists.
 
-![NLB 1.0](images/ks_loadbalancer_nlb1.png)
+![NLB 1.0](../images/ks_loadbalancer_nlb1.png)
 
 Version 2.0 NLBs doesn't use NAT but `IP over IP (IPIP)` to encapsulate the original request packet into another packet, which preserves the client IP as its source IP address. The worker node then uses `Direct Server Return (DSR)` to send the app response packet back to the client IP.
 
-![NLB 2.0](images/ks_loadbalancer_nlb2.png)
+![NLB 2.0](../images/ks_loadbalancer_nlb2.png)
 
 ## Load Balancing Methods on IBM Cloud
 
