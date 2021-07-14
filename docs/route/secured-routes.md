@@ -240,3 +240,7 @@ You can learn more using the following resources:
 * [Secured Routes](https://docs.openshift.com/container-platform/4.5/networking/routes/secured-routes.html)
 * [End to End Encryption with OpenShift: Part 1](https://developers.redhat.com/blog/2017/01/24/end-to-end-encryption-with-openshift-part-1-two-way-ssl/)
 * [End to End Encryption with OpenShift: Part 2](https://www.openshift.com/blog/self-serviced-end-to-end-encryption-for-kubernetes-applications-part-2-a-practical-example)
+
+## Next
+
+Next, go to [Network Policy](../calico/networkpolicy.md).

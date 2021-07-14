@@ -20,11 +20,11 @@ nav:
         - ClusterIP: services/clusterip.md
         - NodePort: services/nodeport.md
         - Loadbalancer and NLB: services/loadbalancer.md
-        - ExternalName: services/externalname.md
+        - ExternalName: services/externalname.md      
+    - <b>Lab2: Ingress</b>:
       - Ingress and ALB: ingress/ingress-alb.md
       - Route: route/route.md
-    - <b>Lab2 Secured Routes</b>:
-      - Route: route/secured-routes.md
+      - Secured Routes: route/secured-routes.md
     - <b>Lab3 Network Policies</b>:
       - Network Policy and Calico: calico/networkpolicy.md
 #   - Open Policy Agent (OPA): opa.md
