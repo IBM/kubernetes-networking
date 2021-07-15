@@ -75,7 +75,7 @@ On IBM Cloud, every Kubernetes Service cluster is set up with a network plug-in 
 
 For this tutorial, we will use an additional app called `helloworld-proxy`, which proxies requests to the `helloworld` app.
 
-![helloworld proxy architecture](images/helloworld-proxy.png)
+![helloworld proxy architecture](../images/helloworld-proxy.png)
 
 If you don't have the repository already, clone it to your local machine,
 
@@ -213,7 +213,6 @@ helloworld-proxy   LoadBalancer   172.21.115.248   169.60.24.132   8080:31043/TC
 $ oc get routes -n $MY_NS
 NAME                       HOST/PORT                                                                                                            PATH   SERVICES           PORT          TERMINATION   WILDCARD
 helloworld                 helloworld-my-apps.dte-ocp44-t6knp0-915b3b336cabec458a7c7ec2aa7c625f-0000.us-east.containers.appdomain.cloud                helloworld         http-server                 None
-helloworld-ingress-lxz9w   hello.dte-ocp44-t6knp0-915b3b336cabec458a7c7ec2aa7c625f-0000.us-east.containers.appdomain.cloud                             helloworld         <all>                       None
 helloworld-proxy           helloworld-proxy-my-apps.dte-ocp44-t6knp0-915b3b336cabec458a7c7ec2aa7c625f-0000.us-east.containers.appdomain.cloud          helloworld-proxy   http-server                 None
 ```
 
@@ -284,7 +283,8 @@ oc delete deployment helloworld -n $MY_NS
 oc delete deployment helloworld-proxy -n $MY_NS
 oc delete svc helloworld -n $MY_NS
 oc delete svc helloworld-proxy -n $MY_NS
-oc delete namespace $MY_NS
+oc delete route helloworld
+oc delete route helloworld-proxy
 ```
 
 Verify all resources are removed,
@@ -293,4 +293,10 @@ Verify all resources are removed,
 $ oc get all -n $MY_NS
 
 No resources found in my-apps namespace.
+```
+
+and delete the namespace,
+
+```bash
+oc delete namespace $MY_NS
 ```
