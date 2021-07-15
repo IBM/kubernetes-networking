@@ -154,7 +154,7 @@ In a standard cluster on IKS, the Ingress Application Load Balancer (ALB) is a l
 
 In a [Red Hat OpenShift Kubernetes Service (ROKS) cluster](https://cloud.ibm.com/docs/openshift?topic=openshift-ingress-about-roks4), the router is a layer 7 load balancer which implements an [`HAProxy` Ingress controller](https://github.com/haproxytech/kubernetes-ingress).
 
-![Multi-zone cluster Ingress ALB traffic](images/ks_ingress_multizone.png)
+![Multi-zone cluster Ingress ALB traffic](../images/ks_ingress_multizone.png)
 
 ## Create an Ingress Resource for the HelloWorld App
 
