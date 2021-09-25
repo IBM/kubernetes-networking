@@ -1,34 +1,15 @@
 # Kubernetes Networking
 
+This series of workshops on Kubernetes Networking is accompanied by a [lecture on Kubernetes Networking](https://raw.githubusercontent.com/IBM/kubernetes-networking/master/pdf/KubernetesNetworking-Lecture.pdf).
+
 The Kubernetes Networking series consists of the following topics:
 
 1. **Kubernetes Networking 101** (60 mins), you will use different ways to control traffic on a Kubernetes cluster with Service types. Start [here](services/services.md).
 1. **Add an Ingress on OpenShift** (15 minutes), add an Ingress and Route to expose a Service, you will use different types of TLS termination to secure Routes on OpenShift: edge, passthrough and reencrypt. Start [here](route/route.md).
 1. **Network Policies and Calico** (15 minutes), create a Network Policy and use Calico. Start [here](calico/networkpolicy.md).
-1. **Kubernetes Network Security using a Virtual Private Cloud (VPC)** (90 mins), you will deploy a guestbook application to a Kubernetes cluster in a Virtual Private Cloud (VPC) Gen2, you will create the VPC, add a subnet, attach a public gateway, and update a security group with rules to allow inbound traffic to the guestbook application. Start [here](vpc/vpcgen2.md).
+1. **Create a Virtual Private Cloud (VPC)** (90 mins), you will create the VPC, add a subnet, attach a public gateway, and review the security group that allows inbound and outbound access. Start [here](vpc/0_about.md).
+1. **Create a Kubernetes Cluster for VPC** you will create a IBM Cloud Kubernetes Service (IKS) for VPC and deploy a guestbook application to a Kubernetes cluster in VPC, and update a security group with rules to allow inbound traffic to the guestbook application. Start [here](vpc_iks/0_about.md).
 1. **[Istio](https://ibm.github.io/istio101/)**, use Istio to manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
-
-This series of workshops on Kubernetes Networking is accompanied by a [lecture on Kubernetes Networking](https://raw.githubusercontent.com/IBM/kubernetes-networking/master/pdf/KubernetesNetworking-Lecture.pdf).
-
-Kubernetes Networking is part of the series `Kubernetes Security`, which includes:
-
-1. Kubernetes Security,
-2. Kubernetes Networking,
-3. Kubernetes Storage,
-4. Kubernetes Automation (DevOps, IaC, CI/CD).
-
-## Next steps
-
-Continue your learning by visiting the [Istio workshop](https://ibm.github.io/istio101/). With Istio, you can manage network traffic, load balance across microservices, enforce access policies, verify service identity, and more.
-
-## Prerequirementss
-
-* Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
-* Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
-* CognitiveLabs.ai account, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/).
-* Kubernetes standard cluster v1.18 with at least 2 worker nodes on a VLAN, a subnet with public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ).
-
-Go to [Setup](setup/setup1.md) for more details.
 
 ## Labs
 
@@ -40,13 +21,33 @@ Go to [Setup](setup/setup1.md) for more details.
     5. [Loadbalancer NLB](services/loadbalancer.md)
     6. [ExternalName](services/externalname.md)
     7. [Ingress ALB](services/ingress-alb.md)
-1. **Lab2 Secured Routes**
-    1. [Secured Routes and TLS Termination](route/secured-routes.md)
+1. **Lab2 Ingress**
+    1. [Ingress and ALB](ingress/ingress-alb.md),
+    1. [Route](route/route.md),
+    1. [Secured Routes and TLS Termination](route/secured-routes.md),
 1. **Lab3 Network Policies**
     1. [Network Policy and Calico](calico/networkpolicy.md)
-1. **Lab4 Secure a Cluster using VPC**
-    1. [Setup](vpc/setup2.md)
-    2. [VPC Gen2](vpc/vpcgen2.md)
+1. **Lab4 Create a VPC**
+    1. [Setup](vpc/0_setup.md),
+    1. [About](vpc/1_about.md),
+    1. [Create a VPC](vpc/2_create_vpc.md),
+    1. [Create a Subnet](vpc/3_create_subnet.md),
+    1. [Review the Security Group](vpc/4_review_security_group.md),
+    1. [Create a Public Gateway with Floating IP](vpc/5_create_public_gateway.md),
+    1. [Review the VPC](vpc/6_review_vpc.md).
+1. **Lab5 Create a Kubernetes Cluster for VPC**
+    1. [Setup](vpc_iks/1_setup.md),
+    1. [Create an IBM Cloud Kubernetes Service (IKS) for VPC](vpc_iks/2_create_iks_for_vpc.md),
+
+## Related Workshops
+
+The following series are related to `Kubernetes Networking`:
+
+1. Kubernetes Security,
+2. [Kubernetes Networking](https://ibm.github.io/kubernetes-networking/),
+3. [Kubernetes Storage](https://ibm.github.io/kubernetes-storage/),
+4. Kubernetes Automation (Secure DevOps, IaC, CI/CD),
+    1. [Tekton](https://ibm.github.io/tekton-tutorial-openshift/)
 
 ## Technologies
 
