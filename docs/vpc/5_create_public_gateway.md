@@ -1,4 +1,4 @@
-# Create Public Gateway
+# Create a Public Gateway
 
 Create a public gateway, and update the subnet with the public gateway, this should create a floating IP for your public gateway attached to your subnet,
 
@@ -75,3 +75,7 @@ Check that the public gateway is now attached to the subnet by retrieving the pu
 MY_PUBLIC_GATEWAY_ID2=$(ibmcloud is subnets --output json | jq -r '.[] | select( .name=='\"$MY_VPC_SUBNET_NAME\"') | .public_gateway.id ')
 echo $MY_PUBLIC_GATEWAY_ID2
 ```
+
+## Next
+
+Next, [Review VPC](6_review_vpc.md).

@@ -54,3 +54,7 @@ ibmcloud is security-group $MY_DEFAULT_SG_ID --output json
     }
 }
 ```
+
+## Next
+
+Next, [Create a Public Gateway](5_create_public_gateway.md).
