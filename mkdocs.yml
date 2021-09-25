@@ -28,12 +28,19 @@ nav:
     - <b>Lab3 Network Policies</b>:
       - Network Policy and Calico: calico/networkpolicy.md
 #   - Open Policy Agent (OPA): opa.md
-    - <b>Lab4 Secure a Cluster using VPC</b>:
-      - Setup: setup/setup2.md
-      - VPC Gen2: vpc/vpcgen2.md
+    - <b>Lab4 Create a VPC</b>:
+      - Setup: vpc/0_setup.md
+      - About: vpc/1_about.md
+      - Create a VPC: vpc/2_create_vpc.md
+      - Create a Subnet: vpc/3_create_subnet.md
+      - Review Security Group: vpc/4_review_security_group.md
+      - Create Public Gateway: vpc/5_create_public_gateway.md
+      - Review VPC Infrastructure: vpc/6_review_vpc.md
       - Background:
         - Load Balancer for VPC: vpc/vpcgen2-loadbalancer.md
         - Airgap: vpc/airgap.md
+    - <b>Lab5 Create a Secure Cluster for VPC</b>:
+      - About: vpc_roks/1_create_roks_for_vpc.md
   - References:
     - Contributors: references/contributors.md
 
