@@ -21,7 +21,8 @@ This tutorial is based on the official documentation for [Using the IBM Cloud co
 Steps:
 
 1. [Setup](0_setup.md),
-1. [Create a VPC](1_create_vpc.md),
+1. [About](1_about.md),
+1. [Create a VPC](2_create_vpc.md),
 1. [Create a Subnet](3_create_subnet.md),
 1. [Review the Security Group](4_review_security_group.md),
 1. [Create a Public Gateway with Floating IP](5_create_public_gateway.md),
