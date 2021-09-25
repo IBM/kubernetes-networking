@@ -8,7 +8,7 @@
 
 ## Setup CLI
 
-In this tutorial, we use the IBM Cloud Shell, a cloud managed instance of a client terminal with pre-installed tools like ibmcloud CLI and the OpenShift CLI. 
+In this tutorial, we use the IBM Cloud Shell, a cloud managed instance of a client terminal with pre-installed tools like ibmcloud CLI and the OpenShift CLI.
 
 [Log into your IBM Cloud account](https://ibm.github.io/workshop-setup/IBMCLOUD/) and open the [IBM Cloud Shell](https://cloud.ibm.com/shell).
 

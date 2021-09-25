@@ -1,4 +1,4 @@
-# Create a VPC
+# Create a Virtual Private Cloud (VPC)
 
 In this section, you will create and configure a Virtual Private Cloud (VPC) and configure the related resources for your VPC like the subnet, security group and floating IP.
 

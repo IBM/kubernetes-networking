@@ -1,4 +1,4 @@
-## Create a Kubernetes Cluster
+# Create a Red Hat Openshift Kubernetes Service (ROKS) Cluster
 
 Create a cluster in your VPC in the same zone as the subnet. By default, your cluster is created with a public and a private service endpoint. You can use the public service endpoint to access the Kubernetes master,
 
