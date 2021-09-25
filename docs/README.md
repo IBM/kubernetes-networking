@@ -44,9 +44,10 @@ The Kubernetes Networking series consists of the following topics:
 The following series are related to `Kubernetes Networking`:
 
 1. Kubernetes Security,
-2. Kubernetes Networking,
-3. Kubernetes Storage,
-4. Kubernetes Automation (Secure DevOps, IaC, CI/CD).
+2. [Kubernetes Networking](https://ibm.github.io/kubernetes-networking/),
+3. [Kubernetes Storage](https://ibm.github.io/kubernetes-storage/),
+4. Kubernetes Automation (Secure DevOps, IaC, CI/CD),
+    1. [Tekton](https://ibm.github.io/tekton-tutorial-openshift/)
 
 ## Technologies
 
