@@ -69,4 +69,4 @@ br-sao          Sao Paulo
 
 ## Next
 
-Next, read [About this Workshop](1_about.md).
+Next, read more [About this Workshop](1_about.md).
