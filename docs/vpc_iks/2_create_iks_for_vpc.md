@@ -29,11 +29,11 @@ To continue with the next step, the cluster status and the Ingress status must i
 ibmcloud ks cluster get --cluster $MY_CLUSTER_ID
 ```
 
-![IBM Cloud Kubernetes Service Overview](images/ibmcloud-iks-overview.png)
+![IBM Cloud Kubernetes Service Overview](../images/ibmcloud-iks-overview.png)
 
 Once the cluster is fully provisioned including the Ingress Application Load Balancer (ALB), you should see the `Worker nodes` status to be `100% Normal`, the `Ingress subdomain` should be populated, among other,
 
-![IBM Cloud Kubernetes Service Overview](images/ibmcloud-iks-overview-done.png)
+![IBM Cloud Kubernetes Service Overview](../images/ibmcloud-iks-overview-done.png)
 
 Or via the CLI,
 
@@ -130,7 +130,7 @@ echo $SVC_PORT
 
 **Note** the external IP address is set to the `hostname` of one of two `Load Balancers for VPC`. See the [Load balancers for VPC](https://cloud.ibm.com/vpc-ext/network/loadBalancers) in the IBM Cloud VPC Infrastructure listing.
 
-![Load balancers fort VPC](images/ibmcloud-loadbalancers-for-vpc.png)
+![Load balancers fort VPC](../images/ibmcloud-loadbalancers-for-vpc.png)
 
 Try to send a request to the guestbook application,
 
@@ -188,7 +188,7 @@ You should now be able to see the HTML response object from the Guestbook applic
 echo http://$SVC_EXTERNAL_IP:$SVC_PORT
 ```
 
-![Guestbook v1](images/guestbook-v1.png)
+![Guestbook v1](../images/guestbook-v1.png)
 
 If you want to understand better how the load balancing for VPC works, review the optional extra section [Understanding the Load Balancer for VPC](vpcgen2-loadbalancer.md)
 
@@ -280,3 +280,7 @@ Deleting vpc r006-3c9ab19c-e8af-4eb3-ab60-b9777c3cce1c under account Remko de Kn
 OK
 vpc r006-3c9ab19c-e8af-4eb3-ab60-b9777c3cce1c is deleted.
 ```
+
+## Next
+
+Next, go back to [Kubernetes Networking](../README.md).
