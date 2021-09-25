@@ -4,4 +4,4 @@ This tutorial is based on the official documentation for [creating a cluster in 
 
 ## Next
 
-Go to [Create an IBM Cloud Kubernetes Service instance for VPC](2_create_iks_for_vpc.md).
+Go to [Setup](1_setup.md).

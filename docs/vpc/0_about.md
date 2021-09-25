@@ -29,4 +29,4 @@ Steps:
 
 ## Next
 
-Next, [Create a VPC](2_create_vpc.md).
+Next, [Setup](1_setup.md).

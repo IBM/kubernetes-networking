@@ -92,7 +92,7 @@ r006-1b267b51-9651-4922-b95c-8a3243226207   bnewell-vpcgen2-vpc1   available   f
 
 Set an environment variable `MY_VPC_ID`,
 
-```console
+```bash
 MY_VPC_ID=$(ibmcloud is vpcs --output json | jq -r '.[] | select( .name=='\"$MY_VPC_NAME\"') | .id ')
 echo $MY_VPC_ID
 ```

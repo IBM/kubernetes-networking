@@ -69,4 +69,4 @@ br-sao          Sao Paulo
 
 ## Next
 
-Next, read more [About this Workshop](1_about.md).
+Next, [Create a VPC](2_create_vpc.md).
