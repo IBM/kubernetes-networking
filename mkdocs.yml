@@ -39,8 +39,8 @@ nav:
 #      - Background:
 #        - Load Balancer for VPC: vpc/vpcgen2-loadbalancer.md
 #        - Airgap: vpc/airgap.md
-    - <b>Lab5 Create a Secure Cluster for VPC</b>:
-      - About: vpc_roks/1_create_roks_for_vpc.md
+    - <b>Lab5 Create a Kubernetes Cluster for VPC</b>:
+      - About: vpc_iks/1_about.md
   - References:
     - Contributors: references/contributors.md
 

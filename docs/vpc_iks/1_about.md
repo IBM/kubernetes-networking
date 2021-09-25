@@ -4,4 +4,4 @@ This tutorial is based on the official documentation for [creating a cluster in 
 
 ## Next
 
-Go to [Create a Red Hat OpenShift Kubernetes Service instance for VPC](2_create_roks_for_vpc.md).
+Go to [Create an IBM Cloud Kubernetes Service instance for VPC](2_create_iks_for_vpc.md).

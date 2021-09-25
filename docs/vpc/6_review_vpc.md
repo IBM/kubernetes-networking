@@ -50,4 +50,6 @@ You are awesome! You created a Virtual Private Cloud (VPC) with a subnet, a secu
 
 ## Next
 
-Next, [create a Red Hat OpenShift Kubernetes Service (ROKS)](../vpc_roks/1_create_roks_for_vpc.md) or create an IBM Cloud Kubernetes Service instance.
+Next, [create an IBM Cloud Kubernetes Service instance for VPC](../vpc_iks/1_about.md).
+
+<!--Next, [create a Red Hat OpenShift Kubernetes Service (ROKS)](../vpc_roks/1_about.md) or [Create an IBM Cloud Kubernetes Service instance](../vpc_iks/1_about.md).-->
