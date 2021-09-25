@@ -62,7 +62,7 @@ theme:
   features:
     - navigation.tabs
     #- navigation.instant
-    - navigation.expand
+    #- navigation.expand
   palette:
     scheme: default
     primary: black
