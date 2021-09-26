@@ -2,7 +2,7 @@
 
 Create a subnet
 
-```console
+```bash
 $ ibmcloud is subnet-create $MY_VPC_SUBNET_NAME $MY_VPC_ID --zone $MY_ZONE --ipv4-address-count 256
 
 Creating subnet bnewell-vpcsubnet1 in resource group bnewell-vpc-rg under account B. NEWELL's Account as user bnewell@email.com...
@@ -32,7 +32,7 @@ Resource group      ID                                 Name
 
 Set an environment variable `MY_VPC_SUBNET_ID`,
 
-```console
+```bash
 MY_VPC_SUBNET_ID=$(ibmcloud is subnets --output json | jq -r '.[] | select( .name=='\"$MY_VPC_SUBNET_NAME\"') | .id ')
 echo $MY_VPC_SUBNET_ID
 ```

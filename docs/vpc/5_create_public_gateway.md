@@ -30,7 +30,7 @@ MY_PUBLIC_GATEWAY_ID=$(ibmcloud is public-gateways --output json | jq -r '.[] | 
 echo $MY_PUBLIC_GATEWAY_ID
 ```
 
-Configure the public gateway for the subnet,
+Update the subnet and attach the public gateway,
 
 ```bash
 $ ibmcloud is subnet-update $MY_VPC_SUBNET_ID --public-gateway-id $MY_PUBLIC_GATEWAY_ID

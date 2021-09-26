@@ -43,13 +43,21 @@ Check the available Kubernetes service versions,
 ibmcloud ks versions
 ```
 
+Set an environment variable for the cluster name,
+
+```bash
+USERNAME=<your username>
+
+MY_CLUSTER_NAME=$USERNAME-iks120-vpc-cl1
+```
+
 Set an environment variable for the Kubernetes version using the default version for Kubernetes,
 
 ```bash
 export KS_VERSION=1.20.10
 ```
 
-You need to have set environment variables for `KS_VERSION` and `MY_ZONE`, `MY_VPC_ID` and `MY_VPC_SUBNET_ID`, the latter 3 were created in [Lab 4 Create a VPC](../vpc/2_create_vpc.md).
+You need to have set environment variables for `KS_VERSION` and `MY_ZONE`, `MY_VPC_ID`, `MY_VPC_SUBNET_ID` and `MY_CLUSTER_NAME`. The variables `MY_ZONE`, `MY_VPC_ID` and `MY_VPC_SUBNET_ID` were created in [Lab 4 Create a VPC](../vpc/2_create_vpc.md).
 
 ## Next
 
