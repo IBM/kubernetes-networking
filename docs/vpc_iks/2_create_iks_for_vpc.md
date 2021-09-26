@@ -16,7 +16,7 @@ Review your [IBM Cloud account resources](https://cloud.ibm.com/resources).
 
 ![IBM Cloud Resources](../images/vpc_iks/ibmcloud-resources.png)
 
-Find your cluster and click the linked cluster name of the cluster you just created. If you do not see the cluster listed yet, wait and refresh the page. 
+Find your cluster and click the linked cluster name of the cluster you just created. If you do not see the cluster listed yet, wait and refresh the page.
 
 ![IBM Cloud Cluster Details](../images/vpc_iks/iks-cluster-details1.png)
 
