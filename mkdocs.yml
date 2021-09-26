@@ -43,6 +43,7 @@ nav:
       - About: vpc_iks/0_about.md
       - Setup: vpc_iks/1_setup.md
       - Create Kubernetes Cluster: vpc_iks/2_create_iks_for_vpc.md
+      - Cleanup: vpc_iks/3_cleanup.md
   - References:
     - Contributors: references/contributors.md
 
