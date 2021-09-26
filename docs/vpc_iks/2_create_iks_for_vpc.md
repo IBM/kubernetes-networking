@@ -4,17 +4,23 @@ Create a cluster in your VPC in the same zone as the subnet. By default, your cl
 
 Create the cluster in the VPC,
 
-```console
-$ ibmcloud ks cluster create vpc-gen2 --name $MY_CLUSTER_NAME --zone $MY_ZONE --version $KS_VERSION --flavor bx2.2x8 --workers 1 --vpc-id $MY_VPC_ID --subnet-id $MY_VPC_SUBNET_ID
+```bash
+$ ibmcloud ks cluster create vpc-gen2 --flavor bx2.2x8 --name $MY_CLUSTER_NAME --subnet-id $MY_VPC_SUBNET_ID --vpc-id $MY_VPC_ID --zone $MY_ZONE --version $KS_VERSION --workers 1
 
 Creating cluster...
 OK
 Cluster created with ID bvglln7d0e5j0u9lfa80
 ```
 
-Review your IBM Cloud account resources,
+Review your [IBM Cloud account resources](https://cloud.ibm.com/resources).
 
-Click the linked cluster name of the cluster you just created. If you do not see the cluster listed yet, wait and refresh the page. Check the status of the new cluster,
+![IBM Cloud Resources](../images/vpc_iks/ibmcloud-resources.png)
+
+Find your cluster and click the linked cluster name of the cluster you just created. If you do not see the cluster listed yet, wait and refresh the page.
+
+![IBM Cloud Cluster Details](../images/vpc_iks/iks-cluster-details1.png)
+
+Check the status of the new cluster,
 
 ```bash
 ibmcloud ks clusters
@@ -26,10 +32,35 @@ echo $MY_CLUSTER_ID
 To continue with the next step, the cluster status and the Ingress status must indicate to be available. The cluster might take about 15 minutes to complete.
 
 ```bash
-ibmcloud ks cluster get --cluster $MY_CLUSTER_ID
-```
+$ ibmcloud ks cluster get --cluster $MY_CLUSTER_ID
 
-![IBM Cloud Kubernetes Service Overview](../images/ibmcloud-iks-overview.png)
+Retrieving cluster c57pqakd0fk24fuesujg...OK
+                                   Name:                           bnewell-iks120-vpc-cl1   ID:                             c57pqakd0fk24fuesujg   State:                          deploying   
+Status:                         -   Created:                        2021-09-25 22:05:30 +0000 (8 minutes ago)   
+Resource Group ID:              0d71b6d02dba487a9826cc7e5c546dd0   
+Resource Group Name:            bnewell-vpc-rg   
+Pod Subnet:                     172.17.0.0/18   
+Service Subnet:                 172.21.0.0/16   
+Workers:                        1   
+Worker Zones:                   us-south-1   
+Ingress Subdomain:              - †   
+Ingress Secret:                 - †   
+Ingress Status:                 -   
+Ingress Message:                -   
+Public Service Endpoint URL:    -   
+Private Service Endpoint URL:   -   
+Pull Secrets:                   enabled in the default namespace   
+VPCs:                           r006-ae17b5d4-56b9-4dac-88dd-85fc3aa530ac   
+
+Master         
+Status:     Deploy in progress. (7 minutes ago)   
+State:      deploying   
+Health:     -   
+Version:    1.20.10_1550   
+Location:   Dallas   
+URL:        -   
+† Your Ingress subdomain and secret might not be ready yet. For more info by cluster type, see 'https://ibm.biz/ingress-sub' for Kubernetes or 'https://ibm.biz/ingress-sub-ocp' for OpenShift.
+```
 
 Once the cluster is fully provisioned including the Ingress Application Load Balancer (ALB), you should see the `Worker nodes` status to be `100% Normal`, the `Ingress subdomain` should be populated, among other,
 
@@ -39,37 +70,36 @@ Or via the CLI,
 
 ```bash
 $ ibmcloud ks cluster get --cluster $MY_CLUSTER_ID
-Retrieving cluster c031jqqd0rll2ksfg97g...
+Retrieving cluster c57pqakd0fk24fuesujg...
 OK
                                    
-Name:                           bnewell2-iks118-vpc-cluster1   
-ID:                             c031jqqd0rll2ksfg97g   
+Name:                           remkohdev-iks120-vpc-cl1   
+ID:                             c57pqakd0fk24fuesujg   
 State:                          normal   
 Status:                         All Workers Normal   
-Created:                        2021-01-18 23:29:47 +0000 (16 hours ago)   
-Resource Group ID:              68af6383f717459686457a6434c4d19f   
-Resource Group Name:            Default   
+Created:                        2021-09-25 22:05:30 +0000 (50 minutes ago)   
+Resource Group ID:              0d71b6d02dba487a9826cc7e5c546dd0   
+Resource Group Name:            remkohdev-vpc-rg   
 Pod Subnet:                     172.17.0.0/18   
 Service Subnet:                 172.21.0.0/16   
 Workers:                        1   
 Worker Zones:                   us-south-1   
-Ingress Subdomain:              bnewell2-iks118-vpc-clu-47d7983a425e05fef831e694b7945b16-0000.us-south.containers.appdomain.cloud   
-Ingress Secret:                 bnewell2-iks118-vpc-clu-47d7983a425e05fef831e694b7945b16-0000   
+Ingress Subdomain:              remkohdev-iks120-vpc-cl1-2bef1f4b4097001da9502000c44fc2b2-0000.us-south.containers.appdomain.cloud   
+Ingress Secret:                 remkohdev-iks120-vpc-cl1-2bef1f4b4097001da9502000c44fc2b2-0000   
 Ingress Status:                 warning   
 Ingress Message:                One or more ALBs are unhealthy. See http://ibm.biz/ingress-alb-check   
-Creator:                        -   
-Public Service Endpoint URL:    https://c111.us-south.containers.cloud.ibm.com:31097   
-Private Service Endpoint URL:   https://c111.private.us-south.containers.cloud.ibm.com:31097   
+Public Service Endpoint URL:    https://c127.us-south.containers.cloud.ibm.com:31169   
+Private Service Endpoint URL:   https://c127.private.us-south.containers.cloud.ibm.com:31169   
 Pull Secrets:                   enabled in the default namespace   
-VPCs:                           r006-3c9ab19c-e8af-4eb3-ab60-b9777c3cce1c   
+VPCs:                           r006-ae17b5d4-56b9-4dac-88dd-85fc3aa530ac   
 
 Master         
-Status:     Ready (15 hours ago)   
+Status:     Ready (13 minutes ago)   
 State:      deployed   
 Health:     normal   
-Version:    1.18.14_1537   
+Version:    1.20.10_1550   
 Location:   Dallas   
-URL:        https://c111.us-south.containers.cloud.ibm.com:31097 
+URL:        https://c127.us-south.containers.cloud.ibm.com:31169
 ```
 
 You can also check the status of the Application Load Balancer (ALB),
@@ -79,8 +109,8 @@ $ ibmcloud ks ingress alb ls --cluster $MY_CLUSTER_ID
 
 OK
 ALB ID                                Enabled   State      Type      Load Balancer Hostname                 Zone         Build                                  Status   
-private-crc031jqqd0rll2ksfg97g-alb1   false     disabled   private   -                                      us-south-1   ingress:/ingress-auth:                 -   
-public-crc031jqqd0rll2ksfg97g-alb1    true      enabled    public    f128a85f-us-south.lb.appdomain.cloud   us-south-1   ingress:0.35.0_869_iks/ingress-auth:   -   
+private-crc57pqakd0fk24fuesujg-alb1   false     disabled   private   -                                      us-south-1   ingress:/ingress-auth:                 disabled   
+public-crc57pqakd0fk24fuesujg-alb1    true      enabled    public    62809e32-us-south.lb.appdomain.cloud   us-south-1   ingress:1.0.0_1699_iks/ingress-auth:   healthy    
 ```
 
 ## Deploy the Guestbook Application
@@ -110,9 +140,8 @@ List the created service for guestbook,
 
 ```bash
 $ kubectl get svc -n $MY_NAMESPACE
-
-NAME        TYPE           CLUSTER-IP     EXTERNAL-IP                            PORT(S)          AGE
-guestbook   LoadBalancer   172.21.48.26   7a6a66a7-us-south.lb.appdomain.cloud   3000:32219/TCP   31m
+NAME        TYPE           CLUSTER-IP       EXTERNAL-IP                            PORT(S)          AGE
+guestbook   LoadBalancer   172.21.139.220   b0384765-us-south.lb.appdomain.cloud   3000:32498/TCP   116s
 ```
 
 Create environment variables for the public IP address of the `LoadBalancer` service, the `NodePort`, and the port,
@@ -137,7 +166,7 @@ Try to send a request to the guestbook application,
 ```bash
 curl http://$SVC_EXTERNAL_IP:$SVC_PORT
 
-curl: (52) Empty reply from server
+url: (7) Failed to connect to b0384765-us-south.lb.appdomain.cloud port 32498: Connection timed out
 ```
 
 Even if you have created a `LoadBalancer` service with an external IP, the service cannot be reached because the VPC does not include a rule to allow incoming or ingress traffic to the service.
@@ -151,15 +180,15 @@ Update the security group and add an inbound rule for the NodePort of the servic
 ```bash
 $ ibmcloud is security-group-rule-add $MY_DEFAULT_SG_ID inbound tcp --port-min $SVC_NODEPORT --port-max $SVC_NODEPORT
 
-Creating rule for security group r006-b4f498ea-1e71-489e-95f0-0e64cf8d520f under account Remko de Knikker as user b.newell2@remkoh.dev...
+Creating rule for security group r006-3541d535-2c0d-4fac-8811-b6f4f0a76690 under account IBM Client Developer Advocacy as user bnewell@email.com...
                           
-ID                     r006-26b196de-5e3a-4a7d-b5fb-9baf9173feb7   
+ID                     r006-b23ee8eb-1860-4c2b-b758-86ae0dea4f08   
 Direction              inbound   
 IP version             ipv4   
 Protocol               tcp   
-Min destination port   32219   
-Max destination port   32219   
-Remote                 0.0.0.0/0
+Min destination port   32498   
+Max destination port   32498   
+Remote                 0.0.0.0/0 
 ```
 
 List all the security group rules,
@@ -167,11 +196,11 @@ List all the security group rules,
 ```console
 $ ibmcloud is security-group-rules $MY_DEFAULT_SG_ID
 
-Listing rules of security group r006-b4f498ea-1e71-489e-95f0-0e64cf8d520f under account Remko de Knikker as user b.newell2@remkoh.dev...
+Listing rules of security group r006-3541d535-2c0d-4fac-8811-b6f4f0a76690 under account IBM Client Developer Advocacy as user bnewell@email.com...
 ID                                          Direction   IP version   Protocol                        Remote   
-r006-6c281868-cfbd-46d1-b714-81e085ae2b85   outbound    ipv4         all                             0.0.0.0/0   
-r006-b07bbf77-84a0-4e35-90b7-5422f035cf1e   inbound     ipv4         all                             compacted-imprison-clinic-support   
-r006-26b196de-5e3a-4a7d-b5fb-9baf9173feb7   inbound     ipv4         tcp Ports:Min=32219,Max=32219   0.0.0.0/0
+r006-95a98531-df4c-4ac6-b8a0-3af8e8e4bb64   outbound    ipv4         all                             0.0.0.0/0   
+r006-b0a5dd7b-e494-4829-8d7a-af391c903745   inbound     ipv4         all                             stadium-reemerge-vexingly-spotted   
+r006-b23ee8eb-1860-4c2b-b758-86ae0dea4f08   inbound     ipv4         tcp Ports:Min=32498,Max=32498   0.0.0.0/0 
 ```
 
 Or add a security group rule to allow inbound TCP traffic on all Kubernetes ports in the range of 30000–32767.
@@ -179,14 +208,11 @@ Or add a security group rule to allow inbound TCP traffic on all Kubernetes port
 Try again to reach the guestbook application,
 
 ```console
-curl http://$SVC_EXTERNAL_IP:$SVC_PORT
+$ curl http://$SVC_EXTERNAL_IP:$SVC_PORT/hello
+Hello from guestbook. Your app is up! (Hostname: guestbook-58df645464-rscpd)
 ```
 
-You should now be able to see the HTML response object from the Guestbook application. Open the guestbook URL in a browser to review the web page.
-
-```console
-echo http://$SVC_EXTERNAL_IP:$SVC_PORT
-```
+Or open the Guestbook in a browser,
 
 ![Guestbook v1](../images/guestbook-v1.png)
 
@@ -200,87 +226,8 @@ ibmcloud is security-group-rule-delete $MY_DEFAULT_SG_ID $MY_DEFAULT_SG_RULE_ID
 
 ## Conclusion
 
-You are awesome! You secured your Kubernetes cluster with a Virtual Private Cloud (VPC) and started to air-gap the cluster, blocking direct access to your cluster. Security is an important integral part of any software application development and `airgapping` your cluster by adding a VPC Generation 2 is a first step in securing your cluster, network and containers.
-
-## Cleanup
-
-To conclude, you can choose to delete your Kubernetes resources for this tutorial,
-
-```bash
-$ ibmcloud ks cluster rm --cluster $MY_CLUSTER_NAME
-
-Do you want to delete the persistent storage for this cluster? If yes, the data cannot be recovered. If no, you can delete the persistent storage later in your IBM Cloud infrastructure account. [y/N]> y
-After you run this command, the cluster cannot be restored. Remove the cluster remkohdev-iks118-vpc-cluster1? [y/N]> y
-Removing cluster remkohdev-iks118-vpc-cluster1, persistent storage...
-OK
-```
-
-Now the Kubernetes cluster is deleted, we need to first remove the public gateway and load balancers from the subnet, then remove the subnet from the VPC, and delete the VPC.
-
-Delete the Gateways, Load Balancers, Network Interfaces, subnet, public gateways, and finally delete the VPC,
-
-```bash
-ibmcloud is security-group-rules $MY_DEFAULT_SG_ID --output json 
-
-MY_DEFAULT_SG_RULE_ID=$(ibmcloud is security-group-rules $MY_DEFAULT_SG_ID --output json | jq -r --arg SVC_NODEPORT $SVC_NODEPORT  '.[] | select( .port_max==($SVC_NODEPORT|tonumber)) | .id ')
-echo $MY_DEFAULT_SG_RULE_ID
-```
-
-Delete the rule for the security group,
-
-```bash
-$ ibmcloud is security-group-rule-delete $MY_DEFAULT_SG_ID $MY_DEFAULT_SG_RULE_ID
-This will delete security group rule r006-4f5f795f-fa90-44e4-b9c4-cb9457a2a421 and cannot be undone. Continue [y/N] ?> y
-Deleting rule r006-4f5f795f-fa90-44e4-b9c4-cb9457a2a421 from security group  r006-db96d593-c224-497d-888c-03d84f6d8e98 under account Remko de Knikker as user b.newell2@remkoh.dev...
-OK
-Rule r006-4f5f795f-fa90-44e4-b9c4-cb9457a2a421 is deleted.
-```
-
-Detach the public gateway from the subnet,
-
-```bash
-$ ibmcloud is subnet-public-gateway-detach $MY_VPC_SUBNET_ID
-Detaching public gateway from subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 under account Remko de Knikker as user b.newell2@remkoh.dev...
-OK
-Public gateway is detached.
-```
-
-Delete the public gateway,
-
-```bash
-ibmcloud is public-gateways
-PUBLIC_GATEWAY_ID=$(ibmcloud is public-gateways --output json | jq '.[0]' | jq -r '.id' ) 
-echo $PUBLIC_GATEWAY_ID
-
-$ ibmcloud is public-gateway-delete $PUBLIC_GATEWAY_ID
-This will delete public gateway r006-f4603b78-839b-42a5-949c-76403948821a and cannot be undone. Continue [y/N] ?> y
-Deleting public gateway r006-f4603b78-839b-42a5-949c-76403948821a under account Remko de Knikker as user b.newell2@remkoh.dev...
-OK
-Public gateway r006-f4603b78-839b-42a5-949c-76403948821a is deleted.
-```
-
-Delete the subnet,
-
-```bash
-$ ibmcloud is subnet-delete $MY_VPC_SUBNET_ID
-This will delete Subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 and cannot be undone. Continue [y/N] ?> y
-Deleting subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 under account Remko de Knikker as user b.newell2@remkoh.dev...
-OK
-Subnet 0717-57ebaf2d-0de6-4630-af01-6cd84031b679 is deleted.
-```
-
-Delete the Virtual Private Cloud,
-
-```bash
-MY_VPC_ID=$(ibmcloud is vpcs --output json | jq -r '.[] | select( .name=='\"$MY_VPC_NAME\"') | .id ')
-echo $MY_VPC_ID
-
-$ ibmcloud is vpc-delete $MY_VPC_IDThis will delete vpc r006-3c9ab19c-e8af-4eb3-ab60-b9777c3cce1c and cannot be undone. Continue [y/N] ?> y
-Deleting vpc r006-3c9ab19c-e8af-4eb3-ab60-b9777c3cce1c under account Remko de Knikker as user b.newell2@remkoh.dev...
-OK
-vpc r006-3c9ab19c-e8af-4eb3-ab60-b9777c3cce1c is deleted.
-```
+You are awesome! You secured your Kubernetes cluster with a Virtual Private Cloud (VPC), managing direct access to your cluster. Security is an important integral part of any software application development and `airgapping` your cluster by adding a VPC is a first step in securing your cluster, network and other resources.
 
 ## Next
 
-Next, go back to [Kubernetes Networking](../README.md).
+Next, [Cleanup](3_cleanup.md) the resources you created or go back to [Kubernetes Networking](../README.md).

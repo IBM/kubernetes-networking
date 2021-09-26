@@ -1,6 +1,6 @@
 # Review Security Group
 
-Inspect the VPC's default security group, set an environment variable `MY_DEFAULT_SG_NAME` and `MY_DEFAULT_SG_ID`,
+Inspect the VPC's default security group and set the environment variables `MY_DEFAULT_SG_NAME` and `MY_DEFAULT_SG_ID`,
 
 ```console
 MY_DEFAULT_SG_NAME=$(ibmcloud is vpcs --output json | jq -r '.[] | select( .name=='\"$MY_VPC_NAME\"') | .default_security_group.name ')

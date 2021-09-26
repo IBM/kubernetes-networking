@@ -6,14 +6,18 @@ In this section, you will create and configure a Virtual Private Cloud (VPC) and
 
 Set the following environment variables to be used in the remainder of the tutorial. Set the USERNAME to a unique value shorter than 10 characters and set the IBMID to the email you used to create the IBM Cloud account. The other variables don't need to be changed but you can choose to rename them if you prefer.
 
-```console
+```bash
 USERNAME=<bnewell>
 IBMID=<b.newell2@email.com>
+```
 
+Using the previous values, set the following environment variables,
+
+```bash
 RESOURCE_GROUP=$USERNAME-vpc-rg
 MY_REGION=us-south
 MY_ZONE=$MY_REGION-1
-MY_VPC_NAME=$USERNAME-vpcgen2-vpc1
+MY_VPC_NAME=$USERNAME-vpc1
 MY_VPC_SUBNET_NAME=$USERNAME-vpcsubnet1
 MY_PUBLIC_GATEWAY=$USERNAME-public-gateway1
 MY_NAMESPACE=my-guestbook
@@ -23,6 +27,7 @@ MY_NAMESPACE=my-guestbook
 
 ```bash
 $ ibmcloud resource group-create $RESOURCE_GROUP
+
 Creating resource group remkohdev-vpc-rg under account 3fe3c0de197257ef62d81c9f9c0f33aa as b.newell2@email.com...
 OK
 Resource group bnewell-vpc-rg was created.
@@ -31,7 +36,7 @@ Resource Group ID: 6542804b7f1040e59d7db25f53d5db18
 
 ## Set Targets
 
-Target the region where you want to create your VPC environment. The resource group flag is optional, if you happen to know it, you can target it explicitly, but this tutorial does not use it.
+Target the region and the resource group to create our VPC environment.
 
 ```bash
 ibmcloud target -r $MY_REGION -g $RESOURCE_GROUP

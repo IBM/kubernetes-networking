@@ -6,6 +6,7 @@ Steps:
 
 1. [Setup](1_setup.md),
 1. [Create an IBM Cloud Kubernetes Service (IKS) for VPC](2_create_iks_for_vpc.md),
+1. [Cleanup](3_cleanup.md),
 
 ## Next
 
