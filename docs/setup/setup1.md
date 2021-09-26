@@ -4,17 +4,9 @@
 
 * Free IBM Cloud account, to create a new IBM Cloud account go [here](https://ibm.github.io/workshop-setup/NEWACCOUNT/).
 * Free `Pay-As-You-Go` account. To upgrade a free IBM Cloud account, go [here](https://ibm.github.io/workshop-setup/PAYASYOUGO/).
-* Client terminal with:
-* IBM Cloud CLI,
-  * IBM CLoud CLI Kubernetes Service plugin,
-  * IBM CLoud CLI Infrastructure Service plugin,
-* kubectl CLI,
-  * OpenShift commandline `oc` CLI,
-* Recommended client terminals:
-  * CognitiveLabs.ai, to access a client terminal at CognitiveLabs.ai, go [here](https://ibm.github.io/workshop-setup/COGNITIVECLASS/),
-  * IBM OpenLabs
-  * IBM Cloud Shell
+* [IBM Cloud Shell](https://cloud.ibm.com/shell),
 * Kubernetes cluster:
+
   * IBM Cloud Kubernetes Service (IKS) v1.18 with a standard plan, a classic provider,
   * **OR** an Red Hat OpenShift Kubernetes Service v4.5 with a classic provider,
   * at least 2 worker nodes (with a subnet and public IPs, external LoadBalancer (for details about VLAN, subnets and IPs, see [here](https://cloud.ibm.com/docs/containers?topic=containers-subnets) ),
