@@ -51,6 +51,14 @@ MY_REGION=us-south
 ibmcloud target -r $MY_REGION
 ```
 
+Create a new resource group or use an existing resource group,
+
+```bash
+export MY_RG=<username>-vpc-rg
+ibmcloud resource group-create $MY_RG
+ibmcloud target -g $MY_RG
+```
+
 ## Next
 
 Next, [create a VPC](2_create_vpc.md).
