@@ -23,17 +23,6 @@ MY_PUBLIC_GATEWAY=$USERNAME-public-gateway1
 MY_NAMESPACE=my-guestbook
 ```
 
-## Create Resource Group
-
-```bash
-$ ibmcloud resource group-create $RESOURCE_GROUP
-
-Creating resource group remkohdev-vpc-rg under account 3fe3c0de197257ef62d81c9f9c0f33aa as b.newell2@email.com...
-OK
-Resource group bnewell-vpc-rg was created.
-Resource Group ID: 6542804b7f1040e59d7db25f53d5db18
-```
-
 ## Set Targets
 
 Target the region and the resource group to create our VPC environment.
