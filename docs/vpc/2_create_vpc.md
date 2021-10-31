@@ -14,7 +14,7 @@ IBMID=<b.newell2@email.com>
 Using the previous values, set the following environment variables,
 
 ```bash
-RESOURCE_GROUP=$USERNAME-vpc-rg
+RESOURCE_GROUP=$MY_RG
 MY_REGION=us-south
 MY_ZONE=$MY_REGION-1
 MY_VPC_NAME=$USERNAME-vpc1
